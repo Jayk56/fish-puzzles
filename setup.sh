@@ -284,7 +284,7 @@ help: ## Show this help message
 
 setup: ## Initial project setup
 	@echo "Setting up project..."
-	@swift package resolve
+	@cd fish-puzzles && swift package resolve
 	@if ! command -v swiftlint &> /dev/null; then \\
 		echo "Installing SwiftLint..."; \\
 		brew install swiftlint; \\
@@ -296,22 +296,23 @@ setup: ## Initial project setup
 
 build: ## Build the project
 	@echo "Building project..."
-	@swift build
+	@xcodebuild -project fish-puzzles/fish-puzzles.xcodeproj -scheme fish-puzzles -configuration Debug build | xcbeautify
 
 test: ## Run all tests
 	@echo "Running tests..."
-	@swift test
+	@xcodebuild test -project fish-puzzles/fish-puzzles.xcodeproj -scheme fish-puzzles -destination "platform=iOS Simulator,name=iPhone 15" | xcbeautify
 
 run: ## Run the app in simulator
 	@echo "Running app..."
 	@open -a Simulator
 	@sleep 2
-	@xcodebuild -scheme FishPuzzles -destination "platform=iOS Simulator,name=iPhone 15" run | xcbeautify
+	@xcodebuild -project fish-puzzles/fish-puzzles.xcodeproj -scheme fish-puzzles -destination "platform=iOS Simulator,name=iPhone 15" -configuration Debug build run | xcbeautify
 
 clean: ## Clean build artifacts
 	@echo "Cleaning..."
-	@swift package clean
-	@rm -rf .build
+	@xcodebuild -project fish-puzzles/fish-puzzles.xcodeproj clean
+	@rm -rf fish-puzzles/.build
+	@rm -rf fish-puzzles/DerivedData
 	@rm -rf DerivedData
 	@rm -rf ProcessedAssets
 
@@ -321,28 +322,39 @@ atlases: ## Generate texture atlases
 
 lint: ## Run SwiftLint
 	@echo "Linting code..."
-	@swiftlint
+	@cd fish-puzzles && swiftlint
 
 format: ## Format code with SwiftFormat
 	@echo "Formatting code..."
 	@if command -v swiftformat &> /dev/null; then \\
-		swiftformat . --swiftversion 5.9; \\
+		swiftformat fish-puzzles --swiftversion 5.9; \\
 	else \\
 		echo "SwiftFormat not installed. Install with: brew install swiftformat"; \\
 	fi
 
 debug: ## Build and run in debug mode
 	@echo "Running in debug mode..."
-	@swift build -c debug
-	@swift run -c debug
+	@xcodebuild -project fish-puzzles/fish-puzzles.xcodeproj -scheme fish-puzzles -configuration Debug -destination "platform=iOS Simulator,name=iPhone 15" build run | xcbeautify
 
 release: ## Build for release
 	@echo "Building release..."
-	@swift build -c release
+	@xcodebuild -project fish-puzzles/fish-puzzles.xcodeproj -scheme fish-puzzles -configuration Release build | xcbeautify
 
 profile: ## Run with performance profiling
 	@echo "Running with profiling..."
-	@xcodebuild -scheme FishPuzzles -enableCodeCoverage YES -enableAddressSanitizer YES test | xcbeautify'
+	@xcodebuild -project fish-puzzles/fish-puzzles.xcodeproj -scheme fish-puzzles -enableCodeCoverage YES -enableAddressSanitizer YES test | xcbeautify
+
+test-unit: ## Run unit tests only
+	@echo "Running unit tests..."
+	@xcodebuild test -project fish-puzzles/fish-puzzles.xcodeproj -scheme fish-puzzles -only-testing:fish-puzzlesTests -destination "platform=iOS Simulator,name=iPhone 15" | xcbeautify
+
+test-ui: ## Run UI tests only
+	@echo "Running UI tests..."
+	@xcodebuild test -project fish-puzzles/fish-puzzles.xcodeproj -scheme fish-puzzles -only-testing:fish-puzzlesUITests -destination "platform=iOS Simulator,name=iPhone 15" | xcbeautify
+
+archive: ## Create archive for App Store
+	@echo "Creating archive..."
+	@xcodebuild -project fish-puzzles/fish-puzzles.xcodeproj -scheme fish-puzzles -configuration Release -archivePath ./build/fish-puzzles.xcarchive archive | xcbeautify'
 
 # Create README
 create_file "README.md" '# 🐠 Fish Puzzles

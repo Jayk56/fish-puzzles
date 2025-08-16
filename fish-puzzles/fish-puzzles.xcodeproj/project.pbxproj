@@ -78,6 +78,7 @@
 				6CC4141A2E511D630011F8BF /* fish-puzzles */,
 				6CC414342E511D650011F8BF /* fish-puzzlesTests */,
 				6CC4143E2E511D650011F8BF /* fish-puzzlesUITests */,
+				6CC414842E5125910011F8BF /* Frameworks */,
 				6CC414192E511D630011F8BF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +91,13 @@
 				6CC4143B2E511D650011F8BF /* fish-puzzlesUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		6CC414842E5125910011F8BF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -395,6 +403,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "fish-puzzles/fish-puzzles.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MFW99WGUS6;
@@ -423,6 +432,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "fish-puzzles/fish-puzzles.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MFW99WGUS6;

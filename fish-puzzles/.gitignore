@@ -1,0 +1,23 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+
+# macOS
+.DS_Store
+
+# Assets (use Git LFS for large files)
+*.png
+*.jpg
+*.wav
+*.mp3
+*.m4a
+
+# Secrets
+*.p12
+*.mobileprovision
+.env

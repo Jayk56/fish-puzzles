@@ -1,11 +1,38 @@
-# Xcode user data & junk
-*.xcuserstate
-*.xcscmblueprint
-xcuserdata/
-DerivedData/
-# Old user files
+# Xcode
+#
+build/
 *.pbxuser
+!default.pbxuser
 *.mode1v3
+!default.mode1v3
 *.mode2v3
-# macOS cruft
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+DerivedData/
+*.hmap
+*.ipa
+*.xcuserstate
 .DS_Store
+
+# Swift Package Manager
+.build/
+Package.resolved
+*.xcodeproj
+
+# Large Assets (use Git LFS)
+Assets/Art/**/*.png
+Assets/Art/**/*.jpg
+Assets/Audio/**/*.wav
+Assets/Audio/**/*.mp3
+Assets/Audio/**/*.m4a
+ProcessedAssets/
+
+# Secrets
+*.p12
+*.mobileprovision
+.env
+Config.xcconfig
