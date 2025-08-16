@@ -1,0 +1,11 @@
+# Xcode user data & junk
+*.xcuserstate
+*.xcscmblueprint
+xcuserdata/
+DerivedData/
+# Old user files
+*.pbxuser
+*.mode1v3
+*.mode2v3
+# macOS cruft
+.DS_Store
