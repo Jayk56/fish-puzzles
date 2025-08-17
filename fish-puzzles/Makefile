@@ -25,13 +25,13 @@ build: ## Build the project
 
 test: ## Run all tests
 	@echo "Running tests..."
-	@xcodebuild test -project fish-puzzles.xcodeproj -scheme fish-puzzles -destination "platform=iOS Simulator,name=iPhone 15" | xcbeautify
+	@xcodebuild test -project fish-puzzles.xcodeproj -scheme fish-puzzles -destination "platform=iOS Simulator,name=iPhone 16" | xcbeautify
 
 run: ## Run the app in simulator
 	@echo "Running app..."
 	@open -a Simulator
 	@sleep 2
-	@xcodebuild -project fish-puzzles.xcodeproj -scheme fish-puzzles -destination "platform=iOS Simulator,name=iPhone 15" -configuration Debug build run | xcbeautify
+	@xcodebuild -project fish-puzzles.xcodeproj -scheme fish-puzzles -destination "platform=iOS Simulator,name=iPhone 16" -configuration Debug build run | xcbeautify
 
 clean: ## Clean build artifacts
 	@echo "Cleaning..."
@@ -59,7 +59,7 @@ format: ## Format code with SwiftFormat
 
 debug: ## Build and run in debug mode
 	@echo "Running in debug mode..."
-	@xcodebuild -project fish-puzzles.xcodeproj -scheme fish-puzzles -configuration Debug -destination "platform=iOS Simulator,name=iPhone 15" build run | xcbeautify
+	@xcodebuild -project fish-puzzles.xcodeproj -scheme fish-puzzles -configuration Debug -destination "platform=iOS Simulator,name=iPhone 16" build run | xcbeautify
 
 release: ## Build for release
 	@echo "Building release..."
@@ -71,11 +71,11 @@ profile: ## Run with performance profiling
 
 test-unit: ## Run unit tests only
 	@echo "Running unit tests..."
-	@xcodebuild test -project fish-puzzles.xcodeproj -scheme fish-puzzles -only-testing:fish-puzzlesTests -destination "platform=iOS Simulator,name=iPhone 15" | xcbeautify
+	@xcodebuild test -project fish-puzzles.xcodeproj -scheme fish-puzzles -only-testing:fish-puzzlesTests -destination "platform=iOS Simulator,name=iPhone 16" | xcbeautify
 
 test-ui: ## Run UI tests only
 	@echo "Running UI tests..."
-	@xcodebuild test -project fish-puzzles.xcodeproj -scheme fish-puzzles -only-testing:fish-puzzlesUITests -destination "platform=iOS Simulator,name=iPhone 15" | xcbeautify
+	@xcodebuild test -project fish-puzzles.xcodeproj -scheme fish-puzzles -only-testing:fish-puzzlesUITests -destination "platform=iOS Simulator,name=iPhone 16" | xcbeautify
 
 archive: ## Create archive for App Store
 	@echo "Creating archive..."

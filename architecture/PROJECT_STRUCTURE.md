@@ -417,7 +417,7 @@ test:
 	xcodebuild test \
 		-workspace FishPuzzles.xcworkspace \
 		-scheme FishPuzzles \
-		-destination 'platform=iOS Simulator,name=iPhone 15'
+		-destination 'platform=iOS Simulator,name=iPhone 16'
 
 run:
 	xcodebuild -workspace FishPuzzles.xcworkspace \
