@@ -50,6 +50,10 @@ class MainMenuScene: BaseGameScene {
     }
     
     private func startGame() {
-        SceneManager(view: view!).loadScene("Location1")
+        guard let view = view else { 
+            print("⚠️ No view available to transition scene")
+            return 
+        }
+        SceneManager(view: view).loadScene("Location1")
     }
 }

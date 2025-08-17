@@ -19,8 +19,10 @@ final class GameEngine {
     }
     
     func start(with view: SKView) {
+        print("🎮 GameEngine starting...")
         sceneManager = SceneManager(view: view)
         sceneManager?.loadMainMenu()
+        print("✅ Main menu loaded")
     }
     
     func pause() {

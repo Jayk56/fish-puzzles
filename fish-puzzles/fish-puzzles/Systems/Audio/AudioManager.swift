@@ -29,7 +29,10 @@ final class AudioManager {
     }
     
     func playMusic(_ filename: String, volume: Float = 1.0) {
-        guard let url = Bundle.main.url(forResource: filename, withExtension: "m4a") else { return }
+        guard let url = Bundle.main.url(forResource: filename, withExtension: "m4a") else { 
+            print("⚠️ Music file not found: \(filename).m4a - Please add audio files to Resources/Audio/")
+            return 
+        }
         
         do {
             musicPlayer = try AVAudioPlayer(contentsOf: url)
@@ -42,7 +45,10 @@ final class AudioManager {
     }
     
     func playSFX(_ filename: String, volume: Float = 1.0) {
-        guard let url = Bundle.main.url(forResource: filename, withExtension: "wav") else { return }
+        guard let url = Bundle.main.url(forResource: filename, withExtension: "wav") else { 
+            print("⚠️ SFX file not found: \(filename).wav - Please add audio files to Resources/Audio/")
+            return 
+        }
         
         do {
             let player = try AVAudioPlayer(contentsOf: url)
