@@ -24,11 +24,11 @@ class GameViewController: UIViewController {
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .landscapeRight
+        return .landscape  // Allow both landscape orientations
     }
     
     override var shouldAutorotate: Bool {
-        return false
+        return true  // Allow rotation between landscape modes
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -36,6 +36,6 @@ class GameViewController: UIViewController {
     }
     
     override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
-        return .landscapeRight
+        return .landscapeLeft  // Default to landscape-left (home button on right)
     }
 }

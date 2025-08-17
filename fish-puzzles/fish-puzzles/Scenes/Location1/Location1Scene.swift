@@ -17,6 +17,9 @@ class Location1Scene: BaseGameScene {
         
         print("🏝️ Setting up Location1Scene...")
         
+        // Set scene scaling for landscape
+        scaleMode = .aspectFill
+        
         // Background - will be replaced with actual art
         let background = SKSpriteNode(color: .cyan, size: size)
         background.position = CGPoint(x: size.width/2, y: size.height/2)
@@ -33,6 +36,104 @@ class Location1Scene: BaseGameScene {
         AudioManager.shared.playMusic("underwater_ambience")
         
         print("✅ Location1Scene ready! Tap to move fish, tap treasure chest to collect pearl.")
+    }
+    
+    override func setupHUD() {
+        super.setupHUD()
+        
+        // Add HUD buttons
+        setupHUDButtons()
+    }
+    
+    private func setupHUDButtons() {
+        // Inventory button - top left
+        let inventoryButton = createHUDButton(
+            iconText: "🎒",
+            position: CGPoint(x: 60, y: size.height - 60),
+            name: "inventoryButton"
+        )
+        addChild(inventoryButton)
+        
+        // Map button - next to inventory
+        let mapButton = createHUDButton(
+            iconText: "🗺",
+            position: CGPoint(x: 130, y: size.height - 60),
+            name: "mapButton"
+        )
+        addChild(mapButton)
+        
+        // Settings button - top right
+        let settingsButton = createHUDButton(
+            iconText: "⚙️",
+            position: CGPoint(x: size.width - 60, y: size.height - 60),
+            name: "settingsButton"
+        )
+        addChild(settingsButton)
+        
+        // Hint button - bottom right
+        let hintButton = createHUDButton(
+            iconText: "💡",
+            position: CGPoint(x: size.width - 60, y: 60),
+            name: "hintButton"
+        )
+        addChild(hintButton)
+    }
+    
+    private func createHUDButton(iconText: String, position: CGPoint, name: String) -> SKNode {
+        let button = SKSpriteNode(color: UIColor(white: 0.2, alpha: 0.7), size: CGSize(width: 50, height: 50))
+        button.position = position
+        button.name = name
+        button.zPosition = 100  // Ensure HUD is on top
+        
+        let border = SKShapeNode(rectOf: button.size, cornerRadius: 10)
+        border.strokeColor = .white
+        border.lineWidth = 2
+        border.zPosition = 1
+        button.addChild(border)
+        
+        let icon = SKLabelNode(text: iconText)
+        icon.fontSize = 28
+        icon.verticalAlignmentMode = .center
+        icon.zPosition = 2
+        button.addChild(icon)
+        
+        // Register hotspot for button
+        let hotspot = Hotspot(
+            id: name,
+            frame: CGRect(
+                x: position.x - 25,
+                y: position.y - 25,
+                width: 50,
+                height: 50
+            ),
+            action: { [weak self] in
+                self?.handleHUDButton(name: name)
+            }
+        )
+        interactionSystem.registerHotspot(hotspot)
+        
+        return button
+    }
+    
+    private func handleHUDButton(name: String) {
+        switch name {
+        case "inventoryButton":
+            hudManager?.toggle(.inventory)
+            print("📦 Toggled inventory")
+        case "mapButton":
+            hudManager?.toggle(.map)
+            print("🗺 Toggled map")
+        case "settingsButton":
+            hudManager?.toggle(.settings)
+            print("⚙️ Toggled settings")
+        case "hintButton":
+            if let hintOverlay = hudManager?.overlays[.hint] as? HintOverlay {
+                hintOverlay.showHint("Try tapping on the treasure chest!", level: .subtle)
+            }
+            print("💡 Showing hint")
+        default:
+            break
+        }
     }
     
     private func setupCharacter() {
@@ -171,12 +272,24 @@ class Location1Scene: BaseGameScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        
-        // Move character to touch location
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
         
+        // Let parent handle HUD overlays and hotspots first
+        // Parent will check: 1) HUD overlays, 2) interaction system (hotspots)
+        super.touchesBegan(touches, with: event)
+        
+        // Check if something was handled by checking the same conditions
+        // We need to re-check because parent doesn't tell us if it handled it
+        if let hudManager = hudManager, hudManager.handleTouch(at: location) {
+            return  // HUD overlay is active and handled it
+        }
+        
+        if let handled = interactionSystem?.handleTouch(at: location), handled {
+            return  // A hotspot (HUD button, chest, door) handled it
+        }
+        
+        // Nothing handled the touch, so move the fish
         // Face the correct direction
         animationComponent.faceDirection(movingTo: location)
         

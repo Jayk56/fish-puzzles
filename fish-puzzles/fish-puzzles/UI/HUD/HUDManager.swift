@@ -24,7 +24,7 @@ class HUDManager {
     }
     
     weak var scene: SKScene?
-    private var overlays: [OverlayType: UIOverlay] = [:]
+    private(set) var overlays: [OverlayType: UIOverlay] = [:]
     private var activeOverlays: Set<OverlayType> = []
     private var overlayContainer: SKNode
     
@@ -32,6 +32,8 @@ class HUDManager {
         self.scene = scene
         self.overlayContainer = SKNode()
         self.overlayContainer.name = "HUDContainer"
+        // Position container at center of scene for proper overlay positioning
+        overlayContainer.position = CGPoint(x: scene.size.width/2, y: scene.size.height/2)
         scene.addChild(overlayContainer)
         
         setupOverlays()
@@ -128,6 +130,7 @@ class HUDManager {
         if overlayContainer.childNode(withName: "backgroundDim") == nil {
             let dim = SKSpriteNode(color: .black, size: scene?.size ?? .zero)
             dim.name = "backgroundDim"
+            dim.position = CGPoint.zero  // Center in the container which is now centered
             dim.alpha = 0
             dim.zPosition = zPosition - 1
             overlayContainer.addChild(dim)

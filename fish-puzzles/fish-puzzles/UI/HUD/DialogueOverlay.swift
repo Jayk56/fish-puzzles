@@ -40,7 +40,8 @@ class DialogueOverlay: BaseOverlay {
     private func setupDialogueBox() {
         let boxSize = CGSize(width: overlaySize.width * 0.85, height: 150)
         dialogueBox = SKSpriteNode(color: UIColor(white: 0.1, alpha: 0.95), size: boxSize)
-        dialogueBox.position = CGPoint(x: 0, y: -overlaySize.height/2 + 100)
+        // Position at bottom of screen (container is now centered)
+        dialogueBox.position = CGPoint(x: 0, y: -overlaySize.height/2 + boxSize.height/2 + 20)
         dialogueBox.zPosition = 0
         
         let border = SKShapeNode(rectOf: boxSize, cornerRadius: 15)

@@ -33,25 +33,29 @@ final class InteractionSystem {
         hotspots.removeAll { $0.id == id }
     }
     
-    func handleTouch(at point: CGPoint) {
+    func handleTouch(at point: CGPoint) -> Bool {
         // Check hotspots
         for hotspot in hotspots {
             if hotspot.contains(point) {
                 hotspot.action()
                 AudioManager.shared.playSFX("tap")
-                return
+                return true
             }
         }
         
         // Check entities with interaction components
+        var handled = false
         scene?.entities.forEach { entity in
             guard let node = entity.node,
                   let _ = entity.get(InteractableComponent.self) else { return }
             
             if node.contains(point) {
                 handleEntityInteraction(entity)
+                handled = true
             }
         }
+        
+        return handled
     }
     
     private func handleEntityInteraction(_ entity: Entity) {

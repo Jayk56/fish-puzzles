@@ -11,26 +11,31 @@ The game targets young children aged 4-9 who will primarily play on iPads and iP
 - Ensures consistent experience across all devices
 
 ## Decision
-The game will launch and play exclusively in landscape orientation with:
-- Device rotated 90° counter-clockwise (landscape-right)
-- Top of phone on the right side
-- Bottom of phone (home indicator) on the left side
-- No orientation changes during gameplay
+The game will launch and play in landscape orientation with:
+- Default: Device rotated 90° clockwise (landscape-left)
+- Top of phone on the left side
+- Bottom of phone (home indicator) on the right side
+- Allow rotation between both landscape orientations for user preference
 
 ## Implementation
 ```swift
 // GameViewController.swift
 override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-    return .landscapeRight
+    return .landscape  // Both landscape orientations
 }
 
 override var shouldAutorotate: Bool {
-    return false
+    return true  // Allow rotation between landscape modes
+}
+
+override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+    return .landscapeLeft  // Default orientation
 }
 
 // Info.plist
 <key>UISupportedInterfaceOrientations</key>
 <array>
+    <string>UIInterfaceOrientationLandscapeLeft</string>
     <string>UIInterfaceOrientationLandscapeRight</string>
 </array>
 ```

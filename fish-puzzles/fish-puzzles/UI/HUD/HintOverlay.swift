@@ -58,7 +58,8 @@ class HintOverlay: BaseOverlay {
     private func setupHintBubble() {
         let bubbleSize = CGSize(width: 300, height: 100)
         hintBubble = SKSpriteNode(color: currentLevel.color, size: bubbleSize)
-        hintBubble.position = CGPoint(x: 0, y: overlaySize.height/2 - 150)
+        // Position at top of screen (container is now centered)
+        hintBubble.position = CGPoint(x: 0, y: overlaySize.height/2 - bubbleSize.height/2 - 80)
         hintBubble.zPosition = 0
         
         let border = SKShapeNode(rectOf: bubbleSize, cornerRadius: 20)
