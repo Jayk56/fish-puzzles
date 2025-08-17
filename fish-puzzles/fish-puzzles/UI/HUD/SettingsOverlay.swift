@@ -9,7 +9,7 @@ import SpriteKit
 
 class SettingsOverlay: BaseOverlay {
     private var settingsBackground: SKSpriteNode!
-    private var closeButton: SKSpriteNode!
+    private var closeButton: CloseButton!
     
     private var masterVolumeSlider: SliderControl!
     private var musicVolumeSlider: SliderControl!
@@ -122,34 +122,25 @@ class SettingsOverlay: BaseOverlay {
     }
     
     private func setupCloseButton() {
-        let buttonSize = CGSize(width: 40, height: 40)
-        closeButton = SKSpriteNode(color: .red, size: buttonSize)
+        closeButton = CloseButton()
         closeButton.position = CGPoint(
             x: settingsBackground.size.width/2 - 30,
             y: settingsBackground.size.height/2 - 30
         )
         closeButton.zPosition = 3
-        closeButton.name = "closeButton"
-        
-        let xLabel = SKLabelNode(text: "✕")
-        xLabel.fontSize = 24
-        xLabel.fontName = "AvenirNext-Bold"
-        xLabel.verticalAlignmentMode = .center
-        closeButton.addChild(xLabel)
+        closeButton.onTap = { [weak self] in
+            self?.hudManager?.hide(.settings)
+        }
         
         settingsBackground.addChild(closeButton)
     }
     
-    override func handleTouch(at point: CGPoint) -> Bool {
-        let localPoint = convert(point, to: settingsBackground)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        let localPoint = convert(location, to: settingsBackground)
         
-        if let touchedNode = settingsBackground.atPoint(localPoint) as? SKSpriteNode {
-            if touchedNode.name == "closeButton" || touchedNode.parent?.name == "closeButton" {
-                hide(animated: true)
-                return true
-            }
-        }
-        
+        // Check controls (close button handles itself)
         let controls = [masterVolumeSlider, musicVolumeSlider, sfxVolumeSlider, 
                        subtitlesToggle, voiceOverToggle]
         
@@ -158,17 +149,15 @@ class SettingsOverlay: BaseOverlay {
                 let controlPoint = settingsBackground.convert(localPoint, to: control)
                 if let slider = control as? SliderControl {
                     if slider.handleTouch(at: controlPoint) {
-                        return true
+                        return
                     }
                 } else if let toggle = control as? ToggleControl {
                     if toggle.handleTouch(at: controlPoint) {
-                        return true
+                        return
                     }
                 }
             }
         }
-        
-        return settingsBackground.contains(localPoint)
     }
 }
 

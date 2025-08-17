@@ -11,7 +11,7 @@ class MapOverlay: BaseOverlay {
     private var mapBackground: SKSpriteNode!
     private var locationNodes: [LocationNode] = []
     private var currentLocationIndicator: SKSpriteNode!
-    private var closeButton: SKSpriteNode!
+    private var closeButton: CloseButton!
     
     init(size: CGSize) {
         super.init(layer: .map, size: size)
@@ -110,42 +110,32 @@ class MapOverlay: BaseOverlay {
     }
     
     private func setupCloseButton() {
-        let buttonSize = CGSize(width: 40, height: 40)
-        closeButton = SKSpriteNode(color: .red, size: buttonSize)
+        closeButton = CloseButton()
         closeButton.position = CGPoint(
             x: mapBackground.size.width/2 - 30,
             y: mapBackground.size.height/2 - 30
         )
         closeButton.zPosition = 3
-        closeButton.name = "closeButton"
-        
-        let xLabel = SKLabelNode(text: "✕")
-        xLabel.fontSize = 24
-        xLabel.fontName = "AvenirNext-Bold"
-        xLabel.verticalAlignmentMode = .center
-        closeButton.addChild(xLabel)
+        closeButton.onTap = { [weak self] in
+            self?.hudManager?.hide(.map)
+        }
         
         mapBackground.addChild(closeButton)
     }
     
-    override func handleTouch(at point: CGPoint) -> Bool {
-        let localPoint = convert(point, to: mapBackground)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        let localPoint = convert(location, to: mapBackground)
         
-        if let touchedNode = mapBackground.atPoint(localPoint) as? SKSpriteNode {
-            if touchedNode.name == "closeButton" || touchedNode.parent?.name == "closeButton" {
-                return true
+        // Check location nodes (close button handles itself)
+        for locationNode in locationNodes {
+            if locationNode.contains(localPoint) && locationNode.isDiscovered {
+                locationNode.handleTap()
+                moveIndicatorTo(location: locationNode)
+                return
             }
         }
-        
-        for location in locationNodes {
-            if location.contains(localPoint) && location.isDiscovered {
-                location.handleTap()
-                moveIndicatorTo(location: location)
-                return true
-            }
-        }
-        
-        return mapBackground.contains(localPoint)
     }
     
     private func moveIndicatorTo(location: LocationNode) {

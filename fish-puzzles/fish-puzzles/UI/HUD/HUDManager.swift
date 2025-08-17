@@ -26,14 +26,15 @@ class HUDManager {
     weak var scene: SKScene?
     private(set) var overlays: [OverlayType: UIOverlay] = [:]
     private var activeOverlays: Set<OverlayType> = []
-    private var overlayContainer: SKNode
+    private var overlayContainer: HUDContainer
     
     init(scene: SKScene) {
         self.scene = scene
-        self.overlayContainer = SKNode()
-        self.overlayContainer.name = "HUDContainer"
+        self.overlayContainer = HUDContainer()
+        self.overlayContainer.hudManager = self
         // Position container at center of scene for proper overlay positioning
         overlayContainer.position = CGPoint(x: scene.size.width/2, y: scene.size.height/2)
+        overlayContainer.zPosition = 1000  // Ensure HUD is above game elements
         scene.addChild(overlayContainer)
         
         setupOverlays()
@@ -99,24 +100,12 @@ class HUDManager {
         return activeOverlays.contains(type)
     }
     
-    func handleTouch(at point: CGPoint) -> Bool {
-        let sortedOverlays = activeOverlays.sorted { $0.rawValue > $1.rawValue }
-        
-        for overlayType in sortedOverlays {
-            guard let overlay = overlays[overlayType] else { continue }
-            
-            if let node = overlay as? SKNode {
-                let localPoint = overlayContainer.convert(point, to: node)
-                if overlay.handleTouch(at: localPoint) {
-                    return true
-                }
-                
-                if overlay.isModal {
-                    return true
-                }
+    func hasActiveModalOverlay() -> Bool {
+        for type in activeOverlays {
+            if let overlay = overlays[type], overlay.isModal {
+                return true
             }
         }
-        
         return false
     }
     
@@ -157,7 +146,6 @@ protocol UIOverlay: AnyObject {
     func show(animated: Bool)
     func hide(animated: Bool)
     func update(deltaTime: TimeInterval)
-    func handleTouch(at point: CGPoint) -> Bool
 }
 
 class BaseOverlay: SKNode, UIOverlay {
@@ -165,11 +153,16 @@ class BaseOverlay: SKNode, UIOverlay {
     var isModal: Bool = false
     var dimBackground: Bool = false
     let overlaySize: CGSize
+    weak var hudManager: HUDManager? {
+        return (parent as? HUDContainer)?.hudManager
+    }
     
     init(layer: HUDManager.OverlayType, size: CGSize) {
         self.layer = layer
         self.overlaySize = size
         super.init()
+        // Enable touch handling for overlays
+        isUserInteractionEnabled = true
         setupOverlay()
     }
     
@@ -216,7 +209,19 @@ class BaseOverlay: SKNode, UIOverlay {
     func update(deltaTime: TimeInterval) {
     }
     
-    func handleTouch(at point: CGPoint) -> Bool {
+    func containsTouch(at point: CGPoint) -> Bool {
+        // Check if any child contains the touch
+        for child in children {
+            let childPoint = convert(point, to: child)
+            if child.contains(childPoint) {
+                return true
+            }
+        }
         return false
+    }
+    
+    // Subclasses should override touchesBegan for handling touches
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // Default implementation - subclasses override this
     }
 }

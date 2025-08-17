@@ -163,15 +163,14 @@ class HintOverlay: BaseOverlay {
         }
     }
     
-    override func handleTouch(at point: CGPoint) -> Bool {
-        let localPoint = convert(point, to: hintBubble)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
         
-        if hintBubble.contains(localPoint) {
-            hide(animated: true)
-            return true
+        // Check if hint bubble was tapped
+        if hintBubble.contains(location) {
+            hudManager?.hide(.hint)
         }
-        
-        return false
     }
     
     func getNextHintLevel() -> HintLevel {

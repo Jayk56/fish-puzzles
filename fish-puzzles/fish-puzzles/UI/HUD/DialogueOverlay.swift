@@ -167,22 +167,23 @@ class DialogueOverlay: BaseOverlay {
         }
     }
     
-    override func handleTouch(at point: CGPoint) -> Bool {
-        let localPoint = convert(point, to: dialogueBox)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
         
-        if dialogueBox.contains(localPoint) {
+        // Check if dialogue box was tapped
+        if dialogueBox.contains(location) {
             if !isTextComplete {
+                // Show all text immediately
                 displayedText = currentText
                 dialogueText.text = displayedText
                 isTextComplete = true
                 continueIndicator.isHidden = false
             } else {
-                hide(animated: true)
+                // Hide dialogue
+                hudManager?.hide(.dialogue)
             }
-            return true
         }
-        
-        return false
     }
     
     func nextDialogue(text: String) {

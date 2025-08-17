@@ -47,18 +47,17 @@ class BaseGameScene: SKScene {
         guard let touch = touches.first else { return }
         let location = touch.location(in: self)
         
-        // Check HUD overlays first (for modal dialogs, etc.)
-        if let hudManager = hudManager {
-            if hudManager.handleTouch(at: location) {
-                return  // HUD overlay handled the touch, don't process further
-            }
-        }
+        // With proper isUserInteractionEnabled, touches will be handled by:
+        // 1. HUD buttons (highest z-position, isUserInteractionEnabled = true)
+        // 2. HUD overlays (in HUDContainer, isUserInteractionEnabled = true)
+        // 3. Game hotspots (treasure chest, doors, etc.)
+        // 4. Scene itself (for movement)
         
-        // Check game interactions (including HUD buttons registered as hotspots)
+        // Only check game interactions (non-HUD hotspots)
         if let handled = interactionSystem?.handleTouch(at: location), handled {
-            return  // Interaction was handled, don't process further
+            return  // A game hotspot was touched
         }
         
-        // If nothing handled the touch, subclasses can process it (e.g., move character)
+        // If nothing handled it, subclasses can process (e.g., move character)
     }
 }

@@ -12,7 +12,7 @@ class InventoryOverlay: BaseOverlay {
     private var itemSlots: [ItemSlot] = []
     private let slotsPerRow = 6
     private let maxSlots = 12
-    private var closeButton: SKSpriteNode!
+    private var closeButton: CloseButton!
     
     init(size: CGSize) {
         super.init(layer: .inventory, size: size)
@@ -75,43 +75,31 @@ class InventoryOverlay: BaseOverlay {
     }
     
     private func setupCloseButton() {
-        let buttonSize = CGSize(width: 40, height: 40)
-        closeButton = SKSpriteNode(color: .red, size: buttonSize)
+        closeButton = CloseButton()
         closeButton.position = CGPoint(
             x: inventoryBackground.size.width/2 - 30,
             y: inventoryBackground.size.height/2 - 30
         )
         closeButton.zPosition = 3
-        closeButton.name = "closeButton"
-        
-        let xLabel = SKLabelNode(text: "✕")
-        xLabel.fontSize = 24
-        xLabel.fontName = "AvenirNext-Bold"
-        xLabel.verticalAlignmentMode = .center
-        closeButton.addChild(xLabel)
+        closeButton.onTap = { [weak self] in
+            self?.hudManager?.hide(.inventory)
+        }
         
         inventoryBackground.addChild(closeButton)
     }
     
-    override func handleTouch(at point: CGPoint) -> Bool {
-        let localPoint = convert(point, to: inventoryBackground)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        let localPoint = convert(location, to: inventoryBackground)
         
-        if let touchedNode = inventoryBackground.atPoint(localPoint) as? SKSpriteNode {
-            if touchedNode.name == "closeButton" || touchedNode.parent?.name == "closeButton" {
-                if let hudManager = scene?.childNode(withName: "HUDContainer")?.parent as? BaseGameScene {
-                }
-                return true
-            }
-        }
-        
+        // Check item slots (close button handles itself via isUserInteractionEnabled)
         for slot in itemSlots {
             if slot.contains(localPoint) {
                 slot.handleTap()
-                return true
+                return
             }
         }
-        
-        return inventoryBackground.contains(localPoint)
     }
     
     func addItem(_ itemName: String, texture: SKTexture) {
