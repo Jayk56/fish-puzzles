@@ -87,4 +87,9 @@ final class GameEngine {
         }
         SaveManager.shared.save(gameState)
     }
+    
+    func updateSubtitlesEnabled(_ enabled: Bool) {
+        gameState.subtitlesEnabled = enabled
+        SaveManager.shared.save(gameState)
+    }
 }

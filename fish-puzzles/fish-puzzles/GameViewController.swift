@@ -24,14 +24,18 @@ class GameViewController: UIViewController {
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
-        } else {
-            return .all
-        }
+        return .landscapeRight
+    }
+    
+    override var shouldAutorotate: Bool {
+        return false
     }
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return .landscapeRight
     }
 }
