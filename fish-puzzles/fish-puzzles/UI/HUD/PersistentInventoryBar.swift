@@ -17,7 +17,8 @@ class PersistentInventoryBar: SKNode {
     private var overflowItems: [Item] = []
     private var moreButton: HUDButton?
     
-    private let backgroundBar: SKShapeNode
+    private let backgroundBar: SKSpriteNode
+    private let backgroundBorder: SKShapeNode
     private let selectedIndicator: SKShapeNode
     private let slotSpacing: CGFloat = 10
     
@@ -36,10 +37,31 @@ class PersistentInventoryBar: SKNode {
     init(size: CGSize) {
         let barSize = CGSize(width: size.width, height: Self.barHeight)
         
-        backgroundBar = SKShapeNode(rectOf: barSize, cornerRadius: 10)
-        backgroundBar.fillColor = UIColor(white: 0.1, alpha: 0.9)
-        backgroundBar.strokeColor = UIColor(white: 0.3, alpha: 0.8)
-        backgroundBar.lineWidth = 2
+        // Create a completely opaque black background using Core Graphics
+        UIGraphicsBeginImageContextWithOptions(barSize, true, 0)  // 'true' makes it opaque
+        let context = UIGraphicsGetCurrentContext()!
+        // Fill with black
+        context.setFillColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
+        context.fill(CGRect(origin: .zero, size: barSize))
+        let blackImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        // Create the texture and sprite
+        let blackTexture = SKTexture(image: blackImage)
+        blackTexture.filteringMode = .nearest  // No filtering
+        
+        // Use texture-based sprite with no possibility of color modification
+        backgroundBar = SKSpriteNode(texture: blackTexture)
+        backgroundBar.size = barSize
+        backgroundBar.blendMode = .replace  // Replace mode ignores any underlying colors
+        backgroundBar.color = .white  // White color means no tinting
+        backgroundBar.colorBlendFactor = 0  // Absolutely no color blending
+        
+        // Add border as separate shape node
+        backgroundBorder = SKShapeNode(rectOf: barSize, cornerRadius: 10)
+        backgroundBorder.fillColor = .clear
+        backgroundBorder.strokeColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1.0)
+        backgroundBorder.lineWidth = 2
         
         selectedIndicator = SKShapeNode(rectOf: CGSize(width: 90, height: 90), cornerRadius: 12)
         selectedIndicator.strokeColor = .systemYellow
@@ -66,13 +88,30 @@ class PersistentInventoryBar: SKNode {
     }
     
     private func setupBar(size: CGSize) {
-        // Position at bottom of screen, half the bar height up from the edge
-        position = CGPoint(x: 0, y: -size.height/2 + Self.barHeight/2)
-        zPosition = 50
+        // Position at bottom of screen (now relative to scene, not container)
+        position = CGPoint(x: size.width/2, y: Self.barHeight/2)
+        zPosition = 5000  // Extremely high z-position
+        
+        // Ensure this node is fully opaque and interactive
+        self.isUserInteractionEnabled = true
+        self.alpha = 1.0
         
         backgroundBar.position = CGPoint(x: 0, y: 0)
-        backgroundBar.zPosition = 0
+        backgroundBar.zPosition = -1  // Below other elements in this node
+        backgroundBar.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         addChild(backgroundBar)
+        
+        // Add an additional opaque background layer for extra insurance
+        let solidBackground = SKSpriteNode(color: .black, size: backgroundBar.size)
+        solidBackground.position = CGPoint(x: 0, y: 0)
+        solidBackground.zPosition = -2
+        solidBackground.blendMode = .replace
+        solidBackground.alpha = 1.0
+        addChild(solidBackground)
+        
+        backgroundBorder.position = CGPoint(x: 0, y: 0)
+        backgroundBorder.zPosition = 1  // Border on top of background
+        addChild(backgroundBorder)
         
         selectedIndicator.zPosition = 5
         addChild(selectedIndicator)
@@ -91,7 +130,7 @@ class PersistentInventoryBar: SKNode {
             slot.zPosition = 2
             slot.slotIndex = i
             
-            backgroundBar.addChild(slot)
+            addChild(slot)
             visibleSlots.append(slot)
         }
     }
@@ -111,7 +150,7 @@ class PersistentInventoryBar: SKNode {
         }
         
         if let button = moreButton {
-            backgroundBar.addChild(button)
+            addChild(button)
         }
         
         updateMoreButton()
@@ -161,7 +200,7 @@ class PersistentInventoryBar: SKNode {
             slot.setSelected(true)
             selectedSlot = slot
             
-            selectedIndicator.position = convert(slot.position, from: backgroundBar)
+            selectedIndicator.position = slot.position
             selectedIndicator.isHidden = false
             animateSelection()
             
@@ -175,14 +214,14 @@ class PersistentInventoryBar: SKNode {
     
     private func setupButtonContainers() {
         // Left button container (for inventory, map buttons)
-        leftButtonContainer.position = CGPoint(x: -backgroundBar.frame.width/2 + 100, y: 0)
+        leftButtonContainer.position = CGPoint(x: -backgroundBar.size.width/2 + 100, y: 0)
         leftButtonContainer.zPosition = 3
-        backgroundBar.addChild(leftButtonContainer)
+        addChild(leftButtonContainer)
         
         // Right button container (for settings, hint buttons)
-        rightButtonContainer.position = CGPoint(x: backgroundBar.frame.width/2 - 100, y: 0)
+        rightButtonContainer.position = CGPoint(x: backgroundBar.size.width/2 - 100, y: 0)
         rightButtonContainer.zPosition = 3
-        backgroundBar.addChild(rightButtonContainer)
+        addChild(rightButtonContainer)
     }
     
     func addPersistentButton(_ button: HUDButton, position: ButtonPosition) {
@@ -252,7 +291,7 @@ class PersistentInventoryBar: SKNode {
         sparkle.position = slot.position
         sparkle.zPosition = 10
         
-        backgroundBar.addChild(sparkle)
+        addChild(sparkle)
         
         sparkle.run(SKAction.sequence([
             SKAction.wait(forDuration: 0.5),
@@ -269,7 +308,7 @@ class PersistentInventoryBar: SKNode {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        let location = touch.location(in: backgroundBar)
+        let location = touch.location(in: self)
         
         for slot in visibleSlots {
             if slot.contains(location) && !slot.isEmpty {

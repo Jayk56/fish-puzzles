@@ -23,8 +23,9 @@ class Location1Scene: BaseGameScene {
         // Set scene scaling for landscape
         scaleMode = .aspectFill
         
-        // Background - uses safe area to avoid inventory bar
-        let background = createSafeBackground(color: .cyan)
+        // Background - match the tropical theme colors for seamless blend
+        // Tropical theme uses cyan-like colors, so we'll match that
+        let background = createSafeBackground(color: UIColor(red: 0.0, green: 0.7, blue: 0.85, alpha: 1.0))
         addChild(background)
         
         // Enable debug mode to visualize safe areas (remove in production)

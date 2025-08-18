@@ -20,40 +20,20 @@ class BackgroundStyler {
         var borderStyle: SafeAreaManager.BorderStyle {
             switch self {
             case .underwater:
-                return .gradient(
-                    colors: [
-                        UIColor(red: 0.0, green: 0.3, blue: 0.5, alpha: 0.9),
-                        UIColor(red: 0.0, green: 0.2, blue: 0.4, alpha: 0.95)
-                    ],
-                    direction: .vertical
-                )
+                // Use solid color for better blending
+                return .solid(color: UIColor(red: 0.0, green: 0.25, blue: 0.45, alpha: 1.0))
                 
             case .coral:
-                return .gradient(
-                    colors: [
-                        UIColor(red: 1.0, green: 0.5, blue: 0.4, alpha: 0.85),
-                        UIColor(red: 1.0, green: 0.4, blue: 0.5, alpha: 0.9)
-                    ],
-                    direction: .diagonal
-                )
+                // Use solid coral color
+                return .solid(color: UIColor(red: 1.0, green: 0.45, blue: 0.45, alpha: 1.0))
                 
             case .deepSea:
-                return .gradient(
-                    colors: [
-                        UIColor(red: 0.0, green: 0.1, blue: 0.2, alpha: 0.95),
-                        UIColor(red: 0.0, green: 0.05, blue: 0.15, alpha: 1.0)
-                    ],
-                    direction: .vertical
-                )
+                // Use solid deep sea color
+                return .solid(color: UIColor(red: 0.0, green: 0.08, blue: 0.18, alpha: 1.0))
                 
             case .tropical:
-                return .gradient(
-                    colors: [
-                        UIColor(red: 0.0, green: 0.8, blue: 0.9, alpha: 0.8),
-                        UIColor(red: 0.0, green: 0.6, blue: 0.8, alpha: 0.85)
-                    ],
-                    direction: .horizontal
-                )
+                // Use solid tropical color that matches the play area
+                return .solid(color: UIColor(red: 0.0, green: 0.7, blue: 0.85, alpha: 1.0))
                 
             case .custom(let style):
                 return style

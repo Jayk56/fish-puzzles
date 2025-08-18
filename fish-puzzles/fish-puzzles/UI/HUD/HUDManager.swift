@@ -67,11 +67,12 @@ class HUDManager {
         guard let scene = scene else { return }
         
         persistentInventoryBar = PersistentInventoryBar(size: scene.size)
-        persistentInventoryBar?.zPosition = OverlayType.persistentHUD.zPosition
+        persistentInventoryBar?.zPosition = 1100  // Higher than overlayContainer (1000) to ensure it's always on top
         persistentInventoryBar?.hudManager = self
         
         if let inventoryBar = persistentInventoryBar {
-            overlayContainer.addChild(inventoryBar)
+            // Add directly to scene instead of overlay container to avoid rendering issues
+            scene.addChild(inventoryBar)
             persistentElements.append(inventoryBar)
         }
     }
