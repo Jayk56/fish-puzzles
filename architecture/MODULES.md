@@ -154,7 +154,7 @@ InteractionSystem/
 ---
 
 ### 5. Inventory System Module
-**Purpose**: Item management, combination logic, inventory UI
+**Purpose**: Item management, combination logic, persistent inventory bar, inventory UI
 
 ```swift
 // Public API
@@ -162,8 +162,19 @@ public class InventoryManager {
     func addItem(_ item: Item)
     func removeItem(_ item: Item)
     func hasItem(_ item: Item) -> Bool
+    func useItem(_ item: Item, on target: Entity) -> UseResult
     func combineItems(_ item1: Item, _ item2: Item) -> Item?
+    func selectItem(_ item: Item)
     var items: [Item] { get }
+    var selectedItem: Item? { get }
+    var visibleSlots: [Item] { get }  // First 4-6 items
+}
+
+// Item interaction system
+public protocol ItemInteractionEngine {
+    func canUseItem(_ item: Item, on target: Entity) -> Bool
+    func canCombineItems(_ item1: Item, _ item2: Item) -> Bool
+    func getHint(for item: Item) -> String?
 }
 
 // Module Structure
@@ -171,21 +182,30 @@ InventorySystem/
 ├── Sources/
 │   ├── InventoryManager.swift
 │   ├── Item.swift
+│   ├── ItemInteractionEngine.swift
 │   ├── CombinationRules.swift
+│   ├── CombinationDatabase.swift
 │   ├── UI/
-│   │   ├── InventoryView.swift
+│   │   ├── PersistentInventoryBar.swift  // Always visible
+│   │   ├── InventoryOverlay.swift        // Full modal view
 │   │   ├── ItemSlot.swift
-│   │   └── DragDropHandler.swift
-│   └── Components/
-│       ├── CollectibleComponent.swift
-│       └── UsableComponent.swift
+│   │   ├── DragDropHandler.swift
+│   │   └── ItemCursor.swift              // Visual for selected item
+│   ├── Components/
+│   │   ├── CollectibleComponent.swift
+│   │   ├── UsableComponent.swift
+│   │   └── CombinableComponent.swift
+│   └── Feedback/
+│       ├── ItemFeedbackAnimator.swift
+│       └── UsageResultHandler.swift
 ├── Tests/
 └── Resources/
-    └── ItemDefinitions/
+    ├── ItemDefinitions/
+    └── CombinationRecipes/
 ```
 
-**Dependencies**: UI, Persistence
-**Exports**: InventoryManager, Item, CombinationRule
+**Dependencies**: UI, Persistence, Interaction System
+**Exports**: InventoryManager, Item, ItemInteractionEngine, CombinationRule, PersistentInventoryBar
 
 ---
 

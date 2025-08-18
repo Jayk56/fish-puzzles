@@ -28,8 +28,9 @@ Implement a layered UI overlay system with:
 class HUDManager {
     enum OverlayType: Int {
         case gameWorld = 0      // Base game layer
+        case persistentHUD = 50 // Always-visible HUD (inventory bar, buttons)
         case hud = 100          // Always-visible HUD elements
-        case inventory = 200    // Inventory overlay
+        case inventory = 200    // Inventory overlay (full screen)
         case map = 201          // Map overlay  
         case dialogue = 300     // Dialogue boxes
         case hint = 400         // Hint popups
@@ -39,11 +40,13 @@ class HUDManager {
     
     private var overlays: [OverlayType: UIOverlay] = [:]
     private var activeOverlays: Set<OverlayType> = []
+    private var persistentElements: [UIOverlay] = []  // Always active
     
     func show(_ type: OverlayType, animated: Bool = true)
     func hide(_ type: OverlayType, animated: Bool = true)
     func toggle(_ type: OverlayType)
     func hideAll(except: [OverlayType] = [])
+    func registerPersistent(_ element: UIOverlay)  // For always-visible elements
 }
 
 // Base overlay protocol
@@ -60,17 +63,29 @@ protocol UIOverlay {
 
 ## Overlay Components
 
-### 1. Inventory Overlay
+### 1. Persistent Inventory Bar
 ```swift
-class InventoryOverlay: SKNode, UIOverlay {
-    // Grid-based item slots
-    // Drag-and-drop support
-    // Item combination detection
-    // Scrollable for many items
+class PersistentInventoryBar: SKNode, UIOverlay {
+    // Always visible at bottom of screen
+    // 4-6 quick access slots
+    // Drag-and-drop to/from slots
+    // Visual selection indicator
+    // Overflow handling with "more" button
 }
 ```
 
-### 2. Map Overlay
+### 2. Full Inventory Overlay
+```swift
+class InventoryOverlay: SKNode, UIOverlay {
+    // Modal full-screen view
+    // Grid-based item slots
+    // Item combination interface
+    // Scrollable for many items
+    // Accessed via "more" button or gesture
+}
+```
+
+### 3. Map Overlay
 ```swift
 class MapOverlay: SKNode, UIOverlay {
     // Scene thumbnail previews
@@ -80,7 +95,7 @@ class MapOverlay: SKNode, UIOverlay {
 }
 ```
 
-### 3. Hint System
+### 4. Hint System
 ```swift
 class HintOverlay: SKNode, UIOverlay {
     enum HintLevel {
@@ -95,7 +110,7 @@ class HintOverlay: SKNode, UIOverlay {
 }
 ```
 
-### 4. Sound Controls
+### 5. Sound Controls
 ```swift
 class SoundOverlay: SKNode, UIOverlay {
     // Master volume slider
@@ -106,7 +121,7 @@ class SoundOverlay: SKNode, UIOverlay {
 }
 ```
 
-### 5. Settings Overlay
+### 6. Settings Overlay
 ```swift
 class SettingsOverlay: SKNode, UIOverlay {
     // Text size options
@@ -148,9 +163,10 @@ Z-Index    Layer              Description
 500-599    Settings           Settings and options
 400-499    Hints              Hint bubbles and tutorials  
 300-399    Dialogue           Character speech bubbles
-200-299    Overlays           Inventory, map screens
-100-199    HUD                Persistent UI elements
-0-99       Game World         Main gameplay layer
+200-299    Overlays           Full inventory, map screens
+100-199    HUD                UI buttons and controls
+50-99      Persistent HUD     Always-visible inventory bar
+0-49       Game World         Main gameplay layer
 ```
 
 ### Safe Area Handling
@@ -196,12 +212,13 @@ struct SafeAreaManager {
    - Rejected: Complex SpriteKit integration, requires iOS 16+
 
 ## Implementation Priority
-1. HUD elements (always visible)
-2. Inventory system (core gameplay)
-3. Dialogue system (story progression)
-4. Settings/sound (user preferences)
-5. Map overlay (navigation aid)
-6. Hint system (accessibility)
+1. Persistent inventory bar (always visible)
+2. HUD buttons and controls
+3. Full inventory system (modal view)
+4. Dialogue system (story progression)
+5. Settings/sound (user preferences)
+6. Map overlay (navigation aid)
+7. Hint system (accessibility)
 
 ## References
 - [Apple HIG - Modality](https://developer.apple.com/design/human-interface-guidelines/modality)
