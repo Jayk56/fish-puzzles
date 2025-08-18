@@ -33,8 +33,8 @@ class MapOverlay: BaseOverlay {
     private func setupBackground() {
         let bgSize = CGSize(width: overlaySize.width * 0.9, height: overlaySize.height * 0.8)
         mapBackground = SKShapeNode(rectOf: bgSize, cornerRadius: 20)
-        mapBackground.fillColor = UIColor(red: 0.1, green: 0.2, blue: 0.3, alpha: 0.95)
-        mapBackground.strokeColor = .white
+        mapBackground.fillColor = UIColor(red: 0.05, green: 0.05, blue: 0.15, alpha: 0.95) // Dark navy background
+        mapBackground.strokeColor = UIColor(red: 0.3, green: 0.5, blue: 0.7, alpha: 1.0) // Lighter blue border
         mapBackground.lineWidth = 3
         mapBackground.position = CGPoint.zero
         mapBackground.zPosition = 0
@@ -51,14 +51,14 @@ class MapOverlay: BaseOverlay {
     
     private func setupLocations() {
         let locations = [
-            (name: "Coral Reef", position: CGPoint(x: -150, y: 50), discovered: true),
-            (name: "Shipwreck", position: CGPoint(x: 0, y: 0), discovered: true),
-            (name: "Deep Cave", position: CGPoint(x: 150, y: -50), discovered: false),
-            (name: "Kelp Forest", position: CGPoint(x: -100, y: -100), discovered: false)
+            (name: "Coral Reef", position: CGPoint(x: -150, y: 50), discovered: true, color: UIColor(red: 1.0, green: 0.4, blue: 0.3, alpha: 1.0)),
+            (name: "Shipwreck", position: CGPoint(x: 0, y: 0), discovered: true, color: UIColor(red: 0.6, green: 0.4, blue: 0.2, alpha: 1.0)),
+            (name: "Deep Cave", position: CGPoint(x: 150, y: -50), discovered: false, color: UIColor(red: 0.3, green: 0.3, blue: 0.5, alpha: 1.0)),
+            (name: "Kelp Forest", position: CGPoint(x: -100, y: -100), discovered: false, color: UIColor(red: 0.2, green: 0.6, blue: 0.3, alpha: 1.0))
         ]
         
         for location in locations {
-            let node = LocationNode(name: location.name, discovered: location.discovered)
+            let node = LocationNode(name: location.name, discovered: location.discovered, color: location.color)
             node.position = location.position
             node.zPosition = 2
             mapBackground.addChild(node)
@@ -81,7 +81,7 @@ class MapOverlay: BaseOverlay {
                 path.move(to: startNode.position)
                 path.addLine(to: endNode.position)
                 line.path = path
-                line.strokeColor = UIColor(white: 0.6, alpha: 0.5)
+                line.strokeColor = UIColor(red: 0.5, green: 0.7, blue: 0.9, alpha: 0.5)
                 line.lineWidth = 2
                 line.zPosition = 1
                 mapBackground.addChild(line)
@@ -91,8 +91,10 @@ class MapOverlay: BaseOverlay {
     
     private func setupCurrentLocationIndicator() {
         currentLocationIndicator = SKShapeNode(circleOfRadius: 15)
-        currentLocationIndicator.fillColor = .yellow
-        currentLocationIndicator.strokeColor = .clear
+        currentLocationIndicator.fillColor = UIColor(red: 1.0, green: 0.9, blue: 0.3, alpha: 1.0)
+        currentLocationIndicator.strokeColor = UIColor(red: 1.0, green: 1.0, blue: 0.5, alpha: 1.0)
+        currentLocationIndicator.lineWidth = 2
+        currentLocationIndicator.glowWidth = 5
         currentLocationIndicator.zPosition = 3
         
         let pulse = SKAction.sequence([
@@ -157,12 +159,14 @@ class MapOverlay: BaseOverlay {
 class LocationNode: SKNode {
     let locationName: String
     var isDiscovered: Bool
-    private var icon: SKSpriteNode!
+    let nodeColor: UIColor
+    private var icon: SKShapeNode!
     private var label: SKLabelNode!
     
-    init(name: String, discovered: Bool) {
+    init(name: String, discovered: Bool, color: UIColor) {
         self.locationName = name
         self.isDiscovered = discovered
+        self.nodeColor = color
         super.init()
         setupNode()
     }
@@ -172,18 +176,25 @@ class LocationNode: SKNode {
     }
     
     private func setupNode() {
-        let iconSize = CGSize(width: 60, height: 60)
-        icon = SKSpriteNode(
-            color: isDiscovered ? .cyan : .gray,
-            size: iconSize
-        )
+        // Create circular icon instead of square
+        icon = SKShapeNode(circleOfRadius: 30)
+        icon.fillColor = isDiscovered ? nodeColor : .gray
+        icon.strokeColor = isDiscovered ? .white : .gray
+        icon.lineWidth = 3
         icon.alpha = isDiscovered ? 1.0 : 0.3
+        
+        if isDiscovered {
+            icon.glowWidth = 2
+        }
+        
         addChild(icon)
         
-        let shape = SKShapeNode(circleOfRadius: 30)
-        shape.strokeColor = isDiscovered ? .white : .gray
-        shape.lineWidth = 2
-        icon.addChild(shape)
+        // Add inner decoration circle
+        let innerCircle = SKShapeNode(circleOfRadius: 20)
+        innerCircle.strokeColor = isDiscovered ? UIColor(white: 1.0, alpha: 0.3) : .clear
+        innerCircle.lineWidth = 1
+        innerCircle.fillColor = .clear
+        icon.addChild(innerCircle)
         
         label = SKLabelNode(text: locationName)
         label.fontName = "AvenirNext-Medium"

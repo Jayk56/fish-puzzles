@@ -81,10 +81,18 @@ class Location1Scene: BaseGameScene {
         hintButton.position = CGPoint(x: size.width - 60, y: 60)
         hintButton.zPosition = 100
         hintButton.onTap = { [weak self] in
-            if let hintOverlay = self?.hudManager?.overlays[.hint] as? HintOverlay {
-                hintOverlay.showHint("Try tapping on the treasure chest!", level: .subtle)
+            guard let hudManager = self?.hudManager else { return }
+            
+            // Toggle hint overlay if already showing, otherwise show new hint
+            if hudManager.isActive(.hint) {
+                hudManager.hide(.hint)
+                print("💡 Hiding hint")
+            } else {
+                if let hintOverlay = hudManager.overlays[.hint] as? HintOverlay {
+                    hintOverlay.showHint("Try tapping on the treasure chest!", level: .subtle)
+                }
+                print("💡 Showing hint")
             }
-            print("💡 Showing hint")
         }
         addChild(hintButton)
     }
