@@ -10,6 +10,7 @@ import SpriteKit
 class HUDManager {
     enum OverlayType: Int, CaseIterable {
         case gameWorld = 0
+        case persistentHUD = 50  // Always-visible inventory bar
         case hud = 100
         case inventory = 200
         case map = 201
@@ -28,6 +29,9 @@ class HUDManager {
     private var activeOverlays: Set<OverlayType> = []
     private var overlayContainer: HUDContainer
     
+    private var persistentInventoryBar: PersistentInventoryBar?
+    private var persistentElements: [SKNode] = []
+    
     init(scene: SKScene) {
         self.scene = scene
         self.overlayContainer = HUDContainer()
@@ -38,6 +42,7 @@ class HUDManager {
         scene.addChild(overlayContainer)
         
         setupOverlays()
+        setupPersistentElements()
     }
     
     private func setupOverlays() {
@@ -56,6 +61,23 @@ class HUDManager {
                 overlayContainer.addChild(node)
             }
         }
+    }
+    
+    private func setupPersistentElements() {
+        guard let scene = scene else { return }
+        
+        persistentInventoryBar = PersistentInventoryBar(size: scene.size)
+        persistentInventoryBar?.zPosition = OverlayType.persistentHUD.zPosition
+        persistentInventoryBar?.hudManager = self
+        
+        if let inventoryBar = persistentInventoryBar {
+            overlayContainer.addChild(inventoryBar)
+            persistentElements.append(inventoryBar)
+        }
+    }
+    
+    var inventoryBar: PersistentInventoryBar? {
+        return persistentInventoryBar
     }
     
     func show(_ type: OverlayType, animated: Bool = true) {

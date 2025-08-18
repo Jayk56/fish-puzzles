@@ -20,11 +20,14 @@ class Location1Scene: BaseGameScene {
         // Set scene scaling for landscape
         scaleMode = .aspectFill
         
-        // Background - will be replaced with actual art
-        let background = SKSpriteNode(color: .cyan, size: size)
-        background.position = CGPoint(x: size.width/2, y: size.height/2)
-        background.zPosition = -1
+        // Background - uses safe area to avoid inventory bar
+        let background = createSafeBackground(color: .cyan)
         addChild(background)
+        
+        // Enable debug mode to visualize safe areas (remove in production)
+        #if DEBUG
+        showSafeAreaDebug = true
+        #endif
         
         // Add fish character
         setupCharacter()
@@ -46,9 +49,11 @@ class Location1Scene: BaseGameScene {
     }
     
     private func setupHUDButtons() {
+        let safeArea = safeGameplayArea
+        
         // Inventory button - top left
         let inventoryButton = HUDButton(type: .inventory)
-        inventoryButton.position = CGPoint(x: 60, y: size.height - 60)
+        inventoryButton.position = CGPoint(x: safeArea.minX + 60, y: safeArea.maxY - 30)
         inventoryButton.zPosition = 100
         inventoryButton.onTap = { [weak self] in
             self?.hudManager?.toggle(.inventory)
@@ -58,7 +63,7 @@ class Location1Scene: BaseGameScene {
         
         // Map button - next to inventory
         let mapButton = HUDButton(type: .map)
-        mapButton.position = CGPoint(x: 130, y: size.height - 60)
+        mapButton.position = CGPoint(x: safeArea.minX + 130, y: safeArea.maxY - 30)
         mapButton.zPosition = 100
         mapButton.onTap = { [weak self] in
             self?.hudManager?.toggle(.map)
@@ -68,7 +73,7 @@ class Location1Scene: BaseGameScene {
         
         // Settings button - top right
         let settingsButton = HUDButton(type: .settings)
-        settingsButton.position = CGPoint(x: size.width - 60, y: size.height - 60)
+        settingsButton.position = CGPoint(x: safeArea.maxX - 60, y: safeArea.maxY - 30)
         settingsButton.zPosition = 100
         settingsButton.onTap = { [weak self] in
             self?.hudManager?.toggle(.settings)
@@ -78,7 +83,7 @@ class Location1Scene: BaseGameScene {
         
         // Hint button - bottom right
         let hintButton = HUDButton(type: .hint)
-        hintButton.position = CGPoint(x: size.width - 60, y: 60)
+        hintButton.position = CGPoint(x: safeArea.maxX - 60, y: safeArea.minY + 60)
         hintButton.zPosition = 100
         hintButton.onTap = { [weak self] in
             guard let hudManager = self?.hudManager else { return }
@@ -117,7 +122,8 @@ class Location1Scene: BaseGameScene {
             print("⚠️ Using fallback fish sprite")
         }
         
-        fishCharacter.position = CGPoint(x: size.width * 0.2, y: size.height * 0.5)
+        // Position fish in safe area (20% from left, 50% up)
+        fishCharacter.position = safePosition(normalizedX: 0.2, normalizedY: 0.5)
         fishCharacter.name = "player"
         addChild(fishCharacter)
         
@@ -141,7 +147,8 @@ class Location1Scene: BaseGameScene {
     private func setupHotspots() {
         // Add visible treasure chest sprite
         let chestSprite = SKSpriteNode(color: .brown, size: CGSize(width: 100, height: 80))
-        chestSprite.position = CGPoint(x: size.width * 0.7, y: size.height * 0.3)
+        // Position chest in safe area (70% from left, 30% up)
+        chestSprite.position = safePosition(normalizedX: 0.7, normalizedY: 0.3)
         chestSprite.name = "treasureChest"
         addChild(chestSprite)
         
@@ -156,10 +163,11 @@ class Location1Scene: BaseGameScene {
         lock.position = CGPoint(x: 0, y: 0)
         chestSprite.addChild(lock)
         
-        // Register hotspot for interaction
+        // Register hotspot for interaction (using safe area position)
+        let chestPosition = safePosition(normalizedX: 0.7, normalizedY: 0.3)
         let chestHotspot = Hotspot(
             id: "treasure_chest",
-            frame: CGRect(x: size.width * 0.7 - 50, y: size.height * 0.3 - 40, width: 100, height: 80),
+            frame: CGRect(x: chestPosition.x - 50, y: chestPosition.y - 40, width: 100, height: 80),
             action: { [weak self] in
                 self?.openTreasureChest()
             }
@@ -168,7 +176,8 @@ class Location1Scene: BaseGameScene {
         
         // Add a locked door as example of confused animation trigger
         let doorSprite = SKSpriteNode(color: .darkGray, size: CGSize(width: 80, height: 120))
-        doorSprite.position = CGPoint(x: size.width * 0.9, y: size.height * 0.5)
+        // Position door in safe area (90% from left, 50% up)
+        doorSprite.position = safePosition(normalizedX: 0.9, normalizedY: 0.5)
         doorSprite.name = "lockedDoor"
         addChild(doorSprite)
         
@@ -179,9 +188,11 @@ class Location1Scene: BaseGameScene {
         doorSprite.addChild(handle)
         
         // Register locked door hotspot
+        // Register locked door hotspot (using safe area position)
+        let doorPosition = safePosition(normalizedX: 0.9, normalizedY: 0.5)
         let doorHotspot = Hotspot(
             id: "locked_door",
-            frame: CGRect(x: size.width * 0.9 - 40, y: size.height * 0.5 - 60, width: 80, height: 120),
+            frame: CGRect(x: doorPosition.x - 40, y: doorPosition.y - 60, width: 80, height: 120),
             action: { [weak self] in
                 self?.tryLockedDoor()
             }
@@ -245,12 +256,19 @@ class Location1Scene: BaseGameScene {
         }
         
         // Nothing was touched except empty space - move the fish!
+        // Constrain movement to safe area
+        let safeArea = safeGameplayArea
+        let constrainedLocation = CGPoint(
+            x: max(safeArea.minX + 40, min(safeArea.maxX - 40, location.x)),
+            y: max(safeArea.minY + 30, min(safeArea.maxY - 30, location.y))
+        )
+        
         // Face the correct direction
-        animationComponent.faceDirection(movingTo: location)
+        animationComponent.faceDirection(movingTo: constrainedLocation)
         
         // Calculate distance for accurate animation duration
-        let distance = hypot(location.x - fishCharacter.position.x, 
-                           location.y - fishCharacter.position.y)
+        let distance = hypot(constrainedLocation.x - fishCharacter.position.x, 
+                           constrainedLocation.y - fishCharacter.position.y)
         let duration = Double(distance / 200.0) // Speed: 200 points per second
         
         // Play swimming animation for the duration of movement
@@ -258,7 +276,7 @@ class Location1Scene: BaseGameScene {
         animationComponent.playAnimation(.swimming, repeatCount: swimRepeats)
         
         // Move the fish
-        let moveAction = SKAction.move(to: location, duration: duration)
+        let moveAction = SKAction.move(to: constrainedLocation, duration: duration)
         fishCharacter.run(moveAction) { [weak self] in
             // Return to idle when movement completes
             self?.animationComponent.playAnimation(.idle)

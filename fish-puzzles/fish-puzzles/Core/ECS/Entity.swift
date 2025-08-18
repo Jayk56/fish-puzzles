@@ -14,7 +14,7 @@ class Entity {
     weak var node: SKNode?
     
     func add<T: Component>(_ component: T) {
-        let key = String(describing: type(of: component))
+        let key = String(describing: Swift.type(of: component))
         components[key] = component
         component.entity = self
         component.didAddToEntity()

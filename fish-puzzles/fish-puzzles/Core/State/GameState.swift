@@ -49,6 +49,17 @@ struct Inventory: Codable {
 struct Item: Codable {
     let id: String
     let name: String
+    let displayName: String
     let imageName: String
+    let description: String
     var quantity: Int = 1
+    
+    init(id: String, name: String, displayName: String? = nil, imageName: String, description: String = "", quantity: Int = 1) {
+        self.id = id
+        self.name = name
+        self.displayName = displayName ?? name
+        self.imageName = imageName
+        self.description = description
+        self.quantity = quantity
+    }
 }
