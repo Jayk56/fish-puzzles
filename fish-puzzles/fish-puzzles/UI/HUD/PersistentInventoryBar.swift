@@ -21,6 +21,11 @@ class PersistentInventoryBar: SKNode {
     private let selectedIndicator: SKShapeNode
     private let slotSpacing: CGFloat = 10
     
+    // Button containers
+    private var leftButtonContainer: SKNode
+    private var rightButtonContainer: SKNode
+    private(set) var persistentButtons: [HUDButton] = []
+    
     weak var hudManager: HUDManager?
     weak var inventoryManager: InventoryManager?
     
@@ -43,11 +48,15 @@ class PersistentInventoryBar: SKNode {
         selectedIndicator.fillColor = .clear
         selectedIndicator.isHidden = true
         
+        leftButtonContainer = SKNode()
+        rightButtonContainer = SKNode()
+        
         super.init()
         
         setupBar(size: size)
         setupSlots()
         setupMoreButton()
+        setupButtonContainers()
         
         isUserInteractionEnabled = true
     }
@@ -162,6 +171,50 @@ class PersistentInventoryBar: SKNode {
             selectedIndicator.isHidden = true
             onItemSelected?(nil)
         }
+    }
+    
+    private func setupButtonContainers() {
+        // Left button container (for inventory, map buttons)
+        leftButtonContainer.position = CGPoint(x: -backgroundBar.frame.width/2 + 100, y: 0)
+        leftButtonContainer.zPosition = 3
+        backgroundBar.addChild(leftButtonContainer)
+        
+        // Right button container (for settings, hint buttons)
+        rightButtonContainer.position = CGPoint(x: backgroundBar.frame.width/2 - 100, y: 0)
+        rightButtonContainer.zPosition = 3
+        backgroundBar.addChild(rightButtonContainer)
+    }
+    
+    func addPersistentButton(_ button: HUDButton, position: ButtonPosition) {
+        // Remove button from any previous parent
+        button.removeFromParent()
+        
+        switch position {
+        case .left(let index):
+            button.position = CGPoint(x: CGFloat(index) * 60, y: 0)
+            leftButtonContainer.addChild(button)
+        case .right(let index):
+            button.position = CGPoint(x: CGFloat(-index) * 60, y: 0)
+            rightButtonContainer.addChild(button)
+        }
+        
+        button.zPosition = 4
+        persistentButtons.append(button)
+    }
+    
+    func removePersistentButton(_ button: HUDButton) {
+        button.removeFromParent()
+        persistentButtons.removeAll { $0 == button }
+    }
+    
+    func clearPersistentButtons() {
+        persistentButtons.forEach { $0.removeFromParent() }
+        persistentButtons.removeAll()
+    }
+    
+    enum ButtonPosition {
+        case left(index: Int)
+        case right(index: Int)
     }
     
     private func updateMoreButton() {

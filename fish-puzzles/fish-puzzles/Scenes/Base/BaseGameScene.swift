@@ -18,6 +18,9 @@ class BaseGameScene: SKScene {
     var showSafeAreaDebug = false
     private var safeAreaDebugNode: SKNode?
     
+    // Background styling
+    var backgroundTheme: BackgroundStyler.Theme = .underwater
+    
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         setupScene()
@@ -32,12 +35,19 @@ class BaseGameScene: SKScene {
         if !(self is MainMenuScene) {
             hudManager = HUDManager(scene: self)
             setupHUD()
+            
+            // Apply background theme to non-safe areas
+            setupBackgroundStyling()
         }
         
         // Setup safe area debugging if enabled
         if showSafeAreaDebug {
             enableSafeAreaDebug()
         }
+    }
+    
+    func setupBackgroundStyling() {
+        BackgroundStyler.shared.applyTheme(backgroundTheme, to: self)
     }
     
     func setupSystems() {
@@ -60,6 +70,7 @@ class BaseGameScene: SKScene {
     func setupHUD() {
         // Override in subclasses to configure HUD
         setupInventoryBar()
+        setupPersistentButtons()
     }
     
     func setupInventoryBar() {
@@ -77,6 +88,47 @@ class BaseGameScene: SKScene {
             // Drag end is handled by touchesEnded
             _ = item  // Suppress warning
         }
+    }
+    
+    func setupPersistentButtons() {
+        // Default button setup - override in subclasses to customize
+        guard let inventoryBar = hudManager?.inventoryBar else { return }
+        
+        // Inventory button - left side
+        let inventoryButton = HUDButton(type: .inventory)
+        inventoryButton.onTap = { [weak self] in
+            self?.hudManager?.toggle(.inventory)
+        }
+        inventoryBar.addPersistentButton(inventoryButton, position: .left(index: 0))
+        
+        // Map button - left side
+        let mapButton = HUDButton(type: .map)
+        mapButton.onTap = { [weak self] in
+            self?.hudManager?.toggle(.map)
+        }
+        inventoryBar.addPersistentButton(mapButton, position: .left(index: 1))
+        
+        // Settings button - right side
+        let settingsButton = HUDButton(type: .settings)
+        settingsButton.onTap = { [weak self] in
+            self?.hudManager?.toggle(.settings)
+        }
+        inventoryBar.addPersistentButton(settingsButton, position: .right(index: 1))
+        
+        // Hint button - right side
+        let hintButton = HUDButton(type: .hint)
+        hintButton.onTap = { [weak self] in
+            guard let hudManager = self?.hudManager else { return }
+            
+            if hudManager.isActive(.hint) {
+                hudManager.hide(.hint)
+            } else {
+                if let hintOverlay = hudManager.overlays[.hint] as? HintOverlay {
+                    hintOverlay.showHint("Explore the scene and interact with objects!", level: .subtle)
+                }
+            }
+        }
+        inventoryBar.addPersistentButton(hintButton, position: .right(index: 0))
     }
     
     func handleItemSelection(_ item: Item?) {

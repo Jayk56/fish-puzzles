@@ -13,6 +13,9 @@ class Location1Scene: BaseGameScene {
     private var animationComponent: CharacterAnimationComponent!
     
     override func setupScene() {
+        // Set the background theme before calling super
+        backgroundTheme = .tropical
+        
         super.setupScene()
         
         print("🏝️ Setting up Location1Scene...")
@@ -44,62 +47,34 @@ class Location1Scene: BaseGameScene {
     override func setupHUD() {
         super.setupHUD()
         
-        // Add HUD buttons
-        setupHUDButtons()
+        // Buttons are now in the persistent inventory bar
+        // Override setupPersistentButtons if you need custom button behavior
     }
     
-    private func setupHUDButtons() {
-        let safeArea = safeGameplayArea
+    override func setupPersistentButtons() {
+        super.setupPersistentButtons()
         
-        // Inventory button - top left
-        let inventoryButton = HUDButton(type: .inventory)
-        inventoryButton.position = CGPoint(x: safeArea.minX + 60, y: safeArea.maxY - 30)
-        inventoryButton.zPosition = 100
-        inventoryButton.onTap = { [weak self] in
-            self?.hudManager?.toggle(.inventory)
-            print("📦 Toggled inventory")
-        }
-        addChild(inventoryButton)
+        // Customize hint button behavior for this scene
+        guard let inventoryBar = hudManager?.inventoryBar else { return }
         
-        // Map button - next to inventory
-        let mapButton = HUDButton(type: .map)
-        mapButton.position = CGPoint(x: safeArea.minX + 130, y: safeArea.maxY - 30)
-        mapButton.zPosition = 100
-        mapButton.onTap = { [weak self] in
-            self?.hudManager?.toggle(.map)
-            print("🗺 Toggled map")
-        }
-        addChild(mapButton)
-        
-        // Settings button - top right
-        let settingsButton = HUDButton(type: .settings)
-        settingsButton.position = CGPoint(x: safeArea.maxX - 60, y: safeArea.maxY - 30)
-        settingsButton.zPosition = 100
-        settingsButton.onTap = { [weak self] in
-            self?.hudManager?.toggle(.settings)
-            print("⚙️ Toggled settings")
-        }
-        addChild(settingsButton)
-        
-        // Hint button - bottom right
-        let hintButton = HUDButton(type: .hint)
-        hintButton.position = CGPoint(x: safeArea.maxX - 60, y: safeArea.minY + 60)
-        hintButton.zPosition = 100
-        hintButton.onTap = { [weak self] in
-            guard let hudManager = self?.hudManager else { return }
-            
-            // Toggle hint overlay if already showing, otherwise show new hint
-            if hudManager.isActive(.hint) {
-                hudManager.hide(.hint)
-                print("💡 Hiding hint")
-            } else {
-                if let hintOverlay = hudManager.overlays[.hint] as? HintOverlay {
-                    hintOverlay.showHint("Try tapping on the treasure chest!", level: .subtle)
+        // Find and update the hint button with scene-specific hint
+        inventoryBar.persistentButtons.forEach { button in
+            if button.buttonType == .hint {
+                button.onTap = { [weak self] in
+                    guard let hudManager = self?.hudManager else { return }
+                    
+                    if hudManager.isActive(.hint) {
+                        hudManager.hide(.hint)
+                        print("💡 Hiding hint")
+                    } else {
+                        if let hintOverlay = hudManager.overlays[.hint] as? HintOverlay {
+                            hintOverlay.showHint("Try tapping on the treasure chest!", level: .subtle)
+                        }
+                        print("💡 Showing hint")
+                    }
                 }
-                print("💡 Showing hint")
             }
         }
-        addChild(hintButton)
     }
     
     private func setupCharacter() {

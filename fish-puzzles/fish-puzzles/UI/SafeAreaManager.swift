@@ -15,6 +15,18 @@ class SafeAreaManager {
     static let inventoryBarHeight: CGFloat = 100
     static let inventoryBarPadding: CGFloat = 10  // Extra padding above inventory
     
+    enum BorderStyle {
+        case solid(color: UIColor)
+        case gradient(colors: [UIColor], direction: GradientDirection)
+        case pattern(imageName: String)
+        
+        enum GradientDirection {
+            case vertical
+            case horizontal
+            case diagonal
+        }
+    }
+    
     private init() {}
     
     /// Calculate the safe gameplay area for a given scene size
@@ -72,9 +84,143 @@ class SafeAreaManager {
         return gameplayArea(for: sceneSize).maxY
     }
     
+    /// Create styled border areas outside the safe gameplay zone
+    func createStyledBorders(for scene: SKScene, style: BorderStyle) -> SKNode {
+        let borderContainer = SKNode()
+        borderContainer.name = "borderContainer"
+        borderContainer.zPosition = -2  // Behind gameplay but above background
+        
+        let sceneSize = scene.size
+        let safeArea = gameplayArea(for: sceneSize)
+        
+        // Bottom border (inventory area)
+        let bottomBorder = createBorderNode(
+            rect: CGRect(x: 0, y: 0, width: sceneSize.width, height: safeArea.minY),
+            style: style,
+            name: "bottomBorder"
+        )
+        borderContainer.addChild(bottomBorder)
+        
+        // Top border (status bar area)
+        if safeArea.maxY < sceneSize.height {
+            let topBorder = createBorderNode(
+                rect: CGRect(x: 0, y: safeArea.maxY, width: sceneSize.width, height: sceneSize.height - safeArea.maxY),
+                style: style,
+                name: "topBorder"
+            )
+            borderContainer.addChild(topBorder)
+        }
+        
+        // Left border (if exists)
+        if safeArea.minX > 0 {
+            let leftBorder = createBorderNode(
+                rect: CGRect(x: 0, y: safeArea.minY, width: safeArea.minX, height: safeArea.height),
+                style: style,
+                name: "leftBorder"
+            )
+            borderContainer.addChild(leftBorder)
+        }
+        
+        // Right border (if exists)
+        if safeArea.maxX < sceneSize.width {
+            let rightBorder = createBorderNode(
+                rect: CGRect(x: safeArea.maxX, y: safeArea.minY, width: sceneSize.width - safeArea.maxX, height: safeArea.height),
+                style: style,
+                name: "rightBorder"
+            )
+            borderContainer.addChild(rightBorder)
+        }
+        
+        return borderContainer
+    }
+    
+    private func createBorderNode(rect: CGRect, style: BorderStyle, name: String) -> SKNode {
+        let node = SKSpriteNode()
+        node.name = name
+        node.size = rect.size
+        node.position = CGPoint(x: rect.midX, y: rect.midY)
+        node.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        
+        switch style {
+        case .solid(let color):
+            node.color = color
+            node.texture = nil
+            
+        case .gradient(let colors, let direction):
+            // Create gradient texture
+            let gradientTexture = createGradientTexture(
+                size: rect.size,
+                colors: colors,
+                direction: direction
+            )
+            node.texture = gradientTexture
+            
+        case .pattern(let imageName):
+            // Use tiled pattern
+            let patternTexture = SKTexture(imageNamed: imageName)
+            node.texture = patternTexture
+            // Create shader for tiling effect if needed
+            let shader = SKShader(source: """
+                void main() {
+                    vec2 coord = mod(v_tex_coord * u_texture_size / 100.0, 1.0);
+                    gl_FragColor = texture2D(u_texture, coord);
+                }
+            """)
+            shader.uniforms = [
+                SKUniform(name: "u_texture_size", vectorFloat2: vector_float2(Float(rect.width), Float(rect.height)))
+            ]
+            node.shader = shader
+        }
+        
+        return node
+    }
+    
+    private func createGradientTexture(size: CGSize, colors: [UIColor], direction: BorderStyle.GradientDirection) -> SKTexture {
+        UIGraphicsBeginImageContext(size)
+        guard let context = UIGraphicsGetCurrentContext() else {
+            UIGraphicsEndImageContext()
+            return SKTexture()
+        }
+        
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let cgColors = colors.map { $0.cgColor } as CFArray
+        
+        guard let gradient = CGGradient(colorsSpace: colorSpace, colors: cgColors, locations: nil) else {
+            UIGraphicsEndImageContext()
+            return SKTexture()
+        }
+        
+        let startPoint: CGPoint
+        let endPoint: CGPoint
+        
+        switch direction {
+        case .vertical:
+            startPoint = CGPoint(x: size.width / 2, y: 0)
+            endPoint = CGPoint(x: size.width / 2, y: size.height)
+        case .horizontal:
+            startPoint = CGPoint(x: 0, y: size.height / 2)
+            endPoint = CGPoint(x: size.width, y: size.height / 2)
+        case .diagonal:
+            startPoint = CGPoint(x: 0, y: 0)
+            endPoint = CGPoint(x: size.width, y: size.height)
+        }
+        
+        context.drawLinearGradient(gradient, start: startPoint, end: endPoint, options: [])
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        if let image = image {
+            return SKTexture(image: image)
+        }
+        
+        return SKTexture()
+    }
+    
     private func getDeviceSafeInsets() -> UIEdgeInsets {
         // Get the current window's safe area insets
-        if let window = UIApplication.shared.windows.first {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first {
             return window.safeAreaInsets
         }
         
