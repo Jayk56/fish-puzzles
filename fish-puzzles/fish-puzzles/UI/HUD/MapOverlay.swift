@@ -8,9 +8,9 @@
 import SpriteKit
 
 class MapOverlay: BaseOverlay {
-    private var mapBackground: SKSpriteNode!
+    private var mapBackground: SKShapeNode!
     private var locationNodes: [LocationNode] = []
-    private var currentLocationIndicator: SKSpriteNode!
+    private var currentLocationIndicator: SKShapeNode!
     private var closeButton: CloseButton!
     
     init(size: CGSize) {
@@ -32,15 +32,12 @@ class MapOverlay: BaseOverlay {
     
     private func setupBackground() {
         let bgSize = CGSize(width: overlaySize.width * 0.9, height: overlaySize.height * 0.8)
-        mapBackground = SKSpriteNode(color: UIColor(red: 0.1, green: 0.2, blue: 0.3, alpha: 0.95), size: bgSize)
+        mapBackground = SKShapeNode(rectOf: bgSize, cornerRadius: 20)
+        mapBackground.fillColor = UIColor(red: 0.1, green: 0.2, blue: 0.3, alpha: 0.95)
+        mapBackground.strokeColor = .white
+        mapBackground.lineWidth = 3
         mapBackground.position = CGPoint.zero
         mapBackground.zPosition = 0
-        
-        let border = SKShapeNode(rectOf: bgSize, cornerRadius: 20)
-        border.strokeColor = .white
-        border.lineWidth = 3
-        border.zPosition = 1
-        mapBackground.addChild(border)
         
         addChild(mapBackground)
         
@@ -93,7 +90,9 @@ class MapOverlay: BaseOverlay {
     }
     
     private func setupCurrentLocationIndicator() {
-        currentLocationIndicator = SKSpriteNode(color: .yellow, size: CGSize(width: 30, height: 30))
+        currentLocationIndicator = SKShapeNode(circleOfRadius: 15)
+        currentLocationIndicator.fillColor = .yellow
+        currentLocationIndicator.strokeColor = .clear
         currentLocationIndicator.zPosition = 3
         
         let pulse = SKAction.sequence([
@@ -111,9 +110,10 @@ class MapOverlay: BaseOverlay {
     
     private func setupCloseButton() {
         closeButton = CloseButton()
+        let bgSize = CGSize(width: overlaySize.width * 0.9, height: overlaySize.height * 0.8)
         closeButton.position = CGPoint(
-            x: mapBackground.size.width/2 - 30,
-            y: mapBackground.size.height/2 - 30
+            x: bgSize.width/2 - 30,
+            y: bgSize.height/2 - 30
         )
         closeButton.zPosition = 3
         closeButton.onTap = { [weak self] in

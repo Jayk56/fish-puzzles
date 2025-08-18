@@ -8,7 +8,7 @@
 import SpriteKit
 
 class InventoryOverlay: BaseOverlay {
-    private var inventoryBackground: SKSpriteNode!
+    private var inventoryBackground: SKShapeNode!
     private var itemSlots: [ItemSlot] = []
     private let slotsPerRow = 6
     private let maxSlots = 12
@@ -32,15 +32,12 @@ class InventoryOverlay: BaseOverlay {
     
     private func setupBackground() {
         let bgSize = CGSize(width: overlaySize.width * 0.8, height: overlaySize.height * 0.7)
-        inventoryBackground = SKSpriteNode(color: UIColor(white: 0.2, alpha: 0.95), size: bgSize)
+        inventoryBackground = SKShapeNode(rectOf: bgSize, cornerRadius: 20)
+        inventoryBackground.fillColor = UIColor(white: 0.2, alpha: 0.95)
+        inventoryBackground.strokeColor = .cyan
+        inventoryBackground.lineWidth = 3
         inventoryBackground.position = CGPoint.zero
         inventoryBackground.zPosition = 0
-        
-        let border = SKShapeNode(rectOf: bgSize, cornerRadius: 20)
-        border.strokeColor = .cyan
-        border.lineWidth = 3
-        border.zPosition = 1
-        inventoryBackground.addChild(border)
         
         addChild(inventoryBackground)
         
@@ -76,9 +73,10 @@ class InventoryOverlay: BaseOverlay {
     
     private func setupCloseButton() {
         closeButton = CloseButton()
+        let bgSize = CGSize(width: overlaySize.width * 0.8, height: overlaySize.height * 0.7)
         closeButton.position = CGPoint(
-            x: inventoryBackground.size.width/2 - 30,
-            y: inventoryBackground.size.height/2 - 30
+            x: bgSize.width/2 - 30,
+            y: bgSize.height/2 - 30
         )
         closeButton.zPosition = 3
         closeButton.onTap = { [weak self] in
@@ -95,7 +93,8 @@ class InventoryOverlay: BaseOverlay {
         
         // Check item slots (close button handles itself via isUserInteractionEnabled)
         for slot in itemSlots {
-            if slot.contains(localPoint) {
+            let slotPoint = inventoryBackground.convert(localPoint, to: slot)
+            if slot.background.contains(slotPoint) {
                 slot.handleTap()
                 return
             }
@@ -121,13 +120,16 @@ class InventoryOverlay: BaseOverlay {
     }
 }
 
-class ItemSlot: SKSpriteNode {
+class ItemSlot: SKNode {
     var itemName: String?
     var itemSprite: SKSpriteNode?
     var isEmpty: Bool { return itemName == nil }
+    private let slotSize: CGSize
+    var background: SKShapeNode!
     
     init(size: CGSize) {
-        super.init(texture: nil, color: UIColor(white: 0.3, alpha: 0.8), size: size)
+        self.slotSize = size
+        super.init()
         setupSlot()
     }
     
@@ -136,10 +138,11 @@ class ItemSlot: SKSpriteNode {
     }
     
     private func setupSlot() {
-        let border = SKShapeNode(rectOf: size, cornerRadius: 10)
-        border.strokeColor = .gray
-        border.lineWidth = 2
-        addChild(border)
+        background = SKShapeNode(rectOf: slotSize, cornerRadius: 10)
+        background.fillColor = UIColor(white: 0.3, alpha: 0.8)
+        background.strokeColor = .gray
+        background.lineWidth = 2
+        addChild(background)
     }
     
     func setItem(name: String, texture: SKTexture) {
@@ -147,7 +150,7 @@ class ItemSlot: SKSpriteNode {
         
         itemName = name
         itemSprite = SKSpriteNode(texture: texture)
-        itemSprite?.size = CGSize(width: size.width * 0.8, height: size.height * 0.8)
+        itemSprite?.size = CGSize(width: slotSize.width * 0.8, height: slotSize.height * 0.8)
         itemSprite?.position = .zero
         
         if let sprite = itemSprite {

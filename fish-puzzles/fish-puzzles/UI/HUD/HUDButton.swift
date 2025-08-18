@@ -7,11 +7,13 @@
 
 import SpriteKit
 
-class HUDButton: SKSpriteNode {
+class HUDButton: SKNode {
     let buttonType: ButtonType
     var onTap: (() -> Void)?
+    private var background: SKShapeNode!
     private var iconLabel: SKLabelNode!
     private var border: SKShapeNode!
+    private let buttonSize: CGSize
     
     enum ButtonType {
         case inventory
@@ -31,7 +33,8 @@ class HUDButton: SKSpriteNode {
     
     init(type: ButtonType, size: CGSize = CGSize(width: 50, height: 50)) {
         self.buttonType = type
-        super.init(texture: nil, color: UIColor(white: 0.2, alpha: 0.7), size: size)
+        self.buttonSize = size
+        super.init()
         
         // Enable touch handling
         isUserInteractionEnabled = true
@@ -44,10 +47,18 @@ class HUDButton: SKSpriteNode {
     }
     
     private func setupButton() {
+        // Add rounded background
+        background = SKShapeNode(rectOf: buttonSize, cornerRadius: 10)
+        background.fillColor = UIColor(white: 0.2, alpha: 0.7)
+        background.strokeColor = .clear
+        background.zPosition = 0
+        addChild(background)
+        
         // Add border
-        border = SKShapeNode(rectOf: size, cornerRadius: 10)
+        border = SKShapeNode(rectOf: buttonSize, cornerRadius: 10)
         border.strokeColor = .white
         border.lineWidth = 2
+        border.fillColor = .clear
         border.zPosition = 1
         addChild(border)
         
@@ -60,6 +71,11 @@ class HUDButton: SKSpriteNode {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // Check if touch is within the button bounds
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        if !background.contains(location) { return }
+        
         // Visual feedback
         run(SKAction.sequence([
             SKAction.scale(to: 0.9, duration: 0.05),

@@ -30,7 +30,7 @@ class HintOverlay: BaseOverlay {
         }
     }
     
-    private var hintBubble: SKSpriteNode!
+    private var hintBubble: SKShapeNode!
     private var hintText: SKLabelNode!
     private var hintIcon: SKLabelNode!
     private var currentLevel: HintLevel = .subtle
@@ -57,17 +57,14 @@ class HintOverlay: BaseOverlay {
     
     private func setupHintBubble() {
         let bubbleSize = CGSize(width: 300, height: 100)
-        hintBubble = SKSpriteNode(color: currentLevel.color, size: bubbleSize)
+        hintBubble = SKShapeNode(rectOf: bubbleSize, cornerRadius: 20)
+        hintBubble.fillColor = currentLevel.color
+        hintBubble.strokeColor = .white
+        hintBubble.lineWidth = 2
+        hintBubble.glowWidth = 5
         // Position at top of screen (container is now centered)
         hintBubble.position = CGPoint(x: 0, y: overlaySize.height/2 - bubbleSize.height/2 - 80)
         hintBubble.zPosition = 0
-        
-        let border = SKShapeNode(rectOf: bubbleSize, cornerRadius: 20)
-        border.strokeColor = .white
-        border.lineWidth = 2
-        border.glowWidth = 5
-        border.zPosition = 1
-        hintBubble.addChild(border)
         
         let tail = SKShapeNode()
         let tailPath = CGMutablePath()
@@ -87,7 +84,8 @@ class HintOverlay: BaseOverlay {
     private func setupHintIcon() {
         hintIcon = SKLabelNode(text: currentLevel.icon)
         hintIcon.fontSize = 32
-        hintIcon.position = CGPoint(x: -hintBubble.size.width/2 + 30, y: 0)
+        let bubbleSize = CGSize(width: 300, height: 100)
+        hintIcon.position = CGPoint(x: -bubbleSize.width/2 + 30, y: 0)
         hintIcon.zPosition = 2
         hintBubble.addChild(hintIcon)
     }
@@ -99,7 +97,8 @@ class HintOverlay: BaseOverlay {
         hintText.horizontalAlignmentMode = .center
         hintText.verticalAlignmentMode = .center
         hintText.position = CGPoint(x: 20, y: 0)
-        hintText.preferredMaxLayoutWidth = hintBubble.size.width - 80
+        let bubbleSize = CGSize(width: 300, height: 100)
+        hintText.preferredMaxLayoutWidth = bubbleSize.width - 80
         hintText.numberOfLines = 0
         hintText.zPosition = 2
         hintBubble.addChild(hintText)
@@ -111,7 +110,7 @@ class HintOverlay: BaseOverlay {
         currentLevel = level
         hintText.text = text
         hintIcon.text = level.icon
-        hintBubble.color = level.color
+        hintBubble.fillColor = level.color
         
         if let pos = position {
             hintBubble.position = pos

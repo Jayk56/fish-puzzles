@@ -8,7 +8,7 @@
 import SpriteKit
 
 class SettingsOverlay: BaseOverlay {
-    private var settingsBackground: SKSpriteNode!
+    private var settingsBackground: SKShapeNode!
     private var closeButton: CloseButton!
     
     private var masterVolumeSlider: SliderControl!
@@ -35,15 +35,12 @@ class SettingsOverlay: BaseOverlay {
     
     private func setupBackground() {
         let bgSize = CGSize(width: overlaySize.width * 0.7, height: overlaySize.height * 0.8)
-        settingsBackground = SKSpriteNode(color: UIColor(white: 0.15, alpha: 0.95), size: bgSize)
+        settingsBackground = SKShapeNode(rectOf: bgSize, cornerRadius: 20)
+        settingsBackground.fillColor = UIColor(white: 0.15, alpha: 0.95)
+        settingsBackground.strokeColor = .white
+        settingsBackground.lineWidth = 3
         settingsBackground.position = CGPoint.zero
         settingsBackground.zPosition = 0
-        
-        let border = SKShapeNode(rectOf: bgSize, cornerRadius: 20)
-        border.strokeColor = .white
-        border.lineWidth = 3
-        border.zPosition = 1
-        settingsBackground.addChild(border)
         
         addChild(settingsBackground)
         
@@ -123,9 +120,10 @@ class SettingsOverlay: BaseOverlay {
     
     private func setupCloseButton() {
         closeButton = CloseButton()
+        let bgSize = CGSize(width: overlaySize.width * 0.7, height: overlaySize.height * 0.8)
         closeButton.position = CGPoint(
-            x: settingsBackground.size.width/2 - 30,
-            y: settingsBackground.size.height/2 - 30
+            x: bgSize.width/2 - 30,
+            y: bgSize.height/2 - 30
         )
         closeButton.zPosition = 3
         closeButton.onTap = { [weak self] in
@@ -164,7 +162,7 @@ class SettingsOverlay: BaseOverlay {
 class SliderControl: SKNode {
     private var label: SKLabelNode!
     private var track: SKShapeNode!
-    private var thumb: SKSpriteNode!
+    private var thumb: SKShapeNode!
     private var valueLabel: SKLabelNode!
     
     var value: Float = 0.5 {
@@ -204,7 +202,9 @@ class SliderControl: SKNode {
         track.position = CGPoint(x: -50, y: 0)
         addChild(track)
         
-        thumb = SKSpriteNode(color: .white, size: CGSize(width: 20, height: 20))
+        thumb = SKShapeNode(circleOfRadius: 10)
+        thumb.fillColor = .white
+        thumb.strokeColor = .clear
         thumb.position = CGPoint(x: -50 + CGFloat(value) * 200, y: 0)
         addChild(thumb)
         
@@ -238,8 +238,8 @@ class SliderControl: SKNode {
 
 class ToggleControl: SKNode {
     private var label: SKLabelNode!
-    private var toggleBackground: SKSpriteNode!
-    private var toggleThumb: SKSpriteNode!
+    private var toggleBackground: SKShapeNode!
+    private var toggleThumb: SKShapeNode!
     
     var isOn: Bool = false {
         didSet {
@@ -268,16 +268,16 @@ class ToggleControl: SKNode {
         label.position = CGPoint(x: -150, y: 0)
         addChild(label)
         
-        toggleBackground = SKSpriteNode(color: .gray, size: CGSize(width: 60, height: 30))
+        toggleBackground = SKShapeNode(rectOf: CGSize(width: 60, height: 30), cornerRadius: 15)
+        toggleBackground.fillColor = .gray
+        toggleBackground.strokeColor = .white
+        toggleBackground.lineWidth = 2
         toggleBackground.position = CGPoint(x: 50, y: 0)
         addChild(toggleBackground)
         
-        let bgShape = SKShapeNode(rectOf: toggleBackground.size, cornerRadius: 15)
-        bgShape.strokeColor = .white
-        bgShape.lineWidth = 2
-        toggleBackground.addChild(bgShape)
-        
-        toggleThumb = SKSpriteNode(color: .white, size: CGSize(width: 26, height: 26))
+        toggleThumb = SKShapeNode(circleOfRadius: 13)
+        toggleThumb.fillColor = .white
+        toggleThumb.strokeColor = .clear
         toggleThumb.position = CGPoint(x: isOn ? 15 : -15, y: 0)
         toggleBackground.addChild(toggleThumb)
         
@@ -285,7 +285,7 @@ class ToggleControl: SKNode {
     }
     
     private func updateToggleAppearance() {
-        toggleBackground.color = isOn ? .green : .gray
+        toggleBackground.fillColor = isOn ? .green : .gray
         
         let moveAction = SKAction.move(to: CGPoint(x: isOn ? 15 : -15, y: 0), duration: 0.2)
         toggleThumb.run(moveAction)

@@ -8,11 +8,12 @@
 import SpriteKit
 
 class DialogueOverlay: BaseOverlay {
-    private var dialogueBox: SKSpriteNode!
+    private var dialogueBox: SKShapeNode!
     private var characterName: SKLabelNode!
     private var dialogueText: SKLabelNode!
     private var continueIndicator: SKSpriteNode!
     private var characterPortrait: SKSpriteNode?
+    private var boxSize = CGSize(width: 0, height: 150)
     
     private var currentText: String = ""
     private var displayedText: String = ""
@@ -31,6 +32,8 @@ class DialogueOverlay: BaseOverlay {
     }
     
     override func setupOverlay() {
+        // Set boxSize based on overlaySize
+        boxSize = CGSize(width: overlaySize.width * 0.85, height: 150)
         setupDialogueBox()
         setupCharacterName()
         setupDialogueText()
@@ -38,17 +41,13 @@ class DialogueOverlay: BaseOverlay {
     }
     
     private func setupDialogueBox() {
-        let boxSize = CGSize(width: overlaySize.width * 0.85, height: 150)
-        dialogueBox = SKSpriteNode(color: UIColor(white: 0.1, alpha: 0.95), size: boxSize)
+        dialogueBox = SKShapeNode(rectOf: boxSize, cornerRadius: 15)
+        dialogueBox.fillColor = UIColor(white: 0.1, alpha: 0.95)
+        dialogueBox.strokeColor = .white
+        dialogueBox.lineWidth = 2
         // Position at bottom of screen (container is now centered)
         dialogueBox.position = CGPoint(x: 0, y: -overlaySize.height/2 + boxSize.height/2 + 20)
         dialogueBox.zPosition = 0
-        
-        let border = SKShapeNode(rectOf: boxSize, cornerRadius: 15)
-        border.strokeColor = .white
-        border.lineWidth = 2
-        border.zPosition = 1
-        dialogueBox.addChild(border)
         
         addChild(dialogueBox)
     }
@@ -59,8 +58,8 @@ class DialogueOverlay: BaseOverlay {
         characterName.fontSize = 20
         characterName.horizontalAlignmentMode = .left
         characterName.position = CGPoint(
-            x: -dialogueBox.size.width/2 + 20,
-            y: dialogueBox.size.height/2 - 30
+            x: -boxSize.width/2 + 20,
+            y: boxSize.height/2 - 30
         )
         characterName.zPosition = 2
         dialogueBox.addChild(characterName)
@@ -73,10 +72,10 @@ class DialogueOverlay: BaseOverlay {
         dialogueText.horizontalAlignmentMode = .left
         dialogueText.verticalAlignmentMode = .top
         dialogueText.position = CGPoint(
-            x: -dialogueBox.size.width/2 + 20,
-            y: dialogueBox.size.height/2 - 60
+            x: -boxSize.width/2 + 20,
+            y: boxSize.height/2 - 60
         )
-        dialogueText.preferredMaxLayoutWidth = dialogueBox.size.width - 40
+        dialogueText.preferredMaxLayoutWidth = boxSize.width - 40
         dialogueText.numberOfLines = 0
         dialogueText.zPosition = 2
         dialogueBox.addChild(dialogueText)
@@ -85,8 +84,8 @@ class DialogueOverlay: BaseOverlay {
     private func setupContinueIndicator() {
         continueIndicator = SKSpriteNode(color: .white, size: CGSize(width: 20, height: 20))
         continueIndicator.position = CGPoint(
-            x: dialogueBox.size.width/2 - 30,
-            y: -dialogueBox.size.height/2 + 30
+            x: boxSize.width/2 - 30,
+            y: -boxSize.height/2 + 30
         )
         continueIndicator.zPosition = 3
         continueIndicator.isHidden = true
@@ -125,7 +124,7 @@ class DialogueOverlay: BaseOverlay {
             characterPortrait = SKSpriteNode(texture: portraitTexture)
             characterPortrait?.size = CGSize(width: 80, height: 80)
             characterPortrait?.position = CGPoint(
-                x: -dialogueBox.size.width/2 + 60,
+                x: -boxSize.width/2 + 60,
                 y: 0
             )
             characterPortrait?.zPosition = 2
@@ -134,13 +133,13 @@ class DialogueOverlay: BaseOverlay {
                 dialogueBox.addChild(portrait)
             }
             
-            characterName.position.x = -dialogueBox.size.width/2 + 110
-            dialogueText.position.x = -dialogueBox.size.width/2 + 110
+            characterName.position.x = -boxSize.width/2 + 110
+            dialogueText.position.x = -boxSize.width/2 + 110
         } else {
             characterPortrait?.removeFromParent()
             characterPortrait = nil
-            characterName.position.x = -dialogueBox.size.width/2 + 20
-            dialogueText.position.x = -dialogueBox.size.width/2 + 20
+            characterName.position.x = -boxSize.width/2 + 20
+            dialogueText.position.x = -boxSize.width/2 + 20
         }
         
         show(animated: true)
