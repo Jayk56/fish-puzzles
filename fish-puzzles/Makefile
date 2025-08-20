@@ -21,7 +21,7 @@ setup: ## Initial project setup
 
 build: ## Build the project
 	@echo "Building project..."
-	@xcodebuild -project fish-puzzles.xcodeproj -scheme fish-puzzles -configuration Debug build | xcbeautify
+	@xcodebuild -project fish-puzzles.xcodeproj -scheme fish-puzzles -destination "platform=iOS Simulator,name=iPhone 16" -configuration Debug build | xcbeautify
 
 test: ## Run all tests
 	@echo "Running tests..."
