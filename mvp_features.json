@@ -1,0 +1,299 @@
+{
+  "mvp_version": "1.0.0",
+  "last_updated": "2025-08-19",
+  "total_features": 150,
+  "categories": {
+    "design_gameplay": {
+      "weight": 0.25,
+      "features": {
+        "locations": {
+          "required": 2,
+          "implemented": 0.6,
+          "files": ["Scenes/Location1/", "Scenes/Location2/"],
+          "verification": "count_scene_files",
+          "blockers": []
+        },
+        "puzzles": {
+          "required": 8,
+          "implemented": 0,
+          "files": [],
+          "verification": "check_puzzle_classes",
+          "blockers": ["puzzle_framework_missing"]
+        },
+        "gameplay_duration": {
+          "required": 30,
+          "implemented": 0,
+          "unit": "minutes",
+          "verification": "playtest_required",
+          "blockers": ["no_content"]
+        },
+        "hint_system": {
+          "required": 1,
+          "implemented": 0.7,
+          "files": ["Systems/Hints/ProgressiveHintSystem.swift"],
+          "verification": "check_hint_integration",
+          "blockers": []
+        },
+        "quest_log": {
+          "required": 1,
+          "implemented": 0,
+          "files": [],
+          "verification": "check_quest_system",
+          "blockers": []
+        },
+        "collectibles": {
+          "required": 8,
+          "implemented": 0,
+          "files": [],
+          "verification": "check_collectible_system",
+          "blockers": []
+        },
+        "item_placement_variants": {
+          "required": 3,
+          "implemented": 0,
+          "files": [],
+          "verification": "check_randomization",
+          "blockers": ["no_puzzle_system"]
+        }
+      }
+    },
+    "art_animation": {
+      "weight": 0.20,
+      "features": {
+        "backgrounds": {
+          "required": 6,
+          "implemented": 0,
+          "files": [],
+          "verification": "count_background_assets",
+          "blockers": ["no_artist"]
+        },
+        "characters": {
+          "required": 12,
+          "implemented": 0.08,
+          "files": ["Assets.xcassets/FishCharacter.spriteatlas/"],
+          "verification": "count_character_assets",
+          "blockers": ["no_artist", "animation_component_broken"]
+        },
+        "animations": {
+          "required": 36,
+          "implemented": 0.05,
+          "unit": "animation_states",
+          "verification": "count_animation_clips",
+          "blockers": ["CharacterAnimationComponent_errors"]
+        },
+        "ui_kit": {
+          "required": 1,
+          "implemented": 0.5,
+          "files": ["UI/HUD/"],
+          "verification": "check_ui_completeness",
+          "blockers": []
+        },
+        "art_bible": {
+          "required": 1,
+          "implemented": 0,
+          "files": [],
+          "verification": "check_documentation",
+          "blockers": []
+        }
+      }
+    },
+    "audio": {
+      "weight": 0.10,
+      "features": {
+        "music_tracks": {
+          "required": 4,
+          "implemented": 0,
+          "files": [],
+          "verification": "count_audio_files",
+          "blockers": ["no_composer"]
+        },
+        "voice_over": {
+          "required": 100,
+          "implemented": 0,
+          "unit": "vo_lines",
+          "files": [],
+          "verification": "count_vo_files",
+          "blockers": ["no_script", "no_voice_actors"]
+        },
+        "sound_effects": {
+          "required": 25,
+          "implemented": 0,
+          "files": [],
+          "verification": "count_sfx_files",
+          "blockers": []
+        },
+        "audio_system": {
+          "required": 1,
+          "implemented": 0.9,
+          "files": ["Systems/Audio/AudioManager.swift"],
+          "verification": "test_audio_playback",
+          "blockers": []
+        }
+      }
+    },
+    "engineering": {
+      "weight": 0.25,
+      "features": {
+        "ecs_architecture": {
+          "required": 1,
+          "implemented": 0.7,
+          "files": ["Core/ECS/"],
+          "verification": "compile_check",
+          "blockers": ["CharacterAnimationComponent_compile_errors"]
+        },
+        "save_system": {
+          "required": 1,
+          "implemented": 0.8,
+          "files": ["Systems/Save/SaveManager.swift"],
+          "verification": "test_save_load",
+          "blockers": []
+        },
+        "icloud_sync": {
+          "required": 1,
+          "implemented": 0.6,
+          "files": ["Systems/Save/SaveManager.swift"],
+          "verification": "test_cloud_sync",
+          "blockers": ["needs_testing"]
+        },
+        "interaction_system": {
+          "required": 1,
+          "implemented": 0.5,
+          "files": ["Systems/Interaction/"],
+          "verification": "test_touch_handling",
+          "blockers": []
+        },
+        "inventory_system": {
+          "required": 1,
+          "implemented": 0.65,
+          "files": ["Systems/Inventory/"],
+          "verification": "test_item_management",
+          "blockers": []
+        },
+        "settings_system": {
+          "required": 1,
+          "implemented": 0.6,
+          "files": ["UI/HUD/SettingsOverlay.swift"],
+          "verification": "test_settings_persistence",
+          "blockers": []
+        },
+        "performance_60fps": {
+          "required": 60,
+          "implemented": 0,
+          "unit": "fps",
+          "verification": "performance_test",
+          "blockers": ["not_tested"]
+        },
+        "app_size": {
+          "required": 500,
+          "implemented": 0,
+          "unit": "MB",
+          "verification": "measure_build_size",
+          "blockers": ["not_measured"]
+        }
+      }
+    },
+    "compliance": {
+      "weight": 0.10,
+      "features": {
+        "coppa_compliance": {
+          "required": 1,
+          "implemented": 0,
+          "files": [],
+          "verification": "compliance_audit",
+          "blockers": ["no_review"]
+        },
+        "parental_gate": {
+          "required": 1,
+          "implemented": 0,
+          "files": [],
+          "verification": "test_parental_gate",
+          "blockers": ["not_implemented"]
+        },
+        "privacy_policy": {
+          "required": 1,
+          "implemented": 0,
+          "files": [],
+          "verification": "check_privacy_doc",
+          "blockers": []
+        },
+        "app_store_metadata": {
+          "required": 1,
+          "implemented": 0,
+          "files": [],
+          "verification": "check_metadata",
+          "blockers": []
+        },
+        "accessibility": {
+          "required": 1,
+          "implemented": 0.1,
+          "files": [],
+          "verification": "accessibility_audit",
+          "blockers": ["not_tested"]
+        }
+      }
+    },
+    "documentation": {
+      "weight": 0.10,
+      "features": {
+        "gdd": {
+          "required": 1,
+          "implemented": 0,
+          "files": [],
+          "verification": "check_gdd",
+          "blockers": []
+        },
+        "readme": {
+          "required": 1,
+          "implemented": 0.8,
+          "files": ["README.md"],
+          "verification": "check_readme",
+          "blockers": []
+        },
+        "claude_md": {
+          "required": 1,
+          "implemented": 1.0,
+          "files": ["CLAUDE.md"],
+          "verification": "check_claude_md",
+          "blockers": []
+        },
+        "test_plans": {
+          "required": 1,
+          "implemented": 0,
+          "files": [],
+          "verification": "check_test_docs",
+          "blockers": []
+        },
+        "api_docs": {
+          "required": 1,
+          "implemented": 0,
+          "files": [],
+          "verification": "check_inline_docs",
+          "blockers": []
+        }
+      }
+    }
+  },
+  "critical_blockers": [
+    {
+      "id": "CharacterAnimationComponent_compile_errors",
+      "severity": "critical",
+      "description": "CharacterAnimationComponent.swift has compilation errors preventing build",
+      "affects": ["animations", "ecs_architecture"],
+      "resolution": "Fix missing Component protocol and AssetManager imports"
+    },
+    {
+      "id": "no_content",
+      "severity": "critical",
+      "description": "No game content (puzzles, story, dialogue) has been created",
+      "affects": ["puzzles", "gameplay_duration", "quest_log"],
+      "resolution": "Create game design document and implement first puzzle"
+    },
+    {
+      "id": "no_artist",
+      "severity": "high",
+      "description": "No art assets created for backgrounds and characters",
+      "affects": ["backgrounds", "characters"],
+      "resolution": "Create or commission art assets"
+    }
+  ]
+}
