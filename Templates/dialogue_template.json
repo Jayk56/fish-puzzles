@@ -1,0 +1,113 @@
+{
+  "npc_id": "friendly_crab",
+  "name": "Carl the Crab",
+  "location": "beach_scene",
+  "position": {"x": 200, "y": 150},
+  
+  "character_traits": {
+    "personality": "Helpful, cheerful, loves riddles",
+    "role": "Gives hints about the treasure location",
+    "age_appropriate": true,
+    "voice_description": "Friendly, slightly squeaky voice"
+  },
+  
+  "dialogue_tree": {
+    "greeting": {
+      "id": "greeting_1",
+      "text": "Hello there, little fish! I'm Carl the Crab!",
+      "voice_file": "carl_greeting_1.wav",
+      "animation": "wave",
+      "responses": [
+        {
+          "text": "Hi Carl! I'm looking for treasure.",
+          "next": "treasure_hint_1"
+        },
+        {
+          "text": "Nice to meet you!",
+          "next": "friendly_chat_1"
+        }
+      ]
+    },
+    
+    "treasure_hint_1": {
+      "id": "treasure_hint_1",
+      "text": "Ah, treasure! I know a secret... The old lighthouse keeper might help!",
+      "voice_file": "carl_treasure_hint_1.wav",
+      "animation": "excited",
+      "responses": [
+        {
+          "text": "Where is the lighthouse?",
+          "next": "directions_1"
+        },
+        {
+          "text": "Thank you!",
+          "next": "goodbye_1"
+        }
+      ]
+    },
+    
+    "directions_1": {
+      "id": "directions_1",
+      "text": "Follow the shore to the north. You can't miss it!",
+      "voice_file": "carl_directions_1.wav",
+      "animation": "point_north",
+      "responses": [
+        {
+          "text": "Got it, thanks!",
+          "next": "goodbye_1"
+        }
+      ]
+    },
+    
+    "friendly_chat_1": {
+      "id": "friendly_chat_1",
+      "text": "It's a beautiful day for an adventure!",
+      "voice_file": "carl_chat_1.wav",
+      "animation": "happy",
+      "responses": [
+        {
+          "text": "It sure is!",
+          "next": "goodbye_1"
+        }
+      ]
+    },
+    
+    "goodbye_1": {
+      "id": "goodbye_1",
+      "text": "Good luck on your adventure!",
+      "voice_file": "carl_goodbye_1.wav",
+      "animation": "wave",
+      "ends_conversation": true
+    }
+  },
+  
+  "conditional_dialogue": [
+    {
+      "condition": "has_item:golden_key",
+      "dialogue_id": "key_comment_1",
+      "text": "Oh, you found the golden key! That's very special!",
+      "priority": 1
+    },
+    {
+      "condition": "puzzle_complete:lighthouse_puzzle",
+      "dialogue_id": "congrats_1",
+      "text": "I heard you solved the lighthouse puzzle! Well done!",
+      "priority": 2
+    }
+  ],
+  
+  "idle_animations": [
+    "idle_look_around",
+    "idle_clean_shell",
+    "idle_wave_claw"
+  ],
+  
+  "required_animations": [
+    "idle",
+    "wave",
+    "excited",
+    "point_north",
+    "happy",
+    "talk"
+  ]
+}

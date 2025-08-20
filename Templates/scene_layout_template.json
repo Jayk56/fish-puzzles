@@ -1,0 +1,135 @@
+{
+  "scene_id": "beach_location",
+  "name": "Sandy Beach",
+  "description": "A peaceful beach with crystal clear water",
+  
+  "dimensions": {
+    "width": 1024,
+    "height": 768
+  },
+  
+  "background_layers": [
+    {
+      "name": "sky",
+      "image": "beach_sky.png",
+      "z_order": -3,
+      "parallax": 0.2
+    },
+    {
+      "name": "ocean",
+      "image": "beach_ocean.png",
+      "z_order": -2,
+      "parallax": 0.5
+    },
+    {
+      "name": "sand",
+      "image": "beach_sand.png",
+      "z_order": -1,
+      "parallax": 1.0
+    }
+  ],
+  
+  "walkable_areas": [
+    {
+      "id": "main_beach",
+      "polygon": [
+        {"x": 0, "y": 200},
+        {"x": 1024, "y": 200},
+        {"x": 1024, "y": 500},
+        {"x": 0, "y": 500}
+      ]
+    }
+  ],
+  
+  "obstacles": [
+    {
+      "id": "rock_1",
+      "position": {"x": 300, "y": 350},
+      "size": {"width": 80, "height": 60},
+      "sprite": "beach_rock_1.png"
+    },
+    {
+      "id": "palm_tree_1",
+      "position": {"x": 600, "y": 300},
+      "size": {"width": 100, "height": 200},
+      "sprite": "palm_tree.png"
+    }
+  ],
+  
+  "interactive_objects": [
+    {
+      "id": "treasure_chest",
+      "position": {"x": 800, "y": 400},
+      "size": {"width": 60, "height": 40},
+      "sprite": "chest_closed.png",
+      "sprite_open": "chest_open.png",
+      "contains_item": "map_piece_1",
+      "requires_item": null,
+      "hotspot_description": "A mysterious treasure chest"
+    },
+    {
+      "id": "message_bottle",
+      "position": {"x": 150, "y": 450},
+      "size": {"width": 30, "height": 40},
+      "sprite": "bottle.png",
+      "contains_item": "message_1",
+      "hotspot_description": "A bottle with something inside"
+    }
+  ],
+  
+  "npcs": [
+    {
+      "id": "friendly_crab",
+      "position": {"x": 400, "y": 420},
+      "dialogue_file": "dialogue/carl_crab.json",
+      "sprite": "crab_idle.png"
+    }
+  ],
+  
+  "scene_transitions": [
+    {
+      "id": "to_lighthouse",
+      "position": {"x": 950, "y": 300},
+      "size": {"width": 74, "height": 200},
+      "leads_to": "lighthouse_scene",
+      "transition_type": "walk_off_screen",
+      "direction": "right"
+    },
+    {
+      "id": "to_underwater",
+      "position": {"x": 200, "y": 500},
+      "size": {"width": 200, "height": 100},
+      "leads_to": "underwater_cave",
+      "transition_type": "dive",
+      "requires_item": "diving_gear"
+    }
+  ],
+  
+  "spawn_point": {
+    "x": 100,
+    "y": 350
+  },
+  
+  "ambient_sounds": [
+    {
+      "id": "ocean_waves",
+      "file": "ocean_waves_loop.wav",
+      "volume": 0.3,
+      "loop": true
+    },
+    {
+      "id": "seagulls",
+      "file": "seagulls_ambient.wav",
+      "volume": 0.2,
+      "loop": true,
+      "random_interval": {"min": 10, "max": 30}
+    }
+  ],
+  
+  "lighting": {
+    "time_of_day": "afternoon",
+    "ambient_color": "#FFE5B4",
+    "shadow_direction": 45,
+    "shadow_opacity": 0.3
+  }
+}
