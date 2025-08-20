@@ -45,7 +45,7 @@
 ### Shell #5: The Artist Shell
 **Location**: Entrance crystals, behind purple formation
 **Memory**: "The Shell Gallery"
-*"Shelly's grandmother started the tradition of decorating shells for the festival. Each year, hermit crabs would paint beautiful designs on shells and gift them to friends. The Crystal Caves became their gallery. Every shell tells a story, and every story connects us all."*
+*"Gramma Coral's grandmother started the tradition of decorating shells for the festival. Each year, hermit crabs would paint beautiful designs on shells and gift them to friends. The Crystal Caves became their gallery. Every shell tells a story, and every story connects us all."*
 
 ### Shell #6: The Discovery Shell
 **Location**: Professor's equipment pile
@@ -75,7 +75,7 @@
 - "What's a shark's favorite game? Swallow the leader!"
 
 ### Shell Polish
-**Obtained**: After helping Shelly
+**Obtained**: After helping Gramma Coral
 **Effect**: Makes Finley's scales extra shiny
 **Lore**: "Made from bioluminescent algae and crystal dust"
 

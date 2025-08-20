@@ -3,17 +3,17 @@
 
 ---
 
-## 🎬 Opening Sequence
+## 🎬 Opening Sequence - Festival Day!
 
 ### Scene: Finley's Home
-**Finley**: (yawning) "What a beautiful morning! Today's the day before the Coral Festival!"
-**Finley**: "I can't wait to see all the colors and lights!"
+**Finley**: (nervously) "Today's the Coral Festival! My first performance ever!"
+**Finley**: "Mom and Dad are coming to watch... oh fishsticks!"
 **Finley**: "Maybe I should go see if Mayor Shelley needs any help!"
 
 ### Scene: Swimming to Town Square
 **Finley**: "La la la, swimming to the square!"
-**Finley**: "Oh! Hi Mrs. Anemone! See you at the festival!"
-**Finley**: "Good morning, Freddy! Excited for tomorrow?"
+**Finley**: "Oh! Hi Mrs. Enemy-mone! I mean... Annie-money!"
+**Finley**: "Good morning, Freddy! Excited for tonight?"
 
 ---
 
@@ -25,8 +25,8 @@
 **Mayor Shelley**: "I'm afraid I have troubling news about the festival..."
 **Mayor Shelley**: "The Pearl of Harmony... it's broken into pieces."
 **Finley**: "Oh no! But without the pearl, there's no festival!"
-**Mayor Shelley**: "Indeed. The pieces have scattered across the ocean."
-**Mayor Shelley**: "We need someone brave to find them before tomorrow's sunset."
+**Mayor Shelley**: "Indeed. The pieces have scattered to the Kelp Forest and Crystal Caves."
+**Mayor Shelley**: "We need someone brave to find them before tonight's sunset celebration."
 **Finley**: "I'll do it! I'll find all the pieces!"
 **Mayor Shelley**: "Are you sure, young Finley? It won't be easy."
 **Finley**: "I'm sure! The festival is important to everyone!"
@@ -127,12 +127,13 @@
 **Sage**: "But first, my riddle you must hear."
 **Finley**: "I'm ready! Tell me your riddle!"
 
-### Guardian's Riddle (Variation A)
-**Sage**: "I have no voice, but I can sing,"
-**Sage**: "Touch the water, I'll dance and ring."
-**Sage**: "Find three of me that match the tune,"
-**Sage**: "Under the stone, beneath the moon."
-**Finley**: "Hmm... no voice but sings... Musical shells!"
+### Guardian's Riddle (Guilty Variation)
+**Sage**: "When someone drops—I mean, when pearls do fall..."
+**Sage**: "And sparkle dust—wait, forget I said that part..."
+**Sage**: "The guilty one—THE WISE ONE stands tall!"
+**Sage**: "Just find three sparkly shells... they're normal!"
+**Finley**: "Why is everything covered in glitter?"
+**Sage**: "No reason! Ancient magic! Very normal!"
 
 ### After Solving Riddle
 **Sage**: "Wisdom and courage, both you've shown..."
@@ -156,44 +157,44 @@
 **Echo**: "Hello... hello... hello..."
 **Finley**: "That's amazing! Everything echoes here!"
 
-### Meeting Shelly - Full Conversation
-**Shelly**: "Oh! A visitor! Welcome to my gallery!"
+### Meeting Gramma Coral - Full Conversation
+**Gramma Coral**: "Oh! A visitor! Welcome to my gallery!"
 **Finley**: "Hi! I'm Finley. Your gallery is beautiful!"
-**Shelly**: "Thank you, dear. I'm Shelly. I collect shells."
-**Shelly**: "I'm sorry I'm not properly dressed for guests..."
+**Gramma Coral**: "Thank you, dear. I'm Gramma Coral. I collect shells."
+**Gramma Coral**: "I'm sorry I'm not properly dressed for guests..."
 **Finley**: "What do you mean?"
-**Shelly**: "Well, my shell is... look at this!"
-**Shelly**: "It's cracked, too small, and so last season!"
+**Gramma Coral**: "Well, my shell is... look at this!"
+**Gramma Coral**: "It's cracked, too small, and so last season!"
 **Finley**: "Oh no! That must be uncomfortable!"
-**Shelly**: "It is! I've been looking for the perfect new home."
-**Shelly**: "But I'm very particular. It needs to be just right!"
+**Gramma Coral**: "It is! I've been looking for the perfect new home."
+**Gramma Coral**: "But I'm very particular. It needs to be just right!"
 **Finley**: "I love helping! What would be perfect?"
-**Shelly**: "Well, let me think..."
+**Gramma Coral**: "Well, let me think..."
 
-### Shelly's Requirements (Variation A)
-**Shelly**: "It should be medium-sized - not too big, not too small."
-**Shelly**: "Pink would match my complexion beautifully."
-**Shelly**: "And a spiral pattern is so elegant!"
+### Gramma Coral's Requirements (Variation A)
+**Gramma Coral**: "It should be medium-sized - not too big, not too small."
+**Gramma Coral**: "Pink would match my complexion beautifully."
+**Gramma Coral**: "And a spiral pattern is so elegant!"
 **Finley**: "Medium, pink, and spiral. Got it!"
 
 ### During Shell Search
 **Finley**: "How about this one?"
-**Shelly**: "Oh, that's lovely, but too large!"
+**Gramma Coral**: "Oh, that's lovely, but too large!"
 **Finley**: "This one?"
-**Shelly**: "Beautiful color, but wrong pattern!"
+**Gramma Coral**: "Beautiful color, but wrong pattern!"
 **Finley**: "I'll keep looking!"
 
 ### Finding Perfect Shell
 **Finley**: "What about this one?"
-**Shelly**: "Oh my... let me try it... "
-**Shelly**: "It's... it's... PERFECT!"
-**Shelly**: "It fits like it was made just for me!"
-**Finley**: "You look beautiful, Shelly!"
-**Shelly**: "Thank you so much! You have such an eye for style!"
-**Shelly**: "Oh! I should mention - I heard singing deeper in the caves."
-**Shelly**: "The most beautiful sound! Maybe you should investigate?"
+**Gramma Coral**: "Oh my... let me try it... "
+**Gramma Coral**: "It's... it's... PERFECT!"
+**Gramma Coral**: "It fits like it was made just for me!"
+**Finley**: "You look beautiful, Gramma Coral!"
+**Gramma Coral**: "Thank you so much! You have such an eye for style!"
+**Gramma Coral**: "Oh! I should mention - I heard singing deeper in the caves."
+**Gramma Coral**: "The most beautiful sound! Maybe you should investigate?"
 **Finley**: "Singing? That might be important! Thank you!"
-**Shelly**: "Take this shell polish! For being so helpful!"
+**Gramma Coral**: "Take this shell polish! For being so helpful!"
 
 ### Meeting Echo - Full Conversation
 **Echo**: "La la la! Click click whistle!"
@@ -287,7 +288,7 @@
 ### Friends Arrive
 **Bella**: "Finley! You saved the festival!"
 **Ollie**: "You're ink-credible!"
-**Shelly**: "My hero!"
+**Gramma Coral**: "My hero!"
 **Echo**: "Best friend! Best friend!"
 **Professor**: "Fascinating! And well done!"
 **Sage**: "The youngest hero, pure of heart..."
@@ -305,7 +306,7 @@
 **Echo**: "Dance with me!"
 **Ollie**: "Who needs eight left feet when you're having fun!"
 **Bella**: "The lights are so beautiful!"
-**Shelly**: "And I have the perfect shell for the occasion!"
+**Gramma Coral**: "And I have the perfect shell for the occasion!"
 **Professor**: "The pearl's luminescence is off the charts!"
 **Mayor Shelley**: "Well done, everyone. Well done."
 
@@ -339,8 +340,8 @@
 2. "The answer is something you can touch."
 3. "Look for things that match each other."
 
-**Shelly's Shell**:
-1. "Remember what Shelly said she wanted."
+**Gramma Coral's Shell**:
+1. "Remember what Gramma Coral said she wanted."
 2. "Check your journal for her exact requirements."
 3. "Try looking in the [specific area]."
 
@@ -394,7 +395,7 @@
 - Bella: Sweet, grateful, slightly worried
 - Ollie: Jokey, energetic, grateful
 - Sage: Mystical, rhyming, ancient
-- Shelly: Polite, particular, artistic
+- Gramma Coral: Polite, particular, artistic
 - Echo: Playful, excited, friendly
 - Professor: Scientific, excitable, distracted
 

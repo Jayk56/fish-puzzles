@@ -19,7 +19,7 @@
 **Finley**: "Oh no, there's an amenomy—anemone—enemy-mone over there!"
 **Larry**: *Photobombs while waving*
 **Finley**: "Hi Larry... wait, why are you sparkling?"
-**Marina**: "Finley! Your parents just left Far Reef!"
+**Mayor's Conch**: *bubble message* "Your parents just left Far Reef!"
 **Finley**: "ALREADY?! But I'm not ready!"
 
 ---
@@ -148,14 +148,14 @@
 **Marina**: *appears* "Your parents are almost here!"
 **Finley**: "PRESSURE DOESN'T HELP, MARINA!"
 
-### Meeting Shelly - GRANDMA MODE
-**Shelly**: "Have you seen my granddaughter?"
-**Shelly**: "She's this tall, clicks, does impressions?"
+### Meeting Gramma Coral - GRANDMA MODE
+**Gramma Coral**: "Have you seen my granddaughter?"
+**Gramma Coral**: "She's this tall, clicks, does impressions?"
 **Finley**: "Haven't seen her, sorry."
-**Shelly**: "Let me show you 47 baby pictures!"
+**Gramma Coral**: "Let me show you 47 baby pictures!"
 **Finley**: *45 minutes later* "She's... very cute."
-**Shelly**: "She used to call me Gram-Gram Shelly-Belly!"
-**Shelly**: "Made bubble milk art! So creative!"
+**Gramma Coral**: "She used to call me Gram-Gram Gramma Coral-Belly!"
+**Gramma Coral**: "Made bubble milk art! So creative!"
 **Bubble Bag**: "Kill. Me. Now."
 
 ### Finding Echo - MIMIC CHAOS
@@ -168,14 +168,14 @@
 **Finley**: "Are you copying the PLAYER?!"
 **Echo**: "I copy EVERYTHING! Even that!"
 
-### Echo & Shelly Reunion
-**Shelly**: "ECHO! My baby!"
+### Echo & Gramma Coral Reunion
+**Gramma Coral**: "ECHO! My baby!"
 **Echo**: "Gram-Gram! No baby stories please!"
-**Shelly**: "Remember when you wore food as a hat?"
+**Gramma Coral**: "Remember when you wore food as a hat?"
 **Echo**: "GRAM-GRAM NO!"
-**Shelly**: "And called dolphins 'doll-fins'!"
+**Gramma Coral**: "And called dolphins 'doll-fins'!"
 **Echo**: *mortified* "I'm swimming away now."
-**Shelly**: "Just like when you were two!"
+**Gramma Coral**: "Just like when you were two!"
 
 ### Professor's Dark Secret
 **Professor**: "Welcome to my perfectly normal not-afraid lab!"
@@ -203,7 +203,7 @@
 **Ollie**: "I missed your laugh!"
 **Both**: *Eight-tentacle hug*
 **Echo**: "GROUP HUG!" *Mimics everyone crying*
-**Shelly**: "My granddaughter, the hero!"
+**Gramma Coral**: "My granddaughter, the hero!"
 **Professor**: "I brought ALL my nightlights—I mean, science lights!"
 **Guardian**: "Let me help fix what I broke!"
 **Everyone**: "TOGETHER!"

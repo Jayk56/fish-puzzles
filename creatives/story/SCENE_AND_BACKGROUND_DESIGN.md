@@ -10,11 +10,11 @@
 
 ### The 6 Core Backgrounds:
 1. **Town Square** - Opening/Finale (morning panic → festival celebration)
-2. **Kelp Forest General** - All forest scenes (entrance, clearing, gardens via props)
-3. **Lily Pad Lake/Grove** - Combined water/mystical area (redress for each)
-4. **Crystal Caves General** - Cave entrance and shell gallery (lighting variations)
-5. **Echo Chamber** - Unique cave room with organ-pipe crystals
-6. **Professor's Lab** - Bright crystal laboratory (Mirror Maze is a lighting variant)
+2. **Kelp Forest Main** - All forest scenes (entrance, clearing via props)
+3. **Tangled Gardens & Lily Pad Lake** - Combined outdoor area (redress for each scene)
+4. **Ancient Grove** - Sage's mystical location (sparkly forest variant)
+5. **Crystal Caves Main** - Cave entrance, shell gallery, Echo Chamber (lighting variations)
+6. **Crystal Lab & Mirror Maze** - Professor's bright lab (Mirror Maze is dark variant)
 
 ---
 
@@ -223,7 +223,7 @@
 
 ### Lighting States
 - **Default**: Dark and scary
-- **Character Lights**: Shelly's lamp, Echo's glow
+- **Character Lights**: Gramma Coral's lamp, Echo's glow
 - **Solved**: Magical rainbow lights
 - **Finale Prep**: Building light from friends
 
@@ -281,7 +281,7 @@
 5. **Lily Pad**: Built fort
 6. **Guardian**: Covered in glitter
 7. **Cave Entrance**: Silver disco ball
-8. **Shelly**: Trying on shells
+8. **Gramma Coral**: Trying on shells
 9. **Echo**: Dancing behind
 10. **Professor**: Rainbow colored
 11. **Mirror Maze**: Perfect position
@@ -364,7 +364,7 @@
 | Lily Pad | Tangled Gardens | Lake Mode | Fort built |
 | Guardian | Ancient Grove | Mystical | Glittered |
 | Cave Entry | Crystal Caves | Dark | Disco ball |
-| Shelly | Crystal Caves | Gallery | Trying shells |
+| Gramma Coral | Crystal Caves | Gallery | Trying shells |
 | Echo | Crystal Caves | Chamber | Dancing |
 | Professor | Crystal Lab | Bright | Rainbow |
 | Mirror Maze | Crystal Lab | Dark→Light | Perfect spot |

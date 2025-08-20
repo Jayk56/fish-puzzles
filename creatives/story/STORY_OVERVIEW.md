@@ -46,7 +46,7 @@ Finley is a young clownfish who's FINALLY old enough to perform in the annual Co
 4. Sage's guilty riddle accidentally reveals the truth - awards second pearl piece!
 
 **Running Gags Introduced**:
-- Finley says "anemone" wrong EVERY time ("enemy-mone", "amenemone", "annie-money")
+- Finley says "anemone" wrong EVERY time and gets progressively worse ("enemy-mone", "amenemone", "annie-money", "anemonemenemy")
 - Background fish Larry photobombing every scene
 - Bubble Bag arguing with items ("Not ANOTHER shell!")
 
@@ -61,7 +61,7 @@ Finley is a young clownfish who's FINALLY old enough to perform in the annual Co
 - Professor Puffer (secretly terrified of the dark, using science as a nightlight)
 
 **Core Puzzles & Magic Moments**:
-1. Shell hunt while Shelly tells embarrassing Echo baby stories
+1. Shell hunt while Gramma Coral tells embarrassing Echo baby stories
 2. Echo Says becomes chaos when she mimics everyone simultaneously
 3. Chemistry creates "Disco Cave Mode" - impromptu dance party!
 4. Mirror Maze shows funny reflections (skinny Finley, buff Finley, upside-down Finley)
@@ -92,7 +92,7 @@ Finley is a young clownfish who's FINALLY old enough to perform in the annual Co
 Each playthrough randomly selects from these variations:
 - Bella's home location (3 possible spots)
 - Ollie's tangle pattern (3 different configurations)
-- Shell types needed by Shelly (3 different perfect shells)
+- Shell types needed by Gramma Coral (3 different perfect shells)
 - Crystal color combinations (3 different recipes)
 - Rainbow Shell hiding spots (2-3 variations per shell)
 

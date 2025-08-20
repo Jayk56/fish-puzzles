@@ -41,7 +41,7 @@ We've transformed a safe, predictable story into a memorable adventure full of h
 
 ### 5. RELATIONSHIP DRAMA THAT MATTERS
 - **Bella & Ollie**: Ex-best friends who had a fight (the ink incident!)
-- **Shelly & Echo**: Grandmother/granddaughter with embarrassing baby stories
+- **Gramma Coral & Echo**: Grandmother/granddaughter with embarrassing baby stories
 - **Professor Puffer**: Secretly afraid of the dark (ironic for cave dweller)
 - **Mayor Shelley**: Narcoleptic but still helpful through snore-bubbles
 

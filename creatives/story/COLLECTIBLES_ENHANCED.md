@@ -139,7 +139,7 @@ Unlocked with all shells, shows:
 ## 🌊 The Deep Lore - What REALLY Happened
 
 ### The Pearl's True Purpose
-The Pearl of Harmony doesn't just make pretty lights - it keeps the DARK CURRENT at bay. That's why Mayor Shelley was so worried (between naps). Without it, scary deep-sea creatures would invade! But here's the twist: the Guardian's sparkles actually make it STRONGER against the darkness. Every time she breaks it, it comes back better at protection!
+The Pearl of Harmony doesn't just make pretty lights - it maintains the reef's happiness and harmony. That's why Mayor Shelley was so worried (between naps). Without it, the reef feels less magical and joyful! But here's the twist: the Guardian's sparkles actually make it STRONGER when restored. Her accident leads to the pearl becoming even better at spreading joy throughout the reef!
 
 ### Finley's Destiny
 Finley was always meant to be the hero - not because of bravery, but because of fear. The prophecy says: "The one who swims upside-down in fear shall turn the world right-side up with love." Finley's parents knew. That's why they traveled so much - to give Finley space to grow afraid, then overcome it!

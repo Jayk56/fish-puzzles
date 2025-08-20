@@ -15,7 +15,7 @@
 
 ### Scene: Swimming to Town Square
 **Finley**: "Okay Bubbles, let's go see if Mayor Shelley needs help!"
-**Finley**: "Good morning, Mrs. Annie-mone! I mean, Anemone!"
+**Finley**: "Good morning, Mrs. Enemy-mone! I mean... Annie-money!"
 **Finley**: *to Bubbles* "Why can't I say that word right?"
 **Bubble Bag**: *Text bubble* "Because you're nervous, obviously."
 **Finley**: "My inventory bag is talking to me. This is fine."
@@ -231,33 +231,33 @@
 **Bubble Bag**: "Your echolocation needs work."
 **Larry**: *Still silver, now a disco ball, providing light*
 
-### Meeting Shelly - Grandma on a Mission
-**Shelly**: "Oh! A visitor! Have you seen my granddaughter?"
+### Meeting Gramma Coral - Grandma on a Mission
+**Gramma Coral**: "Oh! A visitor! Have you seen my granddaughter?"
 **Finley**: "Um, no? I just got here?"
-**Shelly**: "She's about yea high, clicks a lot, does impressions?"
-**Shelly**: *showing baby pictures* "Look! Here she is as a baby!"
+**Gramma Coral**: "She's about yea high, clicks a lot, does impressions?"
+**Gramma Coral**: *showing baby pictures* "Look! Here she is as a baby!"
 **Finley**: "That's... nice. You have 47 baby pictures?"
-**Shelly**: "48! Here's when she blew milk bubbles!"
-**Shelly**: "She called me 'Gram-Gram Shelly-Belly'!"
+**Gramma Coral**: "48! Here's when she blew milk bubbles!"
+**Gramma Coral**: "She called me 'Gram-Gram Gramma Coral-Belly'!"
 **Bubble Bag**: "Kill me now."
-**Shelly**: "I need a new shell! Echo painted this one but it's cracked."
-**Shelly**: "Must be perfect for when I find her!"
+**Gramma Coral**: "I need a new shell! Echo painted this one but it's cracked."
+**Gramma Coral**: "Must be perfect for when I find her!"
 **Finley**: "I'll help you look!"
 **Larry**: *In background, trying on shells too*
 
 ### Finding the Perfect Shell
 **Finley**: "How about this one?"
-**Shelly**: "Too big! Echo always said I pick shells too big!"
+**Gramma Coral**: "Too big! Echo always said I pick shells too big!"
 **Finley**: "This one?"
-**Shelly**: "Wrong color! Echo loves pink!"
+**Gramma Coral**: "Wrong color! Echo loves pink!"
 **Finley**: "I'll keep looking!"
 **Bubbles**: *Finding shells, rejected each time*
 **Finley**: "What about this one?"
-**Shelly**: "Oh my... it's PERFECT!"
-**Shelly**: "Just like the one Echo made me when she was five!"
-**Shelly**: "Did I mention she once ate seaweed with her tail?"
+**Gramma Coral**: "Oh my... it's PERFECT!"
+**Gramma Coral**: "Just like the one Echo made me when she was five!"
+**Gramma Coral**: "Did I mention she once ate seaweed with her tail?"
 **Finley**: *backing away* "I heard singing deeper in the caves!"
-**Shelly**: "That might be Echo! She sings constantly!"
+**Gramma Coral**: "That might be Echo! She sings constantly!"
 
 ### Meeting Echo - CHAOS MIMIC!
 **Echo**: *In Finley's voice before they speak* "Oh fishsticks and tartar sauce!"
@@ -267,7 +267,7 @@
 **Echo**: *Switches to Bubble Bag voice* "Stop copying me!"
 **Bubble Bag**: "Okay, that's creepy."
 **Echo**: *Laughs in her own voice* "Want to play Echo Says?"
-**Echo**: *In Shelly's voice* "Did I mention my granddaughter?"
+**Echo**: *In Gramma Coral's voice* "Did I mention my granddaughter?"
 **Finley**: "Wait, are you—"
 **Echo**: "SHHH! She'll hear you! Love her but... the baby stories!"
 **Echo**: *Copies the sound of player tapping screen*
@@ -291,11 +291,11 @@
 **Echo**: "The door's so confused it opened!"
 *Third pearl piece appears*
 **Finley**: "The third piece! Almost there!"
-**Shelly**: *arriving* "ECHO! There you are!"
+**Gramma Coral**: *arriving* "ECHO! There you are!"
 **Echo**: "Gram-Gram! Hi! Please no baby stories!"
-**Shelly**: "Remember when you called dolphins 'doll-fins'?"
+**Gramma Coral**: "Remember when you called dolphins 'doll-fins'?"
 **Echo**: *mortified* "GRAM-GRAM! NOT IN FRONT OF MY NEW FRIEND!"
-**Shelly**: "And you wore kelp as a hat!"
+**Gramma Coral**: "And you wore kelp as a hat!"
 **Echo**: *In Finley's voice* "Gotta go, bye!"
 **Finley**: "That's my voice!"
 **Echo**: "I KNOW!"
@@ -346,7 +346,7 @@
 *Eight-tentacle hug*
 **Bella**: "I missed you so much!"
 **Ollie**: "I kept your bracelet safe!"
-**Shelly & Echo**: *arriving together* "We heard you needed help!"
+**Gramma Coral & Echo**: *arriving together* "We heard you needed help!"
 **Echo**: *In everyone's voice* "TEAMWORK TIME!"
 **Professor**: "I brought ALL the lights!"
 **Sage**: *arriving* "I... I want to help fix my mistake."
@@ -358,7 +358,7 @@
 **Bella**: "I'll hold this mirror!"
 **Ollie**: "I've got eight arms for eight mirrors!"
 **Echo**: "I'll make sound markers!"
-**Shelly**: "Echo and I will work together!"
+**Gramma Coral**: "Echo and I will work together!"
 **Echo**: "Thanks, Gram-Gram!"
 **Professor**: "My lights will guide the way!"
 **Sage**: "My glitter actually helps us see the beam!"
@@ -375,7 +375,7 @@
 **Ollie**: "The Bubble-fish Comedy Hour is BACK!"
 **Echo**: *In everyone's voice* "To the festival!"
 **Professor**: "For science! And light! Mostly light!"
-**Shelly**: "My granddaughter, the hero's helper!"
+**Gramma Coral**: "My granddaughter, the hero's helper!"
 **Echo**: "GRAM-GRAM!" *but smiling*
 **Mayor's Conch**: *urgent bubble* "YOUR PARENTS ARE HERE!"
 **Finley**: "WHAT?! NOW?!"
@@ -424,7 +424,7 @@
 **Bella & Ollie**: *join in upside-down* "We're ruining it too!"
 **Echo**: *copying everyone* "BEST DANCE EVER!"
 **Professor**: *spinning* "For science!"
-**Shelly**: "Just like Echo as a baby!"
+**Gramma Coral**: "Just like Echo as a baby!"
 **Echo**: "GRAM-GRAM!"
 **Sage**: *Sprinkling glitter* "Mistakes make magic!"
 **Mayor Shelley**: *Sleep-dancing perfectly*
@@ -483,7 +483,7 @@
 - **Ollie**: Forced cheer hiding sadness, genuine joy when reunited
 
 ### Chapter 2 Characters  
-- **Shelly**: Grandmotherly, loving but overwhelming
+- **Gramma Coral**: Grandmotherly, loving but overwhelming
 - **Echo**: Playful mimic, bonds through copying
 - **Professor**: Confident until dark, high-pitched when scared
 

@@ -363,7 +363,7 @@
 - **Mayor & Everyone**: Sleeping wisdom dispenser
 
 ### Hidden Connections:
-- **Guardian & Mayor**: Old friends (she broke the pearl last time too!)
+- **Guardian & Mayor**: Old friends (she broke his glasses three years ago!)
 - **Bella's parents & Ollie's parents**: Were best friends too
 - **Echo learned mimicry from**: Watching Larry (never admits it)
 - **Professor's teacher**: Was Mayor Shelley (fell asleep during lessons)
