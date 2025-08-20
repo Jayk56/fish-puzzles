@@ -48,9 +48,10 @@
 **Location**: Forest Clearing
 
 **Setup**:
-- Find Bella swimming in circles, pointedly ignoring something
-- She's lost because she took the long way to avoid Ollie's usual spot
+- Find Bella swimming in circles, squinting without her reading glasses
+- She's lost because she took the long way to avoid Ollie's usual spot  
 - Still wearing the friendship bracelet she "doesn't care about"
+- Larry is wearing her missing glasses in the background
 
 **Dialogue**:
 - Bella: "Oh! Hello there. I'm NOT lost, just... exploring in circles."
@@ -243,14 +244,14 @@
 
 ### Mechanics
 1. **Test Phase**:
-   - Small pads sink immediately
-   - Medium pads hold for 2 seconds
-   - Large pads are stable
+   - Small pads can't support weight (visual indicator)
+   - Medium pads wobble but hold once stepped on
+   - Large pads are completely stable
 
 2. **Solution**:
    - Find and move 3 floating pads into position
-   - Create path using mix of stable and temporary pads
-   - Quick swimming required for medium pads
+   - Create path using stable pads only
+   - No timing pressure - pads stay in place once positioned
 
 ### Hint Progression
 1. "Some lily pads are stronger than others."
@@ -259,8 +260,20 @@
 
 ### Success State
 - Bridge of pads creates path
+- As Finley crosses, a glint from below catches their eye
+- First pearl piece rises in magical bubbles!
+- Finley does mini celebration (messes up of course)
 - Can now access Ancient Grove
 - Optional: Get Rainbow Shell from side path
+
+**Success Dialogue**:
+- Finley: "I did it! I crossed the deep water!"
+- *Glowing from below*
+- Finley: "Wait, what's that shining down there?"
+- *Pearl piece rises in bubbles*
+- Finley: "A PEARL PIECE! Bubble-tastic!"
+- Bubble Bag: "Finally, something worth carrying."
+- Finley: "One down, three to go!"
 
 ---
 
@@ -269,7 +282,7 @@
 
 **Atmosphere**:
 - Everything is EXTRA glittery today
-- Glitter trail leading to Guardian
+- Glitter trail leading to Sage
 - Broken pearl polish bottle hidden poorly
 - Sign that says "DEFINITELY DIDN'T BREAK ANYTHING"
 
@@ -338,12 +351,12 @@ Definitely not a confession from me!"
 
 ### Success State
 - Magical reveal animation
-- Pearl piece appears covered in GLITTER
+- Second pearl piece appears covered in GLITTER
 - Guardian realizes she gave herself away
 - Larry emerges completely silver from glitter
 
 **Success Dialogue**:
-- Sage: "You solved it! Here's the pearl piece!"
+- Sage: "You solved it! Here's another pearl piece!"
 - Finley: "Why is it covered in glitter?"
 - Sage: "...No reason! Ancient magic! Very normal!"
 - Finley: "Did you break the pearl?"
@@ -360,14 +373,14 @@ Definitely not a confession from me!"
 
 ### Beat 7: Chapter Conclusion (30 seconds)
 **Actions**:
-- Pearl piece argues with Bubble Bag about glitter
+- Both pearl pieces argue with Bubble Bag about glitter
 - Finley does tiny Fin Flip Celebration (messes up)
 - Bubbles does it perfectly
 - Path to Crystal Caves opens (it's DARK)
 - Finley gulps, swimming upside-down toward it
 
 **UI Updates**:
-- Progress tracker shows 1/4 pearls (covered in glitter)
+- Progress tracker shows 2/4 pearls (one clean, one covered in glitter)
 - Marina appears: "Your parents are halfway here!"
 - Finley: "Oh fishsticks and tartar sauce!"
 - Larry follows into next chapter, still silver

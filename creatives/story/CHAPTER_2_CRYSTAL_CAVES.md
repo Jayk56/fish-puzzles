@@ -42,26 +42,26 @@
 
 ---
 
-### Beat 2: Meeting Shelly - GRANDMA ON A MISSION (2-3 minutes)
+### Beat 2: Meeting Gramma Coral - GRANDMA ON A MISSION (2-3 minutes)
 **Location**: Shell Gallery Cave
 
 **Setup**:
-- Find Shelly with "HAVE YOU SEEN THIS DOLPHIN?" posters
+- Find Gramma Coral with "HAVE YOU SEEN THIS DOLPHIN?" posters
 - Baby pictures of Echo EVERYWHERE
 - Shell has "WORLD'S BEST GRANDMA" painted on it
 - Collection includes Echo's baby teeth
 
 **Dialogue**:
-- Shelly: "Oh! A visitor! Have you seen my granddaughter?"
+- Gramma Coral: "Oh! A visitor! Have you seen my granddaughter?"
 - Finley: "Um, no? I just got here?"
-- Shelly: "She's about yea high, clicks a lot, does impressions?"
-- Shelly: "Let me show you her baby pictures!"
+- Gramma Coral: "She's about yea high, clicks a lot, does impressions?"
+- Gramma Coral: "Let me show you her baby pictures!"
 - *Shows 47 baby pictures*
-- Shelly: "She used to blow milk bubbles! So talented!"
+- Gramma Coral: "She used to blow milk bubbles! So talented!"
 - Finley: "That's... nice. Do you need help with anything?"
-- Shelly: "Oh yes! My shell! Echo painted this one but it's cracked."
-- Shelly: "I need something perfect for when I find her!"
-- Shelly: "She called me 'Gram-Gram Shelly-Belly' as a baby!"
+- Gramma Coral: "Oh yes! My shell! Echo painted this one but it's cracked."
+- Gramma Coral: "I need something perfect for when I find her!"
+- Gramma Coral: "She called me 'Gram-Gram Coral' as a baby!"
 - Bubble Bag: "This is gonna take a while."
 - Larry: *In background, trying on shells too*
 
@@ -76,7 +76,7 @@
 
 ### Mechanics
 1. **Requirements Phase**:
-   - Shelly gives 3 clues about perfect shell
+   - Gramma Coral gives 3 clues about perfect shell
    - Clues displayed in journal
 
 2. **Search Phase**:
@@ -88,7 +88,7 @@
      - Pattern (Spiral/Ridged/Smooth/Spotted)
 
 3. **Testing Phase**:
-   - Bring shells to Shelly
+   - Bring shells to Gramma Coral
    - She gives specific feedback
    - "Too big!" "Wrong color!" "Almost perfect but..."
 
@@ -107,21 +107,21 @@
 - Location: Behind crystal formation
 
 ### Hint Progression
-1. "Remember what Shelly said she wanted."
+1. "Remember what Gramma Coral said she wanted."
 2. "Check your journal for her requirements."
 3. "The perfect shell is in the [specific area]."
 
 ### Success State
-- Shelly tries on shell
+- Gramma Coral tries on shell
 - Perfect fit animation
 - Happy dance celebration
 
 **Success Dialogue**:
-- Shelly: "Oh my! It's absolutely PERFECT!"
-- Shelly: "It fits like it was made just for me!"
-- Shelly: "Thank you so much, Finley! You have such an eye for style!"
-- Shelly: "Oh! I heard singing deeper in the caves earlier."
-- Shelly: "It was the most beautiful sound! Maybe you should investigate?"
+- Gramma Coral: "Oh my! It's absolutely PERFECT!"
+- Gramma Coral: "It fits like it was made just for me!"
+- Gramma Coral: "Thank you so much, Finley! You have such an eye for style!"
+- Gramma Coral: "Oh! I heard singing deeper in the caves earlier."
+- Gramma Coral: "It was the most beautiful sound! Maybe you should investigate?"
 - *Gives Finley a Shell Polish collectible*
 
 ---
@@ -158,12 +158,12 @@
 - Echo: *Switches to perfect Bubble Bag voice* "Stop copying me!"
 - Bubble Bag: "Okay, that's creepy."
 - Echo: *Laughs in her own voice* "Want to play Echo Says?"
-- Echo: *In Shelly's voice* "You remind me of my granddaughter!"
-- Finley: "Wait, are you Shelly's—"
+- Echo: *In Gramma Coral's voice* "You remind me of my granddaughter!"
+- Finley: "Wait, are you Gramma Coral's—"
 - Echo: "SHHH! She'll hear you! Love her but... the baby stories!"
 - Echo: "Quick! Let's play before she finds me!"
-- *Copies the sound of the player pressing buttons*
-- Finley: "Did you just copy the game controller?!"
+- *Copies the sound of the player tapping the screen*
+- Finley: "Did you just copy the tap sounds?!"
 - Echo: "I copy EVERYTHING!"
 
 ---
@@ -214,12 +214,13 @@
 - Echo: *In everyone's voices at once* "You did it!"
 - Finley: "That's terrifying and impressive!"
 - Echo: "Look! The door's so confused it stayed open!"
-- *Door reveals pearl piece*
-- Shelly: *arriving* "Echo! There you are, sweetie!"
+- *Door reveals third pearl piece*
+- Finley: "The third piece! We're so close!"
+- Gramma Coral: *arriving* "Echo! There you are, sweetie!"
 - Echo: "Gram-Gram! Hi! Please no baby stories!"
-- Shelly: "Remember when you used to call dolphins 'doll-fins'?"
+- Gramma Coral: "Remember when you used to call dolphins 'doll-fins'?"
 - Echo: *mortified* "GRAM-GRAM!"
-- Shelly: "And you'd wear your food as a hat!"
+- Gramma Coral: "And you'd wear your food as a hat!"
 - Finley: *grabs pearl, backs away slowly*
 - Echo: *In Finley's voice* "Thanks for the pearl, gotta go!"
 - Finley: "Hey! That's my line!"
@@ -350,7 +351,7 @@
 - *Awkward pause*
 - Both: "I'M SORRY!"
 - *They hug with all eight tentacles*
-- Shelly and Echo arrive together
+- Gramma Coral and Echo arrive together
 - Echo: "Gram-Gram and I heard you needed help!"
 - Professor: "I brought ALL my lights!"
 - Guardian appears: "I... I want to help fix my mistake."
@@ -402,11 +403,12 @@
 ### Success State - TEAMWORK TRIUMPH!
 - Everyone holding mirrors together
 - Light beam becomes rainbow from all the help
-- Pearl piece rises surrounded by everyone's light
+- Fourth and final pearl piece rises surrounded by everyone's light
 - Larry finally in the perfect photobomb position
 
 **Success Dialogue**:
 - Finley: "WE did it! All of us together!"
+- Finley: "The final piece! We have them all!"
 - Guardian: "I'm so sorry I broke it. I just wanted it to be special."
 - Everyone: "It IS special now!"
 - Bella: "Ollie, I missed you so much!"
@@ -414,7 +416,7 @@
 - Bella: "Yes! The Bubble-fish Comedy Hour!"
 - Echo: *In everyone's voice* "Let's go save the festival!"
 - Professor: "For science! And light! Mostly light!"
-- Shelly: "My granddaughter, the hero's helper!"
+- Gramma Coral: "My granddaughter, the hero's helper!"
 - Echo: "GRAM-GRAM!"
 - Finley: "Mom and Dad are almost here! Let's go!"
 - *Everyone swims together toward Town Square*
@@ -431,7 +433,7 @@
 - Bubbles proudly leading the way
 - Bella and Ollie doing synchronized swimming
 - Echo mimicking everyone simultaneously
-- Shelly telling MORE baby stories
+- Gramma Coral telling MORE baby stories
 - Professor creating light trail behind them
 - Guardian nervously practicing her apology
 - Larry surfing on the light trail
@@ -458,10 +460,17 @@
 ### Return to Town Square - THE CONFESSION!
 **Guardian's Big Moment**:
 - Guardian floats forward nervously
-- \"Everyone... I have something to say...\"\n- \"I broke the Pearl of Harmony. I wanted to make it extra sparkly.\"\n- \"I was too embarrassed to admit it. I'm so sorry.\"\n- Mayor Shelley: *wakes up* \"Oh, we know dear. You did it last year too.\"\n- Guardian: \"WHAT?!\"\n- Mayor: \"The pearl gets better each time! Look!\"\n\n### The Pearl Restoration - BETTER THAN EVER!
+- "Everyone... I have something to say..."
+- "I broke the Pearl of Harmony. I wanted to make it extra sparkly."
+- "I was too embarrassed to admit it. I'm so sorry."
+- Mayor Shelley: *wakes up* "Oh, we had a feeling, dear. Remember the glasses incident?"
+- Guardian: "That was THREE YEARS AGO!"
+- Mayor: "And look - your sparkles are making the pearl even MORE beautiful!"
+
+### The Pearl Restoration - BETTER THAN EVER!
 - All pieces placed together\n- Guardian's sparkles make it AMAZING\n- Pearl creates biggest light show ever\n- Larry literally becomes a disco ball\n\n### Finley's Performance - THE NEW TRADITION!
 - Finley's parents arrive: \"We're so proud!\"\n- Finley starts dance... immediately upside-down\n- Tries to correct... makes it worse\n- EVERYONE joins in doing it wrong\n- Bubbles does it perfectly, winks at camera\n- IT BECOMES THE OFFICIAL FESTIVAL DANCE!\n\n### The Celebration Highlights:
-- Bella & Ollie's comedy routine (all ocean puns)\n- Echo mimics the entire story back\n- Shelly shows everyone baby pictures\n- Professor's fireworks (accidental but pretty)\n- Guardian becomes \"Chief Sparkle Officer\"\n- Larry finally gets his spotlight moment\n- Mayor Shelley gives speech while asleep\n\n### Final Moment:
+- Bella & Ollie's comedy routine (all ocean puns)\n- Echo mimics the entire story back\n- Gramma Coral shows everyone baby pictures\n- Professor's fireworks (accidental but pretty)\n- Guardian becomes \"Chief Sparkle Officer\"\n- Larry finally gets his spotlight moment\n- Mayor Shelley gives speech while asleep\n\n### Final Moment:
 - Finley: \"I learned something today...\"\n- Finley: \"It's okay to be scared, mess up, and need help.\"\n- Finley: \"That's what makes us family!\"\n- Everyone: \"TO THE CORAL COVE FAMILY!\"\n- *Freeze frame on everyone doing the upside-down dance*\n- Bubbles: *Winks at player one more time*\n\n---
 
 ## Collectible Locations
@@ -520,12 +529,12 @@
 - Finley: "Almost done! The festival is counting on me!"
 
 ### Character Reactions
-- Shelly: "Hmm, that's nice but not quite right."
+- Gramma Coral: "Hmm, that's nice but not quite right."
 - Echo: "So close! Try again!"
 - Professor: "Interesting result! But not what we need."
 
 ### Success Reactions
-- Shelly: "Perfection!"
+- Gramma Coral: "Perfection!"
 - Echo: "We did it together!"
 - Professor: "Science is amazing!"
 

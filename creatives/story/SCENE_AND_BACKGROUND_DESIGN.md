@@ -3,10 +3,18 @@
 
 ---
 
-## 🎨 Background Overview
-**Total Unique Backgrounds**: 6
-**Total Scene Variations**: 18+ (through layering and state changes)
+## 🎨 Background Overview (MVP-Compliant)
+**Total Unique Backgrounds**: 6 (strict limit per MVP)
+**Total Scene Variations**: 15+ (through props, lighting, and set dressing)
 **Reuse Strategy**: Smart variations, parallax layers, and progressive changes
+
+### The 6 Core Backgrounds:
+1. **Town Square** - Opening/Finale (morning panic → festival celebration)
+2. **Kelp Forest General** - All forest scenes (entrance, clearing, gardens via props)
+3. **Lily Pad Lake/Grove** - Combined water/mystical area (redress for each)
+4. **Crystal Caves General** - Cave entrance and shell gallery (lighting variations)
+5. **Echo Chamber** - Unique cave room with organ-pipe crystals
+6. **Professor's Lab** - Bright crystal laboratory (Mirror Maze is a lighting variant)
 
 ---
 
@@ -268,7 +276,7 @@
 ### Larry's Journey (Progressive Elaboration)
 1. **Town Square**: Behind Mayor
 2. **Forest Entrance**: Wearing leaf hat
-3. **Bella's Scene**: Has her glasses
+3. **Bella's Scene**: Wearing her friendship bracelet
 4. **Ollie's Scene**: Tangled too
 5. **Lily Pad**: Built fort
 6. **Guardian**: Covered in glitter
@@ -351,7 +359,7 @@
 | Opening | Town Square | Panic Mode | Behind Mayor |
 | Quest Start | Town Square | Glitter Mode | In pedestal |
 | Forest Entry | Kelp Forest | Dark/Scary | Leaf hat |
-| Bella Scene | Kelp Forest | Clearing | Has glasses |
+| Bella Scene | Kelp Forest | Clearing | Wearing bracelet |
 | Ollie Scene | Tangled Gardens | Tangled | Also tangled |
 | Lily Pad | Tangled Gardens | Lake Mode | Fort built |
 | Guardian | Ancient Grove | Mystical | Glittered |

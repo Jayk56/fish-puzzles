@@ -125,6 +125,7 @@
 **Appearance**:
 - Yellow and black stripes
 - Flowing fins like butterfly wings
+- Tiny reading glasses (often misplaced when upset)
 - Carries friendship bracelet she won't admit is from Ollie
 - Tries not to look at Ollie's direction
 
@@ -198,7 +199,7 @@
 
 ## 🔮 CHAPTER 2: CRYSTAL CAVE CHARACTERS
 
-### Shelly the Hermit Crab
+### Gramma Coral the Hermit Crab
 **Role**: Shell-finding puzzle / ECHO'S WORRIED GRANDMA
 **Personality**: Picky about shells, tells embarrassing stories, loving but overprotective
 **Hidden Agenda**: Looking for Echo while shell shopping
@@ -216,7 +217,7 @@
 
 **Embarrassing Echo Stories**:
 - "She used to blow bubbles in her milk!"
-- "Called me 'Gram-Gram Shelly-Belly'!"
+- "Called me 'Gram-Gram Coral'!"
 - "Her first word was 'bubble'!"
 
 ---
@@ -235,7 +236,7 @@
 - Switches between voices constantly
 - Perfect mimicry causes chaos
 - "Grandma! Not the baby stories!"
-- Mimics player's button presses
+- Mimics player's tap sounds
 
 **Mimic Chaos Examples**:
 - Copies Finley so perfectly they get confused who's who
@@ -244,8 +245,8 @@
 - Accidentally mimics player's frustrated sounds
 
 **Their Relationship**:
-- Echo loves Shelly but needs independence
-- Shelly worries but learns to let go
+- Echo loves Gramma Coral but needs independence
+- Gramma Coral worries but learns to let go
 - Sweet moment when Echo helps find shell
 - Festival dance together at the end
 
@@ -356,7 +357,7 @@
 ### Primary Relationships:
 - **Finley & Bubbles**: Inseparable duo, opposite fears, perfect team
 - **Bella & Ollie**: Ex-best friends → Reconciled BFFs
-- **Shelly & Echo**: Grandmother/granddaughter learning boundaries
+- **Gramma Coral & Echo**: Grandmother/granddaughter learning boundaries
 - **Guardian & Everyone**: Secret keeper → Forgiven mistake-maker
 - **Professor & Finley**: Fellow fear-facers, science buddies
 - **Mayor & Everyone**: Sleeping wisdom dispenser

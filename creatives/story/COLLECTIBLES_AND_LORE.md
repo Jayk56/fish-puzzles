@@ -21,7 +21,7 @@
 ### Shell #1: The Welcome Shell
 **Location**: Behind kelp at forest entrance
 **Memory**: "The First Festival"
-*"Long ago, when Coral Cove was just a tiny reef, a young sea turtle named Shelley (now our Mayor!) discovered the Pearl of Harmony washed up after a storm. When she touched it, the entire reef lit up with beautiful colors! That night, all the sea creatures celebrated together for the first time. And so, the Coral Festival was born!"*
+*"Long ago, when Coral Cove was just a tiny reef, a young sea turtle named Shelley (now our Mayor!) discovered the Pearl of Harmony washed up after a storm. When he touched it, the entire reef lit up with beautiful colors! That night, all the sea creatures celebrated together for the first time. And so, the Coral Festival was born!"*
 
 ### Shell #2: The Friendship Shell  
 **Location**: On distant lily pad (requires bridge)
@@ -77,7 +77,7 @@
 ### Shell Polish
 **Obtained**: After helping Shelly
 **Effect**: Makes Finley's scales extra shiny
-**Lore**: "Made from crushed pearls and seaweed"
+**Lore**: "Made from bioluminescent algae and crystal dust"
 
 ### Echo's Song
 **Obtained**: Perfect score in Echo Says
@@ -169,7 +169,7 @@
 ## 📖 Extended Character Backstories
 
 ### Finley's Family
-- **Parents**: Travel the currents as mail carriers
+- **Parents**: Famous dancers who tour the currents performing
 - **Grandmother**: Famous explorer who mapped the caves
 - **Secret**: Finley is descendant of the First Clownfish
 

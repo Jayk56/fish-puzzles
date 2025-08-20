@@ -24,12 +24,12 @@
 ### Shell #3: The Guardian's Guilt Shell
 **Location**: Inside Ollie's joke book (automatic)
 **Memory**: "Breaking Things Since Forever"
-*"Guardian Secret File: This is the FIFTH time Sage has broken something important while trying to 'improve' it. Previous casualties include: The Moon Crystal (added glitter, exploded), The Singing Coral (added reverb, now screams), The Friendship Fountain (added sparkles, shoots glitter at random), and Mayor Shelley's glasses (added shine, now he can't see why kids love Cinnamon Toast Crunch)."*
+*"Guardian Secret File: Sage has broken something important before while trying to 'improve' it. The infamous incident was Mayor Shelley's glasses three years ago (added shine, made them too bright to see through). Since then, she's been SO careful... until today. She truly thought adding just a little sparkle to the pearl would make this year's festival extra special. Turns out pearls are more fragile than glasses!"*
 
 ### Shell #4: The Sleeping Mayor Shell
 **Location**: Hidden behind Guardian's runestone
 **Memory**: "Why Mayor Shelley Really Sleeps"
-*"The truth about the Mayor: He's not THAT old - he's only 90! He falls asleep because he stays up all night protecting Coral Cove from the Dark Current. Every night while everyone sleeps, he patrols the borders. His 'naps' are actually him catching up on sleep. The bubble words that appear when he snores? That's him sleep-fighting sea monsters. What a legend!"*
+*"The truth about the Mayor: Nobody really knows how old he is - some say ancient, some say timeless! He falls asleep because he stays up all night keeping Coral Cove safe and peaceful. Every night while everyone sleeps, he patrols the borders maintaining the reef's protective harmony. His 'naps' are actually him catching up on sleep. The bubble words that appear when he snores? That's him dream-planning the next festival. What a legend!"*
 
 ---
 
@@ -145,7 +145,7 @@ The Pearl of Harmony doesn't just make pretty lights - it keeps the DARK CURRENT
 Finley was always meant to be the hero - not because of bravery, but because of fear. The prophecy says: "The one who swims upside-down in fear shall turn the world right-side up with love." Finley's parents knew. That's why they traveled so much - to give Finley space to grow afraid, then overcome it!
 
 ### The Larry Conspiracy
-Larry isn't just a photobomber - he's the Ocean's Memory Keeper! Every photobomb captures a moment in history. His collection reveals the truth about everything. He's actually a secret agent for the Whale King, documenting the real story. His final photobomb at the festival? It captures the moment that saves the ocean from the Dark Current forever!
+Larry isn't just a photobomber - he's the Ocean's Memory Keeper! Every photobomb captures a moment in history. His collection reveals the truth about everything. He's actually documenting every happy moment for future generations. His final photobomb at the festival? It captures the moment that brings the whole reef together in perfect harmony!
 
 ### Bubbles' Secret Power
 Bubbles can see the future - but only the funny parts. That's why Bubbles is always in the right place for comedy. The wink at the camera? Bubbles KNOWS it's a game and is friends with the player. Bubbles is basically breaking the fourth wall constantly but can't talk so no one notices!

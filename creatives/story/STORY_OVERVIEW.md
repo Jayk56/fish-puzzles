@@ -2,13 +2,14 @@
 ## Story Overview & Plot Structure
 
 ### Core Premise
-Finley is a young clownfish who's FINALLY old enough to perform in the annual Coral Festival - they've been practicing the "Fin Flip Celebration" dance all year! But disaster strikes: The magical Pearl of Harmony shatters when the ancient Guardian tries to "improve" it with extra sparkle. Now the festival is ruined, Finley's parents are swimming home just to see them perform, and our nervous little hero (who's secretly terrified of deep, dark water) must venture into the scary unknown with only their pet seahorse Bubbles for company!
+Finley is a young clownfish who's FINALLY old enough to perform in the annual Coral Festival - they've been practicing the "Fin Flip Celebration" dance all year! But disaster strikes: The magical Pearl of Harmony shatters when Sage the Guardian tries to "improve" it with extra sparkle. Now the festival is ruined, Finley's parents are swimming home just to see them perform, and our nervous little hero (who's secretly terrified of deep, dark water) must venture into the scary unknown with only their pet seahorse Bubbles for company!
 
 ### The REAL Stakes
 - **Personal**: This is Finley's first performance EVER - been dreaming of it since they were a fry
-- **Family**: Parents are traveling from the Far Reef just to watch
-- **Community**: Without the festival, the reef loses its magic protection for a whole year
-- **Secret**: The Guardian is too embarrassed to admit their mistake, adding mystery
+- **Family**: Parents are famous dancers traveling from the Far Reef just to watch Finley perform
+- **Community**: While broken, the pearl provides no protection - the reef is vulnerable until it's restored
+- **Secret**: The Guardian is too embarrassed to admit her mistake, adding mystery
+- **Silver Lining**: When restored with Sage's sparkles, the pearl becomes even stronger (but only AFTER it's whole again!)
 
 ### Theme & Values
 - **Courage Through Fear**: Finley is scared but does it anyway (kids relate to this!)
@@ -18,14 +19,15 @@ Finley is a young clownfish who's FINALLY old enough to perform in the annual Co
 
 ### Story Arc (20-35 minutes gameplay)
 
-#### Opening (3-5 minutes)
-- Finley nervously practicing their dance, keeps messing up and blowing stress bubbles
+#### Opening (3-5 minutes) - Festival Day Morning
+- Finley nervously practicing their dance for TODAY'S festival, keeps messing up and blowing stress bubbles
 - Bubbles (pet seahorse) mimics the dance perfectly, making Finley laugh
 - BOOM! Strange explosion from Town Square
 - Find Mayor Shelley asleep mid-panic (he's SO old), snoring bubbles spell "HELP"
-- Guardian arrives looking suspiciously sparkly, claims pearl "mysteriously" broke
+- Sage the Guardian arrives looking suspiciously sparkly, claims pearl "mysteriously" broke
 - Finley volunteers (while accidentally swimming upside-down from nerves)
 - Receives Magic Bubble Bag that argues with items placed inside
+- Must fix pearl before tonight's sunset celebration!
 
 #### Chapter 1: The Kelp Forest Grove (10-15 minutes)
 **Location**: A magical kelp forest where touching plants creates a musical light symphony
@@ -35,13 +37,13 @@ Finley is a young clownfish who's FINALLY old enough to perform in the annual Co
 **Key Characters**:
 - Bella the Butterfly Fish (lost and mad at ex-best-friend Ollie)
 - Ollie the Octopus (tangled up while practicing apology juggling for Bella)
-- The Kelp Forest Guardian (trying to hide that SHE broke the pearl)
+- Sage the Guardian (Kelp Forest Guardian trying to hide that she broke the pearl)
 
 **Core Puzzles & Magic Moments**:
-1. Help Bella by creating the Kelp Symphony (touching kelp in sequence = musical magic!)
+1. Help Bella find her way home (collect glow seeds to light kelp lamps - discover the Kelp Symphony as magical flavor!)
 2. Untangle Ollie causing the "Tentacle Helicopter" (he spins around the screen!)
-3. Guardian's guilty riddle accidentally reveals the truth
-4. Lily pad bridge where Finley must overcome fear of deep water (Bubbles helps!)
+3. Lily pad bridge where Finley must overcome fear of deep water (Bubbles helps!) - reveals first pearl piece!
+4. Sage's guilty riddle accidentally reveals the truth - awards second pearl piece!
 
 **Running Gags Introduced**:
 - Finley says "anemone" wrong EVERY time ("enemy-mone", "amenemone", "annie-money")
@@ -54,7 +56,7 @@ Finley is a young clownfish who's FINALLY old enough to perform in the annual Co
 **Main Goal**: Find final 2 pieces while discovering the Guardian's secret
 
 **Key Characters**:
-- Shelly the Hermit Crab (Echo's worried grandmother looking for her)
+- Gramma Coral the Hermit Crab (Echo's worried grandmother looking for her)
 - Echo the Dolphin (can hilariously mimic ANYONE - even the player!)
 - Professor Puffer (secretly terrified of the dark, using science as a nightlight)
 
@@ -137,7 +139,7 @@ Each playthrough randomly selects from these variations:
 - **Larry the Photobomb Fish**: In EVERY scene doing something ridiculous
 - **Bubble Bag Commentary**: "Another rock? Really?" "Ooh, shiny!" "I'm not eating that."
 - **Mayor's Narcolepsy**: Falls asleep mid-sentence, bubbles show his dreams
-- **Echo's Mimicry Chaos**: Accidentally copies player's button sounds
+- **Echo's Mimicry Chaos**: Accidentally copies player's tap sounds
 - **Professor's Failed Experiments**: Create plaid water, polka-dot fish, striped bubbles
 
 ### Visual Motifs

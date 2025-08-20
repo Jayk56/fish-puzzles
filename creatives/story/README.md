@@ -25,7 +25,9 @@ This folder contains the complete creative narrative for the kid-friendly point-
 - **Quest**: Save the Coral Festival by finding pieces of the broken Pearl of Harmony
 - **Duration**: 20-35 minutes first playthrough
 - **Chapters**: 2 (Kelp Forest & Crystal Caves)
-- **Characters**: 12 total (3 main, 6 puzzle-givers, 3 ambient)
+- **Characters**: 10 with unique rigs/VO (MVP compliant) + 4 visual-only/ambient
+  - **Full VO Required** (10): Finley, Mayor Shelley, Sage, Bella, Ollie, Gramma Coral, Echo, Professor Puffer, Marina (brief), Parents (1 voice)
+  - **Visual Only/Text** (4): Bubbles (silent), Larry (visual gags), Bubble Bag (text only), Freddy (background)
 - **Puzzles**: 8 core puzzles with variable elements
 - **Collectibles**: 8 Rainbow Shells with backstory memories
 
