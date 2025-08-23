@@ -12,8 +12,18 @@ class SafeAreaManager {
     static let shared = SafeAreaManager()
     
     // UI element heights
-    static let inventoryBarHeight: CGFloat = 100
     static let inventoryBarPadding: CGFloat = 10  // Extra padding above inventory
+
+    static func inventoryBarHeight(for width: CGFloat) -> CGFloat {
+        let slots = CGFloat(PersistentInventoryBar.maxVisibleSlots)
+        let moreButtonWidth: CGFloat = 60
+        let spacing: CGFloat = 10
+        let minSlot: CGFloat = 40
+        let maxSlot: CGFloat = 120
+        let rawSlot = (width - moreButtonWidth - spacing * slots) / slots
+        let slot = min(max(rawSlot, minSlot), maxSlot)
+        return slot + 20
+    }
     
     enum BorderStyle {
         case solid(color: UIColor)
@@ -34,7 +44,7 @@ class SafeAreaManager {
         let deviceSafeInsets = getDeviceSafeInsets()
         
         // Calculate bottom offset (inventory bar + safe area)
-        let bottomOffset = Self.inventoryBarHeight + Self.inventoryBarPadding + deviceSafeInsets.bottom
+        let bottomOffset = Self.inventoryBarHeight(for: sceneSize.width) + Self.inventoryBarPadding + deviceSafeInsets.bottom
         
         // Calculate top offset (status bar + notch if present)
         let topOffset = deviceSafeInsets.top
