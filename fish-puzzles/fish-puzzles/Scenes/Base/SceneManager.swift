@@ -10,7 +10,7 @@ import SpriteKit
 
 final class SceneManager {
     private weak var view: SKView?
-    private(set) var currentScene: BaseGameScene?
+    private(set) var currentScene: SKScene?
     
     init(view: SKView) {
         self.view = view
@@ -64,7 +64,7 @@ final class SceneManager {
         return CGSize(width: width, height: height)
     }
     
-    private func transition(to scene: BaseGameScene, transition: SKTransition = .fade(withDuration: 1.0)) {
+    private func transition(to scene: SKScene, transition: SKTransition = .fade(withDuration: 1.0)) {
         currentScene = scene
         view?.presentScene(scene, transition: transition)
     }

@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Fish Puzzles is a kid-friendly point-and-click adventure game for iOS built with SpriteKit and Swift. The game targets children aged 4-9 with a focus on safety, privacy (COPPA compliant), and 60 FPS performance across all iOS devices.
 
 ## Development Commands
+For all make commands, you must run them after changing into the fish-puzzles project folder first.
 
 ### Building and Running
 ```bash

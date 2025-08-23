@@ -112,8 +112,7 @@ class ProgressiveHintSystem {
         }
         
         hintCooldown = 10
-        // TODO: Track hints used in GameState
-        // GameState.shared.hintsUsed += 1
+        GameEngine.shared.incrementHintsUsed()
     }
     
     private func showEnvironmentalHint(for puzzle: Puzzle) {
@@ -397,15 +396,7 @@ enum HintLevel: Int {
     }
 }
 
-struct Puzzle {
-    let id: String
-    let requiredItem: Item?
-    let solutionObject: Entity?
-    let solutionPath: [CGPoint]?
-    let hint: String?
-    let explicitHint: String?
-    let explicitSolution: PuzzleSolution?
-}
+// Puzzle struct removed - using the Puzzle class from PuzzleSystem.swift instead
 
 struct PuzzleSolution {
     let startPosition: CGPoint

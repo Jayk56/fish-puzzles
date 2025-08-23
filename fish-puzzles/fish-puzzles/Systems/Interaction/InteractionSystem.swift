@@ -7,16 +7,6 @@
 
 import SpriteKit
 
-struct Hotspot {
-    let id: String
-    let frame: CGRect
-    let action: () -> Void
-    
-    func contains(_ point: CGPoint) -> Bool {
-        frame.contains(point)
-    }
-}
-
 final class InteractionSystem {
     weak var scene: BaseGameScene?
     private var hotspots: [Hotspot] = []
@@ -44,14 +34,17 @@ final class InteractionSystem {
     
     func registerHotspot(_ hotspot: Hotspot) {
         hotspots.append(hotspot)
+        HotspotManager.shared.register(hotspot)
     }
     
     func removeHotspot(id: String) {
         hotspots.removeAll { $0.id == id }
         highlightedHotspots.remove(id)
+        HotspotManager.shared.unregister(id)
     }
     
     func handleTouch(at point: CGPoint) -> Bool {
+        print("🔍 InteractionSystem: Handling touch at \(point)")
         // Reset hint system on interaction
         ProgressiveHintSystem.shared.playerInteracted()
         
@@ -60,18 +53,19 @@ final class InteractionSystem {
             return handleItemUse(item: selectedItem, at: point)
         }
         
-        // Check hotspots
-        for hotspot in hotspots {
-            if hotspot.contains(point) {
-                hotspot.action()
-                AudioManager.shared.playSFX("tap")
-                VisualFeedbackSystem.shared.showInteractionFeedback(
-                    at: point,
-                    type: .use
-                )
-                return true
-            }
+        // Use HotspotManager to handle hotspots
+        let currentItem = InventoryManager.shared.selectedItem?.id
+        print("🔍 InteractionSystem: Checking hotspots with HotspotManager...")
+        if HotspotManager.shared.handleTouch(at: point, with: currentItem) {
+            print("✅ InteractionSystem: Hotspot handled!")
+            AudioManager.shared.playSFX("tap")
+            VisualFeedbackSystem.shared.showInteractionFeedback(
+                at: point,
+                type: .use
+            )
+            return true
         }
+        print("❌ InteractionSystem: No hotspot at this point")
         
         // Check entities with interaction components
         var handled = false
@@ -159,13 +153,40 @@ final class InteractionSystem {
             type: .move
         )
         
-        // TODO: Implement actual character movement
-        scene?.run(SKAction.sequence([
-            SKAction.wait(forDuration: 0.1),
-            SKAction.run {
-                AudioManager.shared.playSFX("footstep")
+        // Find the main character entity (usually the first one with a sprite node)
+        var characterEntity: Entity?
+        scene?.entities.forEach { entity in
+            // Look for an entity that might be the player character
+            // Check if it has a sprite node and is not an inventory item
+            if entity.node is SKSpriteNode,
+               entity.get(InteractableComponent.self)?.canPickUp != true {
+                characterEntity = entity
+                return  // Stop at first suitable entity
             }
-        ]))
+        }
+        
+        // Move the character to the target point
+        if let character = characterEntity, let node = character.node {
+            let distance = hypot(point.x - node.position.x, point.y - node.position.y)
+            let duration = TimeInterval(distance / 200.0) // 200 points per second
+            
+            let moveAction = SKAction.move(to: point, duration: duration)
+            moveAction.timingMode = .easeInEaseOut
+            
+            // Play footstep sounds during movement
+            let footstepAction = SKAction.repeat(
+                SKAction.sequence([
+                    SKAction.run { AudioManager.shared.playSFX("footstep") },
+                    SKAction.wait(forDuration: 0.3)
+                ]), 
+                count: Int(duration / 0.3)
+            )
+            
+            node.run(SKAction.group([moveAction, footstepAction]))
+        } else {
+            // Fallback: just play sound if no character found
+            AudioManager.shared.playSFX("footstep")
+        }
     }
     
     private func findEntity(at point: CGPoint) -> Entity? {
@@ -209,7 +230,7 @@ final class InteractionSystem {
         highlightedHotspots.removeAll()
     }
     
-    private func executeEffects(_ effects: [Effect]) {
+    func executeEffects(_ effects: [Effect]) {
         for effect in effects {
             DispatchQueue.main.asyncAfter(deadline: .now() + effect.delay) {
                 self.executeEffect(effect)
@@ -223,15 +244,159 @@ final class InteractionSystem {
             AudioManager.shared.playSFX(sound)
             
         case .playAnimation(let animation):
-            if effect.target?.node != nil {
-                // TODO: Play animation on target
-                print("Playing animation: \(animation)")
+            // First check if the target has a CharacterAnimationComponent
+            if let animationComponent = effect.target?.get(CharacterAnimationComponent.self) {
+                // Use the component's animation system
+                switch animation.lowercased() {
+                case "idle":
+                    animationComponent.playAnimation(.idle)
+                case "swimming", "swim":
+                    animationComponent.playAnimation(.swimming)
+                case "success", "happy", "excited":
+                    animationComponent.playAnimation(.success)
+                case "confused", "puzzled":
+                    animationComponent.playAnimation(.confused)
+                default:
+                    // Try to play as swimming with repeat count
+                    if let count = Int(animation) {
+                        animationComponent.playAnimation(.swimming, repeatCount: count)
+                    } else {
+                        animationComponent.playAnimation(.success)
+                    }
+                }
+            } else if let targetNode = effect.target?.node {
+                // No animation component, handle special animations directly
+                switch animation.lowercased() {
+                case "chest_open", "pearl_rise":
+                    // Create pearl animation for treasure chest
+                    // Check if this is the chest entity (has a brown sprite node)
+                    if let sprite = targetNode as? SKSpriteNode {
+                        let pearl = SKShapeNode(circleOfRadius: 15)
+                        pearl.fillColor = .white
+                        pearl.strokeColor = .systemPink
+                        pearl.lineWidth = 2
+                        pearl.glowWidth = 5
+                        pearl.position = CGPoint(x: 0, y: 20)
+                        pearl.alpha = 0
+                        targetNode.addChild(pearl)
+                        
+                        let appear = SKAction.fadeIn(withDuration: 0.3)
+                        let rise = SKAction.moveBy(x: 0, y: 80, duration: 1.2)
+                        let grow = SKAction.scale(to: 1.8, duration: 1.2)
+                        let sparkle = SKAction.rotate(byAngle: .pi * 4, duration: 1.2)
+                        let fadeOut = SKAction.fadeOut(withDuration: 0.5)
+                        
+                        let riseGroup = SKAction.group([rise, grow, sparkle])
+                        let sequence = SKAction.sequence([appear, riseGroup, fadeOut, SKAction.removeFromParent()])
+                        
+                        pearl.run(sequence)
+                        
+                        // Also animate the chest itself
+                        let chestScale = SKAction.sequence([
+                            SKAction.scale(to: 1.1, duration: 0.2),
+                            SKAction.scale(to: 1.0, duration: 0.2)
+                        ])
+                        sprite.run(chestScale)
+                        
+                        AudioManager.shared.playSFX("magic_sparkle")
+                    }
+                    
+                default:
+                    // Try to run as a generic sprite animation
+                    if let sprite = targetNode as? SKSpriteNode {
+                        if animation.contains("_") {
+                            // Frame-based animation
+                            let parts = animation.split(separator: "_")
+                            let baseName = String(parts[0])
+                            let frameCount = Int(parts.count > 1 ? String(parts[1]) : "1") ?? 1
+                            let duration = Double(parts.count > 2 ? String(parts[2]) : "1.0") ?? 1.0
+                            
+                            var textures: [SKTexture] = []
+                            for i in 1...frameCount {
+                                textures.append(SKTexture(imageNamed: "\(baseName)\(i)"))
+                            }
+                            
+                            let animateAction = SKAction.animate(with: textures, 
+                                                                timePerFrame: duration / Double(frameCount))
+                            sprite.run(animateAction)
+                        } else {
+                            // Single texture change
+                            sprite.texture = SKTexture(imageNamed: animation)
+                        }
+                    }
+                }
             }
             
         case .showParticles(let particles):
-            if effect.target?.node != nil {
-                // TODO: Show particles
-                print("Showing particles: \(particles)")
+            if let targetNode = effect.target?.node {
+                // Try to load particle file first
+                if let particleFile = Bundle.main.path(forResource: particles, ofType: "sks"),
+                   let emitterData = try? Data(contentsOf: URL(fileURLWithPath: particleFile)),
+                   let emitter = try? NSKeyedUnarchiver.unarchivedObject(ofClass: SKEmitterNode.self, from: emitterData) {
+                    emitter.position = .zero
+                    emitter.targetNode = targetNode.parent
+                    targetNode.addChild(emitter)
+                    
+                    // Auto-remove after particle lifetime
+                    let duration = emitter.particleLifetime + emitter.particleLifetimeRange
+                    emitter.run(SKAction.sequence([
+                        SKAction.wait(forDuration: TimeInterval(duration)),
+                        SKAction.removeFromParent()
+                    ]))
+                } else {
+                    // Create a simple particle effect programmatically
+                    let emitter = SKEmitterNode()
+                    emitter.position = .zero
+                    
+                    // Configure based on particle name
+                    switch particles.lowercased() {
+                    case "sparkle", "star":
+                        emitter.particleTexture = SKTexture(imageNamed: "spark")
+                        emitter.particleBirthRate = 30
+                        emitter.particleLifetime = 1.0
+                        emitter.particleScale = 0.2
+                        emitter.particleScaleRange = 0.1
+                        emitter.particleAlpha = 0.8
+                        emitter.particleAlphaRange = 0.2
+                        emitter.particleSpeed = 50
+                        emitter.emissionAngleRange = .pi * 2
+                        
+                    case "smoke":
+                        emitter.particleTexture = SKTexture(imageNamed: "smoke")
+                        emitter.particleBirthRate = 10
+                        emitter.particleLifetime = 2.0
+                        emitter.particleScale = 0.5
+                        emitter.particleAlpha = 0.5
+                        emitter.particleSpeed = 30
+                        emitter.emissionAngle = .pi / 2
+                        emitter.yAcceleration = 20
+                        
+                    case "dust":
+                        emitter.particleTexture = SKTexture(imageNamed: "dust")
+                        emitter.particleBirthRate = 20
+                        emitter.particleLifetime = 1.5
+                        emitter.particleScale = 0.1
+                        emitter.particleSpeed = 20
+                        emitter.emissionAngleRange = .pi * 2
+                        
+                    default:
+                        // Generic particle effect
+                        emitter.particleTexture = SKTexture(imageNamed: "particle")
+                        emitter.particleBirthRate = 15
+                        emitter.particleLifetime = 1.0
+                        emitter.particleScale = 0.3
+                        emitter.particleSpeed = 40
+                    }
+                    
+                    emitter.numParticlesToEmit = Int(emitter.particleBirthRate * emitter.particleLifetime)
+                    targetNode.addChild(emitter)
+                    
+                    // Auto-remove after completion
+                    emitter.run(SKAction.sequence([
+                        SKAction.wait(forDuration: TimeInterval(emitter.particleLifetime + 0.5)),
+                        SKAction.removeFromParent()
+                    ]))
+                }
             }
             
         case .changeSprite(let sprite):
@@ -240,25 +405,50 @@ final class InteractionSystem {
             }
             
         case .unlock(let id):
-            // TODO: Unlock entity with id
-            print("Unlocking: \(id)")
+            scene?.entities.forEach { entity in
+                if entity.id.uuidString == id {
+                    // Mark entity as unlocked by enabling interaction
+                    if let interactable = entity.get(InteractableComponent.self) {
+                        // Remove any required item to make it freely interactable
+                        interactable.requiredItem = nil
+                        
+                        // Visual feedback for unlock
+                        if let node = entity.node {
+                            VisualFeedbackSystem.shared.showInteractionFeedback(
+                                at: node.position,
+                                type: .use
+                            )
+                            AudioManager.shared.playSFX("unlock")
+                        }
+                    }
+                }
+            }
             
         case .triggerDialogue(let dialogue):
-            // TODO: Trigger dialogue
-            print("Triggering dialogue: \(dialogue)")
+            if let dialogueOverlay = scene?.hudManager?.overlays[.dialogue] as? DialogueOverlay {
+                // Parse dialogue string - format expected: "CharacterName:DialogueText"
+                let parts = dialogue.split(separator: ":", maxSplits: 1)
+                let characterName = parts.count > 0 ? String(parts[0]) : "Unknown"
+                let text = parts.count > 1 ? String(parts[1]) : dialogue
+                
+                dialogueOverlay.showDialogue(character: characterName, text: text)
+                scene?.hudManager?.show(.dialogue)
+            }
         }
     }
     
     private func showHintMessage(_ message: String) {
-        // TODO: Show hint message in HUD
-        print("Hint: \(message)")
+        if let hintOverlay = scene?.hudManager?.overlays[.hint] as? HintOverlay {
+            hintOverlay.showHint(message, level: .subtle)
+            scene?.hudManager?.show(.hint)
+        }
     }
     
     func updateHotspotHighlights(playerPosition: CGPoint) {
         for hotspot in hotspots {
             let distance = hypot(
-                hotspot.frame.midX - playerPosition.x,
-                hotspot.frame.midY - playerPosition.y
+                hotspot.area.midX - playerPosition.x,
+                hotspot.area.midY - playerPosition.y
             )
             
             if distance < 150 && !highlightedHotspots.contains(hotspot.id) {

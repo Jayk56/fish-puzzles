@@ -6,6 +6,7 @@
 //
 
 import SpriteKit
+import UIKit
 
 class VisualFeedbackSystem {
     static let shared = VisualFeedbackSystem()
@@ -352,7 +353,15 @@ class VisualFeedbackSystem {
     }
     
     private func getCurrentScene() -> SKScene? {
-        return (UIApplication.shared.keyWindow?.rootViewController?.view as? SKView)?.scene
+        // Get the first active window scene  
+        let windowScene = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first { $0.activationState == .foregroundActive }
+        
+        // Get the key window from the active scene
+        let keyWindow = windowScene?.windows.first { $0.isKeyWindow }
+        
+        return (keyWindow?.rootViewController?.view as? SKView)?.scene
     }
 }
 

@@ -2,14 +2,15 @@
 //  MainMenuScene.swift
 //  fish-puzzles
 //
-//  Main menu scene
+//  Main menu scene with simple UI interaction
 //
 
 import SpriteKit
 
-class MainMenuScene: BaseGameScene {
-    override func setupScene() {
-        super.setupScene()
+class MainMenuScene: BaseMenuScene {
+    
+    override func setupMenu() {
+        super.setupMenu()
         
         // Set scene scaling mode for landscape
         scaleMode = .aspectFill
@@ -36,6 +37,12 @@ class MainMenuScene: BaseGameScene {
         playButton.position = CGPoint(x: size.width/2, y: size.height * 0.4)
         playButton.name = "playButton"
         playButton.zPosition = 1
+        
+        // Add accessibility support for UI testing
+        playButton.isAccessibilityElement = true
+        playButton.accessibilityLabel = "playButton"  // This acts as the identifier in SpriteKit
+        playButton.accessibilityTraits = .button
+        
         addChild(playButton)
         
         let playLabel = SKLabelNode(text: "Play")
@@ -44,25 +51,22 @@ class MainMenuScene: BaseGameScene {
         playLabel.verticalAlignmentMode = .center
         playButton.addChild(playLabel)
         
-        // Register hotspot for play button
-        let playHotspot = Hotspot(
-            id: "play",
-            frame: playButton.frame,
-            action: { [weak self] in
-                self?.startGame()
-            }
-        )
-        interactionSystem.registerHotspot(playHotspot)
-        
         // Play menu music
         AudioManager.shared.playMusic("menu_theme")
     }
     
-    private func startGame() {
-        guard let view = view else { 
-            print("⚠️ No view available to transition scene")
-            return 
+    override func handleButtonTap(_ buttonName: String) {
+        super.handleButtonTap(buttonName)  // Plays tap sound
+        
+        switch buttonName {
+        case "playButton":
+            startGame()
+        default:
+            break
         }
-        SceneManager(view: view).loadScene("Location1")
+    }
+    
+    private func startGame() {
+        transitionToScene(named: "Location1")
     }
 }

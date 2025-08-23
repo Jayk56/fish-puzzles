@@ -95,6 +95,7 @@ class HotspotManager: HotspotDelegate {
     
     func getHotspot(at point: CGPoint) -> Hotspot? {
         for hotspot in hotspots.values {
+            print("🔍 Checking hotspot \(hotspot.id): area=\(hotspot.area), point=\(point), contains=\(hotspot.contains(point: point))")
             if hotspot.isActive && hotspot.contains(point: point) {
                 return hotspot
             }
@@ -103,11 +104,16 @@ class HotspotManager: HotspotDelegate {
     }
     
     func handleTouch(at point: CGPoint, with item: String? = nil) -> Bool {
+        print("🎮 HotspotManager: Checking touch at \(point)")
+        print("🎮 HotspotManager: Registered hotspots: \(hotspots.keys)")
+        
         if let hotspot = getHotspot(at: point) {
+            print("🎯 HotspotManager: Found hotspot: \(hotspot.id)")
             activeHotspot = hotspot
             hotspot.trigger(with: item)
             return true
         }
+        print("❌ HotspotManager: No hotspot found at this point")
         activeHotspot = nil
         return false
     }

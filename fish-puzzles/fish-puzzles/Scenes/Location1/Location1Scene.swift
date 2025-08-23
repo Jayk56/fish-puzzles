@@ -11,12 +11,17 @@ class Location1Scene: BaseGameScene {
     private var fishCharacter: SKSpriteNode!
     private var fishEntity: Entity!
     private var animationComponent: CharacterAnimationComponent!
+    private var chestEntity: Entity!
     
     override func setupScene() {
         // Set the background theme before calling super
         backgroundTheme = .tropical
         
         super.setupScene()
+        
+        // Add accessibility identifier for UI testing
+        isAccessibilityElement = true
+        accessibilityLabel = "Location1Scene"
         
         print("🏝️ Setting up Location1Scene...")
         
@@ -128,6 +133,11 @@ class Location1Scene: BaseGameScene {
         chestSprite.name = "treasureChest"
         addChild(chestSprite)
         
+        // Create chest entity and link it to the sprite
+        chestEntity = Entity()
+        chestEntity.node = chestSprite
+        entities.append(chestEntity)
+        
         // Add golden trim to make it look like a chest
         let chestTrim = SKSpriteNode(color: .systemYellow, size: CGSize(width: 100, height: 10))
         chestTrim.position = CGPoint(x: 0, y: 30)
@@ -143,11 +153,12 @@ class Location1Scene: BaseGameScene {
         let chestPosition = safePosition(normalizedX: 0.7, normalizedY: 0.3)
         let chestHotspot = Hotspot(
             id: "treasure_chest",
-            frame: CGRect(x: chestPosition.x - 50, y: chestPosition.y - 40, width: 100, height: 80),
-            action: { [weak self] in
-                self?.openTreasureChest()
-            }
+            type: .item,
+            area: CGRect(x: chestPosition.x - 50, y: chestPosition.y - 40, width: 100, height: 80),
+            description: "A locked treasure chest"
         )
+        chestHotspot.delegate = self
+        chestHotspot.node = chestSprite  // Link hotspot to its node
         interactionSystem.registerHotspot(chestHotspot)
         
         // Add a locked door as example of confused animation trigger
@@ -168,12 +179,16 @@ class Location1Scene: BaseGameScene {
         let doorPosition = safePosition(normalizedX: 0.9, normalizedY: 0.5)
         let doorHotspot = Hotspot(
             id: "locked_door",
-            frame: CGRect(x: doorPosition.x - 40, y: doorPosition.y - 60, width: 80, height: 120),
-            action: { [weak self] in
-                self?.tryLockedDoor()
-            }
+            type: .door,
+            area: CGRect(x: doorPosition.x - 40, y: doorPosition.y - 60, width: 80, height: 120),
+            description: "A locked door"
         )
+        doorHotspot.delegate = self
         interactionSystem.registerHotspot(doorHotspot)
+        
+        // Enable debug mode to visualize hotspots
+        HotspotManager.shared.setDebugMode(true)
+        HotspotManager.shared.createDebugNodes(in: self)
     }
     
     private func tryLockedDoor() {
@@ -184,39 +199,49 @@ class Location1Scene: BaseGameScene {
     
     private func openTreasureChest() {
         print("🎉 Opening treasure chest!")
-        AudioManager.shared.playSFX("chest_open")
         
-        // Play success animation on fish
-        animationComponent.playAnimation(.success)
+        // Create effects array using the new effect system
+        var effects: [Effect] = []
         
-        // Add item to inventory using the GameEngine method
+        // Add sound effect
+        effects.append(Effect(
+            type: .playSound("chest_open"),
+            target: nil,
+            delay: 0
+        ))
+        
+        // Play success animation on fish using the stored entity
+        if fishEntity != nil {
+            effects.append(Effect(
+                type: .playAnimation("success"),
+                target: fishEntity,
+                delay: 0.2
+            ))
+        }
+        
+        // Animate chest opening with pearl rising using the stored chest entity
+        if chestEntity != nil {
+            effects.append(Effect(
+                type: .playAnimation("pearl_rise"),
+                target: chestEntity,
+                delay: 0.3
+            ))
+            
+            // Add sparkle particles
+            effects.append(Effect(
+                type: .showParticles("sparkle"),
+                target: chestEntity,
+                delay: 0.5
+            ))
+        }
+        
+        // Execute all effects through the interaction system
+        interactionSystem.executeEffects(effects)
+        
+        // Add item to inventory
         let pearl = Item(id: "pearl", name: "Shiny Pearl", imageName: "pearl")
         GameEngine.shared.addItemToInventory(pearl)
         print("✨ Added Shiny Pearl to inventory!")
-        
-        // Visual feedback - chest opens
-        if let chest = childNode(withName: "treasureChest") {
-            // Animate chest opening
-            let scaleUp = SKAction.scale(to: 1.2, duration: 0.2)
-            let scaleDown = SKAction.scale(to: 1.0, duration: 0.2)
-            let fadeOut = SKAction.fadeAlpha(to: 0.5, duration: 0.5)
-            let sequence = SKAction.sequence([scaleUp, scaleDown, fadeOut])
-            chest.run(sequence)
-            
-            // Show pearl emerging from chest
-            let pearlSprite = SKShapeNode(circleOfRadius: 20)
-            pearlSprite.fillColor = .white
-            pearlSprite.strokeColor = .systemPink
-            pearlSprite.lineWidth = 2
-            pearlSprite.position = chest.position
-            addChild(pearlSprite)
-            
-            let moveUp = SKAction.moveBy(x: 0, y: 100, duration: 1.0)
-            let fadeAway = SKAction.fadeOut(withDuration: 0.5)
-            let remove = SKAction.removeFromParent()
-            let pearlSequence = SKAction.sequence([moveUp, fadeAway, remove])
-            pearlSprite.run(pearlSequence)
-        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -262,5 +287,28 @@ class Location1Scene: BaseGameScene {
     // Add a method to show confused animation when trying locked items
     private func showConfusedAnimation() {
         animationComponent.playAnimation(.confused, repeatCount: 2)
+    }
+}
+
+// MARK: - HotspotDelegate
+extension Location1Scene: HotspotDelegate {
+    func hotspotDidActivate(_ hotspot: Hotspot) {
+        // Handle activation if needed
+    }
+    
+    func hotspotDidDeactivate(_ hotspot: Hotspot) {
+        // Handle deactivation if needed
+    }
+    
+    func hotspotDidTrigger(_ hotspot: Hotspot, with item: String?) {
+        print("🎯 Hotspot triggered: \(hotspot.id) with item: \(item ?? "none")")
+        switch hotspot.id {
+        case "treasure_chest":
+            openTreasureChest()
+        case "locked_door":
+            tryLockedDoor()
+        default:
+            break
+        }
     }
 }

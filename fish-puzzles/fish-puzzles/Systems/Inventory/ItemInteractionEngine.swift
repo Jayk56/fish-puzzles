@@ -198,6 +198,10 @@ class ItemInteractionEngine {
     private func loadCombinationRecipes() {
         combinationRecipes = [
             CombinationRecipe(
+                id: "fishing_rod_recipe",
+                ingredients: Set(["stick", "string"]),
+                result: "fishing_rod",
+                description: "A simple fishing rod",
                 inputs: ["stick", "string"],
                 outputID: "fishing_rod",
                 outputName: "Fishing Rod",
@@ -207,6 +211,10 @@ class ItemInteractionEngine {
                 animation: .bind
             ),
             CombinationRecipe(
+                id: "green_paint_recipe",
+                ingredients: Set(["blue_paint", "yellow_paint"]),
+                result: "green_paint",
+                description: "Mixed green paint",
                 inputs: ["blue_paint", "yellow_paint"],
                 outputID: "green_paint",
                 outputName: "Green Paint",
@@ -264,23 +272,7 @@ enum InteractionCondition {
     case characterMet(String)
 }
 
-struct CombinationRecipe {
-    let inputs: [String]
-    let outputID: String
-    let outputName: String
-    let outputDisplayName: String
-    let outputImage: String
-    let outputDescription: String
-    let animation: CombinationAnimation
-}
-
-enum CombinationAnimation {
-    case squish
-    case bind
-    case swirl
-    case merge
-    case sparkle
-}
+// CombinationRecipe and CombinationAnimation moved to ItemCombinationSystem.swift to avoid duplication
 
 extension Entity {
     var requiresTool: Bool {

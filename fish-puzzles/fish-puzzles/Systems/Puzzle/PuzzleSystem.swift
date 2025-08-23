@@ -46,6 +46,14 @@ class Puzzle {
     var currentHintIndex: Int = 0
     var progress: Float = 0.0
     
+    // Additional properties for ProgressiveHintSystem compatibility
+    var requiredItem: Item?
+    var solutionObject: Entity?
+    var solutionPath: [CGPoint]?
+    var hint: String?
+    var explicitHint: String?
+    var explicitSolution: PuzzleSolution?
+    
     init(id: String, type: PuzzleType) {
         self.id = id
         self.type = type

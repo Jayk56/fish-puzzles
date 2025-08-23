@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SpriteKit
 
 class KeyLockPuzzle: Puzzle {
     private var keyId: String

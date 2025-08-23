@@ -31,14 +31,12 @@ class BaseGameScene: SKScene {
         // Override in subclasses
         interactionSystem = InteractionSystem(scene: self)
         
-        // Initialize HUD for game scenes (not for menu)
-        if !(self is MainMenuScene) {
-            hudManager = HUDManager(scene: self)
-            setupHUD()
-            
-            // Apply background theme to non-safe areas
-            setupBackgroundStyling()
-        }
+        // Initialize HUD and background styling for game scenes
+        hudManager = HUDManager(scene: self)
+        setupHUD()
+        
+        // Apply background theme to non-safe areas
+        setupBackgroundStyling()
         
         // Setup safe area debugging if enabled
         if showSafeAreaDebug {

@@ -26,7 +26,7 @@ class HUDContainer: SKNode {
         let location = touch.location(in: self)
         
         // Check if any active overlay wants to handle this touch
-        if let hudManager = hudManager {
+        if hudManager != nil {
             // Let active overlays handle the touch
             // Modal overlays will block touches from reaching the game
             for overlay in children {
