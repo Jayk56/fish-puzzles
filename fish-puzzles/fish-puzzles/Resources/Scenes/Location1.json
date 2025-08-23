@@ -1,0 +1,99 @@
+{
+  "sceneId": "Location1",
+  "metadata": {
+    "name": "Tropical Lagoon",
+    "author": "Core Team",
+    "version": "1.0.0",
+    "createdAt": "2024-08-20T00:00:00Z",
+    "modifiedAt": null
+  },
+  "settings": {
+    "backgroundImage": "",
+    "backgroundMusic": "underwater_ambience",
+    "ambientSound": null,
+    "lightingPreset": "bright_day",
+    "cameraLimits": null
+  },
+  "entities": [
+    {
+      "id": "treasure_chest",
+      "type": "treasure_chest",
+      "position": {
+        "x": 0.7,
+        "y": 0.3
+      },
+      "components": {
+        "sprite": {
+          "type": "sprite",
+          "properties": {
+            "size": {
+              "width": 100,
+              "height": 80
+            }
+          }
+        },
+        "interaction": {
+          "type": "interaction",
+          "properties": {
+            "type": "item",
+            "description": "A locked treasure chest",
+            "areaSize": {
+              "width": 100,
+              "height": 80
+            }
+          }
+        },
+        "navigation": {
+          "type": "navigation",
+          "properties": {
+            "approachAnchor": "center",
+            "interactionRadius": 40
+          }
+        }
+      }
+    },
+    {
+      "id": "locked_door",
+      "type": "door",
+      "position": {
+        "x": 0.9,
+        "y": 0.5
+      },
+      "components": {
+        "sprite": {
+          "type": "sprite",
+          "properties": {
+            "size": {
+              "width": 80,
+              "height": 120
+            }
+          }
+        },
+        "interaction": {
+          "type": "interaction",
+          "properties": {
+            "type": "door",
+            "description": "A locked door",
+            "areaSize": {
+              "width": 80,
+              "height": 120
+            }
+          }
+        },
+        "navigation": {
+          "type": "navigation",
+          "properties": {
+            "approachAnchor": "center",
+            "offset": {
+              "x": 0,
+              "y": -100
+            },
+            "interactionRadius": 50
+          }
+        }
+      }
+    }
+  ],
+  "puzzles": [],
+  "triggers": []
+}

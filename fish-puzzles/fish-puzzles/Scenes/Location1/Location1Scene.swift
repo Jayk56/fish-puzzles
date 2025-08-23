@@ -41,8 +41,8 @@ class Location1Scene: BaseGameScene {
         // Add fish character
         setupCharacter()
         
-        // Setup hotspots
-        setupHotspots()
+        // Setup content and hotspots (via SceneFactory if available)
+        setupContentFromDefinition()
         
         // Play underwater ambience
         AudioManager.shared.playMusic("underwater_ambience")
@@ -132,12 +132,54 @@ class Location1Scene: BaseGameScene {
         fishCharacter.run(SKAction.repeatForever(sequence), withKey: "floating")
     }
     
-    private func setupHotspots() {
+    private func setupContentFromDefinition() {
+        // Try to load JSON definition from bundle
+        if let url = Bundle.main.url(forResource: "Location1", withExtension: "json", subdirectory: "Scenes") {
+            do {
+                let def = try SceneLoader.loadScene(from: url)
+                let built = SceneFactory.build(from: def, into: self, interaction: interactionSystem)
+                // Capture references to specific entities for custom visuals/logic
+                if let chest = built.first(where: { $0.node?.name == "treasure_chest" }) {
+                    chestEntity = chest
+                    if let chestSprite = chest.node as? SKSpriteNode {
+                        chestSprite.color = .brown
+                        let chestTrim = SKSpriteNode(color: .systemYellow, size: CGSize(width: 100, height: 10))
+                        chestTrim.position = CGPoint(x: 0, y: 30)
+                        chestSprite.addChild(chestTrim)
+                        let lock = SKShapeNode(circleOfRadius: 8)
+                        lock.fillColor = .black
+                        lock.position = CGPoint(x: 0, y: 0)
+                        chestSprite.addChild(lock)
+                    }
+                }
+                if let door = built.first(where: { $0.node?.name == "locked_door" }) {
+                    if let doorSprite = door.node as? SKSpriteNode {
+                        doorSprite.color = .darkGray
+                        let handle = SKShapeNode(circleOfRadius: 5)
+                        handle.fillColor = .systemYellow
+                        handle.position = CGPoint(x: -20, y: 0)
+                        doorSprite.addChild(handle)
+                    }
+                }
+            } catch {
+                print("⚠️ Failed to load scene definition: \(error). Falling back to inline setup.")
+                setupFallbackContent()
+            }
+        } else {
+            setupFallbackContent()
+        }
+        
+        // Enable debug mode to visualize hotspots
+        HotspotManager.shared.setDebugMode(true)
+        HotspotManager.shared.createDebugNodes(in: self)
+    }
+
+    private func setupFallbackContent() {
         // Add visible treasure chest sprite
         let chestSprite = SKSpriteNode(color: .brown, size: CGSize(width: 100, height: 80))
         // Position chest in safe area (70% from left, 30% up)
         chestSprite.position = safePosition(normalizedX: 0.7, normalizedY: 0.3)
-        chestSprite.name = "treasureChest"
+        chestSprite.name = "treasure_chest"
         addChild(chestSprite)
         
         // Create chest entity and link it to the sprite
@@ -175,7 +217,7 @@ class Location1Scene: BaseGameScene {
         let doorSprite = SKSpriteNode(color: .darkGray, size: CGSize(width: 80, height: 120))
         // Position door in safe area (90% from left, 50% up)
         doorSprite.position = safePosition(normalizedX: 0.9, normalizedY: 0.5)
-        doorSprite.name = "lockedDoor"
+        doorSprite.name = "locked_door"
         addChild(doorSprite)
         
         // Add door handle
@@ -195,10 +237,6 @@ class Location1Scene: BaseGameScene {
         )
         doorHotspot.delegate = self
         interactionSystem.registerHotspot(doorHotspot)
-        
-        // Enable debug mode to visualize hotspots
-        HotspotManager.shared.setDebugMode(true)
-        HotspotManager.shared.createDebugNodes(in: self)
     }
     
     private func tryLockedDoor() {

@@ -66,6 +66,9 @@ final class ComponentRegistry {
             )
             hotspot.requiresItem = requiresItem
             hotspot.node = node
+            if let delegate = scene as? HotspotDelegate {
+                hotspot.delegate = delegate
+            }
             interaction.registerHotspot(hotspot)
         }
         
@@ -75,12 +78,42 @@ final class ComponentRegistry {
         }
         
         // Navigation zone (attach optional approach point info)
-        register(.navigation) { _, entity, data, _, _ in
+        register(.navigation) { _, entity, data, scene, _ in
             let props = data.properties
-            if let approach = props.cgPoint("approachPoint") {
+            var approach: CGPoint?
+            // 1) Absolute or normalized approachPoint
+            if var ap = props.cgPoint("approachPoint") {
+                if (0...1).contains(ap.x) && (0...1).contains(ap.y) {
+                    ap = scene.safePosition(normalizedX: ap.x, normalizedY: ap.y)
+                }
+                approach = ap
+            }
+            // 2) Anchor-based approach relative to node frame
+            if approach == nil, let anchor = props.string("approachAnchor"), let node = entity.node {
+                let frame = node.frame
+                approach = anchorPoint(for: anchor, in: frame)
+                // Optional offset (absolute pixels)
+                if let offset = props.cgPoint("offset"), let base = approach {
+                    approach = CGPoint(x: base.x + offset.x, y: base.y + offset.y)
+                }
+            }
+            
+            if let approach = approach {
                 let radius = CGFloat(props.double("interactionRadius") ?? 40.0)
                 let zone = NavigationZoneComponent(approachPoint: approach, interactionRadius: radius)
                 entity.add(zone)
+
+                // Debug marker for approach point
+                #if DEBUG
+                let marker = SKShapeNode(circleOfRadius: 5)
+                marker.fillColor = .magenta
+                marker.strokeColor = .clear
+                marker.position = approach
+                marker.zPosition = 2000
+                marker.name = "nav_approach_\(entity.node?.name ?? "")"
+                scene.addChild(marker)
+                print("🧭 Navigation: approach for \(entity.node?.name ?? "?") at \(approach) (radius=\(radius))")
+                #endif
             }
         }
     }
@@ -126,6 +159,24 @@ private extension CGPoint {
     }
 }
 
+private func anchorPoint(for anchor: String, in frame: CGRect) -> CGPoint? {
+    let a = anchor.replacingOccurrences(of: " ", with: "_").lowercased()
+    let midX = (frame.minX + frame.maxX) / 2
+    let midY = (frame.minY + frame.maxY) / 2
+    switch a {
+    case "top_left", "left_top": return CGPoint(x: frame.minX, y: frame.maxY)
+    case "top_center", "center_top": return CGPoint(x: midX, y: frame.maxY)
+    case "top_right", "right_top": return CGPoint(x: frame.maxX, y: frame.maxY)
+    case "center_left", "left_center": return CGPoint(x: frame.minX, y: midY)
+    case "center", "middle": return CGPoint(x: midX, y: midY)
+    case "center_right", "right_center": return CGPoint(x: frame.maxX, y: midY)
+    case "bottom_left", "left_bottom": return CGPoint(x: frame.minX, y: frame.minY)
+    case "bottom_center", "center_bottom": return CGPoint(x: midX, y: frame.minY)
+    case "bottom_right", "right_bottom": return CGPoint(x: frame.maxX, y: frame.minY)
+    default: return nil
+    }
+}
+
 private extension HotspotType {
     static func from(_ str: String) -> HotspotType {
         switch str.lowercased() {
@@ -138,4 +189,3 @@ private extension HotspotType {
         }
     }
 }
-

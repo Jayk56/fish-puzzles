@@ -512,6 +512,7 @@ extension InteractionSystem {
     private func moveToHotspotAndTrigger(_ hotspot: Hotspot, with item: String?) {
         guard let scene = scene else { return }
         let approach = approachPoint(for: hotspot)
+        print("🚶 Moving to hotspot \(hotspot.id) approach: \(approach)")
         scene.movementSystem?.movePlayer(to: approach) { [weak hotspot] in
             hotspot?.trigger(with: item)
         }
