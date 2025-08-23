@@ -9,9 +9,10 @@ import SpriteKit
 
 class PersistentInventoryBar: SKNode {
     static let maxVisibleSlots = 5
-    static let slotSize = CGSize(width: 80, height: 80)
-    static let barHeight: CGFloat = 100  // Matches SafeAreaManager.inventoryBarHeight
-    
+
+    private let slotSize: CGSize
+    private let barHeight: CGFloat
+
     private(set) var visibleSlots: [InventorySlot] = []
     private var selectedSlot: InventorySlot?
     private var overflowItems: [Item] = []
@@ -33,10 +34,13 @@ class PersistentInventoryBar: SKNode {
     var onItemSelected: ((Item?) -> Void)?
     var onItemDragStart: ((Item, CGPoint) -> Void)?
     var onItemDragEnd: ((Item, CGPoint) -> Void)?
-    
+
     init(size: CGSize) {
-        let barSize = CGSize(width: size.width, height: Self.barHeight)
-        
+        self.barHeight = SafeAreaManager.inventoryBarHeight(for: size.width)
+        self.slotSize = CGSize(width: barHeight - 20, height: barHeight - 20)
+
+        let barSize = CGSize(width: size.width, height: barHeight)
+
         // Create a completely opaque black background using Core Graphics
         UIGraphicsBeginImageContextWithOptions(barSize, true, 0)  // 'true' makes it opaque
         let context = UIGraphicsGetCurrentContext()!
@@ -45,41 +49,41 @@ class PersistentInventoryBar: SKNode {
         context.fill(CGRect(origin: .zero, size: barSize))
         let blackImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
+
         // Create the texture and sprite
         let blackTexture = SKTexture(image: blackImage)
         blackTexture.filteringMode = .nearest  // No filtering
-        
+
         // Use texture-based sprite with no possibility of color modification
         backgroundBar = SKSpriteNode(texture: blackTexture)
         backgroundBar.size = barSize
         backgroundBar.blendMode = .replace  // Replace mode ignores any underlying colors
         backgroundBar.color = .white  // White color means no tinting
         backgroundBar.colorBlendFactor = 0  // Absolutely no color blending
-        
+
         // Add border as separate shape node
         backgroundBorder = SKShapeNode(rectOf: barSize, cornerRadius: 10)
         backgroundBorder.fillColor = .clear
         backgroundBorder.strokeColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 1.0)
         backgroundBorder.lineWidth = 2
-        
-        selectedIndicator = SKShapeNode(rectOf: CGSize(width: 90, height: 90), cornerRadius: 12)
+
+        selectedIndicator = SKShapeNode(rectOf: CGSize(width: slotSize.width + 10, height: slotSize.height + 10), cornerRadius: 12)
         selectedIndicator.strokeColor = .systemYellow
         selectedIndicator.lineWidth = 3
         selectedIndicator.glowWidth = 5
         selectedIndicator.fillColor = .clear
         selectedIndicator.isHidden = true
-        
+
         leftButtonContainer = SKNode()
         rightButtonContainer = SKNode()
-        
+
         super.init()
-        
+
         setupBar(size: size)
         setupSlots()
         setupMoreButton()
         setupButtonContainers()
-        
+
         isUserInteractionEnabled = true
     }
     
@@ -89,7 +93,7 @@ class PersistentInventoryBar: SKNode {
     
     private func setupBar(size: CGSize) {
         // Position at bottom of screen (now relative to scene, not container)
-        position = CGPoint(x: size.width/2, y: Self.barHeight/2)
+        position = CGPoint(x: size.width/2, y: barHeight/2)
         zPosition = 5000  // Extremely high z-position
         
         // Ensure this node is fully opaque and interactive
@@ -118,13 +122,13 @@ class PersistentInventoryBar: SKNode {
     }
     
     private func setupSlots() {
-        let totalWidth = CGFloat(Self.maxVisibleSlots) * (Self.slotSize.width + slotSpacing) - slotSpacing
-        let startX = -totalWidth / 2 + Self.slotSize.width / 2
-        
+        let totalWidth = CGFloat(Self.maxVisibleSlots) * (slotSize.width + slotSpacing) - slotSpacing
+        let startX = -totalWidth / 2 + slotSize.width / 2
+
         for i in 0..<Self.maxVisibleSlots {
-            let slot = InventorySlot(size: Self.slotSize)
+            let slot = InventorySlot(size: slotSize)
             slot.position = CGPoint(
-                x: startX + CGFloat(i) * (Self.slotSize.width + slotSpacing),
+                x: startX + CGFloat(i) * (slotSize.width + slotSpacing),
                 y: 0
             )
             slot.zPosition = 2
@@ -136,12 +140,12 @@ class PersistentInventoryBar: SKNode {
     }
     
     private func setupMoreButton() {
-        let buttonSize = CGSize(width: 60, height: 60)
+        let buttonSize = CGSize(width: slotSize.width * 0.75, height: slotSize.height * 0.75)
         let lastSlot = visibleSlots.last!
-        
+
         moreButton = HUDButton(type: .inventory, size: buttonSize)
         moreButton?.position = CGPoint(
-            x: lastSlot.position.x + Self.slotSize.width/2 + slotSpacing + buttonSize.width/2,
+            x: lastSlot.position.x + slotSize.width/2 + slotSpacing + buttonSize.width/2,
             y: 0
         )
         moreButton?.zPosition = 2
@@ -214,12 +218,14 @@ class PersistentInventoryBar: SKNode {
     
     private func setupButtonContainers() {
         // Left button container (for inventory, map buttons)
-        leftButtonContainer.position = CGPoint(x: -backgroundBar.size.width/2 + 100, y: 0)
+        let edgePadding: CGFloat = 20
+        let halfButton: CGFloat = (slotSize.width * 0.75) / 2
+        leftButtonContainer.position = CGPoint(x: -backgroundBar.size.width/2 + edgePadding + halfButton, y: 0)
         leftButtonContainer.zPosition = 3
         addChild(leftButtonContainer)
-        
+
         // Right button container (for settings, hint buttons)
-        rightButtonContainer.position = CGPoint(x: backgroundBar.size.width/2 - 100, y: 0)
+        rightButtonContainer.position = CGPoint(x: backgroundBar.size.width/2 - edgePadding - halfButton, y: 0)
         rightButtonContainer.zPosition = 3
         addChild(rightButtonContainer)
     }
@@ -230,10 +236,10 @@ class PersistentInventoryBar: SKNode {
         
         switch position {
         case .left(let index):
-            button.position = CGPoint(x: CGFloat(index) * 60, y: 0)
+            button.position = CGPoint(x: CGFloat(index) * (button.size.width + 10), y: 0)
             leftButtonContainer.addChild(button)
         case .right(let index):
-            button.position = CGPoint(x: CGFloat(-index) * 60, y: 0)
+            button.position = CGPoint(x: CGFloat(-index) * (button.size.width + 10), y: 0)
             rightButtonContainer.addChild(button)
         }
         
