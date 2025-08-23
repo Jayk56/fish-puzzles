@@ -175,39 +175,52 @@ class DragDropSystem {
     
     private func findDropTarget(at location: CGPoint) -> SKNode? {
         guard let scene = scene else { return nil }
-        
         let nodes = scene.nodes(at: location)
         
+        // Prefer inventory slots first
+        if let slot = nodes.first(where: { $0 is InventorySlot }) {
+            return slot
+        }
+        
+        // Otherwise, any node that belongs to an entity
         for node in nodes {
-            if node is InventorySlot || node is Entity {
+            if resolveEntity(from: node) != nil {
                 return node
             }
         }
-        
+        return nil
+    }
+
+    private func resolveEntity(from node: SKNode) -> Entity? {
+        guard let gameScene = scene as? BaseGameScene else { return nil }
+        var current: SKNode? = node
+        while let n = current {
+            if let entity = gameScene.entities.first(where: { $0.node === n }) {
+                return entity
+            }
+            current = n.parent
+        }
         return nil
     }
     
     private func canDropItem(_ item: Item, on target: SKNode) -> Bool {
-        if let slot = target as? InventorySlot,
-           let slotItem = slot.item {
+        if let slot = target as? InventorySlot, let slotItem = slot.item {
             return InventoryManager.shared.canCombineItems(item, slotItem)
         }
-        
-        if let entity = target as? Entity {
+        if let entity = resolveEntity(from: target) {
             return ItemInteractionEngine.shared.canUseItem(item, on: entity)
         }
-        
         return false
     }
     
     private func performDrop(item: Item, on target: SKNode) {
-        if let slot = target as? InventorySlot,
-           let slotItem = slot.item {
-            
+        if let slot = target as? InventorySlot, let slotItem = slot.item {
             animateCombination(item: item, with: slotItem, at: slot.position) {
                 _ = InventoryManager.shared.combineItems(item, slotItem)
             }
-        } else if let entity = target as? Entity {
+            return
+        }
+        if let entity = resolveEntity(from: target) {
             animateUse(item: item, on: entity) {
                 let result = InventoryManager.shared.useItem(item, on: entity)
                 if result.isSuccess {
@@ -265,11 +278,9 @@ class DragDropSystem {
     }
     
     private func highlightValidDropTargets(for item: Item) {
-        guard let scene = scene else { return }
-        
-        scene.enumerateChildNodes(withName: "//entity") { node, _ in
-            if let entity = node as? Entity,
-               ItemInteractionEngine.shared.canUseItem(item, on: entity) {
+        guard let gameScene = scene as? BaseGameScene else { return }
+        gameScene.entities.forEach { entity in
+            if ItemInteractionEngine.shared.canUseItem(item, on: entity), let node = entity.node {
                 self.addHighlight(to: node, color: .systemGreen)
             }
         }

@@ -49,6 +49,10 @@ class Location1Scene: BaseGameScene {
         
         print("✅ Location1Scene ready! Tap to move fish, tap treasure chest to collect pearl.")
     }
+
+    override func getPlayerPosition() -> CGPoint? {
+        return fishCharacter?.position
+    }
     
     override func setupHUD() {
         super.setupHUD()
@@ -114,6 +118,9 @@ class Location1Scene: BaseGameScene {
         // Add animation component
         animationComponent = CharacterAnimationComponent()
         fishEntity.add(animationComponent)
+        
+        // Register as the player for movement system
+        movementSystem?.playerEntity = fishEntity
         
         // Add entity to scene's entity list
         entities.append(fishEntity)
@@ -256,32 +263,8 @@ class Location1Scene: BaseGameScene {
             return  // Don't move fish if interacting with something
         }
         
-        // Nothing was touched except empty space - move the fish!
-        // Constrain movement to safe area
-        let safeArea = safeGameplayArea
-        let constrainedLocation = CGPoint(
-            x: max(safeArea.minX + 40, min(safeArea.maxX - 40, location.x)),
-            y: max(safeArea.minY + 30, min(safeArea.maxY - 30, location.y))
-        )
-        
-        // Face the correct direction
-        animationComponent.faceDirection(movingTo: constrainedLocation)
-        
-        // Calculate distance for accurate animation duration
-        let distance = hypot(constrainedLocation.x - fishCharacter.position.x, 
-                           constrainedLocation.y - fishCharacter.position.y)
-        let duration = Double(distance / 200.0) // Speed: 200 points per second
-        
-        // Play swimming animation for the duration of movement
-        let swimRepeats = Int(ceil(duration / 0.6)) // Each swim cycle is ~0.6 seconds
-        animationComponent.playAnimation(.swimming, repeatCount: swimRepeats)
-        
-        // Move the fish
-        let moveAction = SKAction.move(to: constrainedLocation, duration: duration)
-        fishCharacter.run(moveAction) { [weak self] in
-            // Return to idle when movement completes
-            self?.animationComponent.playAnimation(.idle)
-        }
+        // Nothing else handled the touch: move the player via movement system
+        movementSystem?.movePlayer(to: location)
     }
     
     // Add a method to show confused animation when trying locked items

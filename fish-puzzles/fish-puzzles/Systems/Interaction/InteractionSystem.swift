@@ -12,9 +12,28 @@ final class InteractionSystem {
     private var hotspots: [Hotspot] = []
     private var itemCursor: ItemCursor?
     private var highlightedHotspots: Set<String> = []
-    
-    init(scene: BaseGameScene) {
+
+    // Injected dependencies (scene-scoped by default)
+    private let hotspotManager: HotspotManaging
+    private let visualFeedback: VisualFeedbackProviding
+    private let audio: AudioPlaying
+    private let hintSystem: HintProviding
+    private let inventory: InventoryManaging
+
+    init(
+        scene: BaseGameScene,
+        hotspotManager: HotspotManaging = HotspotManager.shared,
+        visualFeedback: VisualFeedbackProviding = VisualFeedbackSystem.shared,
+        audio: AudioPlaying = AudioManager.shared,
+        hintSystem: HintProviding = ProgressiveHintSystem.shared,
+        inventory: InventoryManaging = InventoryManager.shared
+    ) {
         self.scene = scene
+        self.hotspotManager = hotspotManager
+        self.visualFeedback = visualFeedback
+        self.audio = audio
+        self.hintSystem = hintSystem
+        self.inventory = inventory
         setupItemCursor()
         setupInventoryCallbacks()
     }
@@ -34,32 +53,32 @@ final class InteractionSystem {
     
     func registerHotspot(_ hotspot: Hotspot) {
         hotspots.append(hotspot)
-        HotspotManager.shared.register(hotspot)
+        hotspotManager.register(hotspot)
     }
     
     func removeHotspot(id: String) {
         hotspots.removeAll { $0.id == id }
         highlightedHotspots.remove(id)
-        HotspotManager.shared.unregister(id)
+        hotspotManager.unregister(id)
     }
     
     func handleTouch(at point: CGPoint) -> Bool {
         print("🔍 InteractionSystem: Handling touch at \(point)")
         // Reset hint system on interaction
-        ProgressiveHintSystem.shared.playerInteracted()
+        hintSystem.playerInteracted()
         
         // Check if we have a selected item
-        if let selectedItem = InventoryManager.shared.selectedItem {
+        if let selectedItem = inventory.selectedItem {
             return handleItemUse(item: selectedItem, at: point)
         }
         
         // Use HotspotManager to handle hotspots
-        let currentItem = InventoryManager.shared.selectedItem?.id
+        let currentItem = inventory.selectedItem?.id
         print("🔍 InteractionSystem: Checking hotspots with HotspotManager...")
-        if HotspotManager.shared.handleTouch(at: point, with: currentItem) {
+        if hotspotManager.handleTouch(at: point, with: currentItem) {
             print("✅ InteractionSystem: Hotspot handled!")
-            AudioManager.shared.playSFX("tap")
-            VisualFeedbackSystem.shared.showInteractionFeedback(
+            audio.playSFX("tap")
+            visualFeedback.showInteractionFeedback(
                 at: point,
                 type: .use
             )
@@ -72,32 +91,27 @@ final class InteractionSystem {
         scene?.entities.forEach { entity in
             guard let node = entity.node,
                   let _ = entity.get(InteractableComponent.self) else { return }
-            
             if node.contains(point) {
                 handleEntityInteraction(entity, at: point)
                 handled = true
             }
         }
         
-        // If nothing was interacted with, move character
-        if !handled {
-            moveCharacter(to: point)
-        }
-        
+        // Do not move here; movement is handled by scenes or a dedicated MovementSystem
         return handled
     }
     
     private func handleItemUse(item: Item, at point: CGPoint) -> Bool {
         // Find target entity at point
         if let targetEntity = findEntity(at: point) {
-            let result = InventoryManager.shared.useItem(item, on: targetEntity)
+            let result = inventory.useItem(item, on: targetEntity)
             
             switch result {
             case .success(let effects):
                 executeEffects(effects)
-                VisualFeedbackSystem.shared.showSuccess(at: point)
+                visualFeedback.showSuccess(at: point)
                 itemCursor?.animateUse(success: true) {
-                    InventoryManager.shared.selectItem(nil)
+                    self.inventory.selectItem(nil)
                 }
                 return true
                 
@@ -121,14 +135,14 @@ final class InteractionSystem {
         }
         
         // Deselect item if tapped on empty space
-        InventoryManager.shared.selectItem(nil)
+        inventory.selectItem(nil)
         return false
     }
     
     private func handleEntityInteraction(_ entity: Entity, at point: CGPoint) {
         if let interactable = entity.get(InteractableComponent.self) {
             let interactionType = determineInteractionType(for: entity)
-            VisualFeedbackSystem.shared.showInteractionFeedback(
+            visualFeedback.showInteractionFeedback(
                 at: point,
                 type: interactionType
             )
@@ -148,7 +162,7 @@ final class InteractionSystem {
     
     private func moveCharacter(to point: CGPoint) {
         // Implement character movement
-        VisualFeedbackSystem.shared.showInteractionFeedback(
+        visualFeedback.showInteractionFeedback(
             at: point,
             type: .move
         )
@@ -176,7 +190,7 @@ final class InteractionSystem {
             // Play footstep sounds during movement
             let footstepAction = SKAction.repeat(
                 SKAction.sequence([
-                    SKAction.run { AudioManager.shared.playSFX("footstep") },
+                    SKAction.run { self.audio.playSFX("footstep") },
                     SKAction.wait(forDuration: 0.3)
                 ]), 
                 count: Int(duration / 0.3)
@@ -185,7 +199,7 @@ final class InteractionSystem {
             node.run(SKAction.group([moveAction, footstepAction]))
         } else {
             // Fallback: just play sound if no character found
-            AudioManager.shared.playSFX("footstep")
+            audio.playSFX("footstep")
         }
     }
     
@@ -219,14 +233,14 @@ final class InteractionSystem {
         scene?.entities.forEach { entity in
             if ItemInteractionEngine.shared.canUseItem(item, on: entity) {
                 if let node = entity.node {
-                    VisualFeedbackSystem.shared.showValidTarget(node: node)
+                    visualFeedback.showValidTarget(node: node)
                 }
             }
         }
     }
     
     private func clearHighlights() {
-        VisualFeedbackSystem.shared.clearAllEffects()
+        visualFeedback.clearAllEffects()
         highlightedHotspots.removeAll()
     }
     
@@ -241,7 +255,7 @@ final class InteractionSystem {
     private func executeEffect(_ effect: Effect) {
         switch effect.type {
         case .playSound(let sound):
-            AudioManager.shared.playSFX(sound)
+            audio.playSFX(sound)
             
         case .playAnimation(let animation):
             // First check if the target has a CharacterAnimationComponent
@@ -298,7 +312,7 @@ final class InteractionSystem {
                         ])
                         sprite.run(chestScale)
                         
-                        AudioManager.shared.playSFX("magic_sparkle")
+                        self.audio.playSFX("magic_sparkle")
                     }
                     
                 default:
@@ -414,11 +428,11 @@ final class InteractionSystem {
                         
                         // Visual feedback for unlock
                         if let node = entity.node {
-                            VisualFeedbackSystem.shared.showInteractionFeedback(
+                            self.visualFeedback.showInteractionFeedback(
                                 at: node.position,
                                 type: .use
                             )
-                            AudioManager.shared.playSFX("unlock")
+                            self.audio.playSFX("unlock")
                         }
                     }
                 }
@@ -462,17 +476,14 @@ final class InteractionSystem {
     }
     
     private func highlightHotspot(_ hotspot: Hotspot, distance: CGFloat) {
-        guard let node = scene?.childNode(withName: hotspot.id) else { return }
-        
-        let glowLevel: GlowLevel = distance < 50 ? .strong :
-                                   distance < 100 ? .moderate : .subtle
-        
-        VisualFeedbackSystem.shared.showHotspotGlow(on: node, level: glowLevel)
+        guard let node = hotspot.node ?? scene?.childNode(withName: hotspot.id) else { return }
+        let glowLevel: GlowLevel = distance < 50 ? .strong : distance < 100 ? .moderate : .subtle
+        visualFeedback.showHotspotGlow(on: node, level: glowLevel)
     }
     
     private func unhighlightHotspot(_ hotspot: Hotspot) {
-        guard scene?.childNode(withName: hotspot.id) != nil else { return }
-        VisualFeedbackSystem.shared.clearAllEffects()
+        guard let node = hotspot.node ?? scene?.childNode(withName: hotspot.id) else { return }
+        visualFeedback.clearEffects(on: node)
     }
     
     func handleTouchMoved(_ touch: UITouch) {
@@ -480,12 +491,12 @@ final class InteractionSystem {
         let location = touch.location(in: scene)
         
         // Update item cursor position if item is selected
-        if InventoryManager.shared.selectedItem != nil {
+        if inventory.selectedItem != nil {
             itemCursor?.updatePosition(location)
             
             // Check if over valid target
             if let targetEntity = findEntity(at: location) {
-                if let item = InventoryManager.shared.selectedItem,
+                if let item = inventory.selectedItem,
                    ItemInteractionEngine.shared.canUseItem(item, on: targetEntity) {
                     itemCursor?.showValidTarget()
                 } else {

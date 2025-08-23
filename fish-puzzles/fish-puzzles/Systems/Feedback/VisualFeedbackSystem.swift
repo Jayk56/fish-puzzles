@@ -12,8 +12,13 @@ class VisualFeedbackSystem {
     static let shared = VisualFeedbackSystem()
     
     private var activeEffects: Set<SKNode> = []
+    private weak var sceneRef: SKScene?
     
     private init() {}
+
+    func setScene(_ scene: SKScene) {
+        self.sceneRef = scene
+    }
     
     func showHotspotGlow(on node: SKNode, level: GlowLevel) {
         removeEffect(from: node, named: "hotspotGlow")
@@ -353,14 +358,14 @@ class VisualFeedbackSystem {
     }
     
     private func getCurrentScene() -> SKScene? {
-        // Get the first active window scene  
+        // Prefer injected scene reference when available
+        if let scene = sceneRef { return scene }
+        
+        // Fallback to UI search (iOS only)
         let windowScene = UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
             .first { $0.activationState == .foregroundActive }
-        
-        // Get the key window from the active scene
         let keyWindow = windowScene?.windows.first { $0.isKeyWindow }
-        
         return (keyWindow?.rootViewController?.view as? SKView)?.scene
     }
 }

@@ -86,7 +86,10 @@ class HotspotManager: HotspotDelegate {
     
     func register(_ hotspot: Hotspot) {
         hotspots[hotspot.id] = hotspot
-        hotspot.delegate = self
+        // Only set ourself as delegate if no delegate has been set by the scene.
+        if hotspot.delegate == nil {
+            hotspot.delegate = self
+        }
     }
     
     func unregister(_ hotspotId: String) {

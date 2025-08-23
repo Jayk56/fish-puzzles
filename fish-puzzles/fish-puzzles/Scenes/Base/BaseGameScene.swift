@@ -12,6 +12,7 @@ class BaseGameScene: SKScene {
     var interactionSystem: InteractionSystem!
     var hudManager: HUDManager?
     var dragDropSystem: DragDropSystem?
+    var movementSystem: MovementSystem?
     var currentPuzzle: Puzzle?
     
     // Safe area management
@@ -35,6 +36,9 @@ class BaseGameScene: SKScene {
         hudManager = HUDManager(scene: self)
         setupHUD()
         
+        // Provide scene reference to visual feedback system for injected usage
+        VisualFeedbackSystem.shared.setScene(self)
+        
         // Apply background theme to non-safe areas
         setupBackgroundStyling()
         
@@ -53,6 +57,9 @@ class BaseGameScene: SKScene {
         dragDropSystem = DragDropSystem.shared
         dragDropSystem?.scene = self
         dragDropSystem?.inventoryBar = hudManager?.inventoryBar
+        
+        // Setup movement system (player-controlled movement only)
+        movementSystem = MovementSystem(scene: self)
         
         // Setup inventory connections
         InventoryManager.shared.persistentBar = hudManager?.inventoryBar
