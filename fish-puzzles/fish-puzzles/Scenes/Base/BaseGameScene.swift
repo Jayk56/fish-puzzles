@@ -60,6 +60,12 @@ class BaseGameScene: SKScene {
         
         // Setup movement system (player-controlled movement only)
         movementSystem = MovementSystem(scene: self)
+        // If a player entity has already been created, assign it now
+        if movementSystem?.playerEntity == nil {
+            if let player = entities.first(where: { $0.node?.name == "player" }) {
+                movementSystem?.playerEntity = player
+            }
+        }
         
         // Setup inventory connections
         InventoryManager.shared.persistentBar = hudManager?.inventoryBar
@@ -187,7 +193,8 @@ class BaseGameScene: SKScene {
             return  // A game hotspot was touched
         }
         
-        // If nothing handled it, subclasses can process (e.g., move character)
+        // If nothing handled it, move the player to the tapped location
+        movementSystem?.movePlayer(to: location)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {

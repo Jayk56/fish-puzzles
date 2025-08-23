@@ -72,16 +72,14 @@ final class InteractionSystem {
             return handleItemUse(item: selectedItem, at: point)
         }
         
-        // Use HotspotManager to handle hotspots
+        // Use HotspotManager to detect hotspots, then move to approach point and trigger
         let currentItem = inventory.selectedItem?.id
         print("🔍 InteractionSystem: Checking hotspots with HotspotManager...")
-        if hotspotManager.handleTouch(at: point, with: currentItem) {
-            print("✅ InteractionSystem: Hotspot handled!")
+        if let hotspot = hotspotManager.getHotspot(at: point) {
+            print("✅ InteractionSystem: Hotspot tapped: \(hotspot.id)")
             audio.playSFX("tap")
-            visualFeedback.showInteractionFeedback(
-                at: point,
-                type: .use
-            )
+            visualFeedback.showInteractionFeedback(at: point, type: .use)
+            moveToHotspotAndTrigger(hotspot, with: currentItem)
             return true
         }
         print("❌ InteractionSystem: No hotspot at this point")
@@ -506,5 +504,38 @@ final class InteractionSystem {
                 itemCursor?.showNeutral()
             }
         }
+    }
+}
+
+// MARK: - Hotspot Movement Coordination
+extension InteractionSystem {
+    private func moveToHotspotAndTrigger(_ hotspot: Hotspot, with item: String?) {
+        guard let scene = scene else { return }
+        let approach = approachPoint(for: hotspot)
+        scene.movementSystem?.movePlayer(to: approach) { [weak hotspot] in
+            hotspot?.trigger(with: item)
+        }
+    }
+    
+    private func approachPoint(for hotspot: Hotspot) -> CGPoint {
+        // Prefer an explicit navigation zone if the hotspot's node belongs to an entity
+        if let node = hotspot.node, let entity = resolveEntity(from: node) {
+            if let zone = entity.get(NavigationZoneComponent.self) {
+                return zone.approachPoint
+            }
+        }
+        // Fallback just below the hotspot area
+        return CGPoint(x: hotspot.area.midX, y: hotspot.area.minY - 40)
+    }
+    
+    private func resolveEntity(from node: SKNode) -> Entity? {
+        var current: SKNode? = node
+        while let n = current {
+            if let entity = scene?.entities.first(where: { $0.node === n }) {
+                return entity
+            }
+            current = n.parent
+        }
+        return nil
     }
 }

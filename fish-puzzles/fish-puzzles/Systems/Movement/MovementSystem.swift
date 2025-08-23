@@ -15,7 +15,7 @@ final class MovementSystem {
         self.scene = scene
     }
     
-    func movePlayer(to point: CGPoint) {
+    func movePlayer(to point: CGPoint, completion: (() -> Void)? = nil) {
         guard let scene = scene,
               let player = playerEntity,
               let node = player.node as? SKSpriteNode else { return }
@@ -47,7 +47,7 @@ final class MovementSystem {
             if let anim = player?.get(CharacterAnimationComponent.self) {
                 anim.playAnimation(.idle)
             }
+            completion?()
         }
     }
 }
-

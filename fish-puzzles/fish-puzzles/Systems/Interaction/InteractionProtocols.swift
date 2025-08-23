@@ -11,6 +11,7 @@ protocol HotspotManaging: AnyObject {
     func register(_ hotspot: Hotspot)
     func unregister(_ hotspotId: String)
     func handleTouch(at point: CGPoint, with item: String?) -> Bool
+    func getHotspot(at point: CGPoint) -> Hotspot?
 }
 
 protocol VisualFeedbackProviding: AnyObject {

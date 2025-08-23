@@ -144,6 +144,9 @@ class Location1Scene: BaseGameScene {
         chestEntity = Entity()
         chestEntity.node = chestSprite
         entities.append(chestEntity)
+        // Add a navigation zone so the player moves to a fixed approach point
+        let chestApproach = NavigationZoneComponent.chest(at: chestSprite.position)
+        chestEntity.add(chestApproach)
         
         // Add golden trim to make it look like a chest
         let chestTrim = SKSpriteNode(color: .systemYellow, size: CGSize(width: 100, height: 10))
