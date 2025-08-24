@@ -8,9 +8,12 @@
 import SpriteKit
 
 class PersistentInventoryBar: SKNode {
-    static let maxVisibleSlots = 5
-    static let slotSize = CGSize(width: 80, height: 80)
-    static let barHeight: CGFloat = 100  // Matches SafeAreaManager.inventoryBarHeight
+    // Max visible slots adapts to width; keep static so other systems can reference it
+    static var maxVisibleSlots = 5
+    // Slot size adapts to bar height
+    private(set) var slotSize = CGSize(width: 80, height: 80)
+    // Instance bar height (synced with SafeAreaManager)
+    private(set) var barHeight: CGFloat = 100  // Matches SafeAreaManager.inventoryBarHeight
     
     private(set) var visibleSlots: [InventorySlot] = []
     private var selectedSlot: InventorySlot?
@@ -34,8 +37,14 @@ class PersistentInventoryBar: SKNode {
     var onItemDragStart: ((Item, CGPoint) -> Void)?
     var onItemDragEnd: ((Item, CGPoint) -> Void)?
     
+    private var lastKnownSceneSize: CGSize
+
     init(size: CGSize) {
-        let barSize = CGSize(width: size.width, height: Self.barHeight)
+        // Calculate responsive bar metrics up front
+        self.lastKnownSceneSize = size
+        self.barHeight = Self.preferredBarHeight(for: size)
+        SafeAreaManager.setInventoryBarHeight(self.barHeight)
+        let barSize = CGSize(width: size.width, height: self.barHeight)
         
         // Create a completely opaque black background using Core Graphics
         UIGraphicsBeginImageContextWithOptions(barSize, true, 0)  // 'true' makes it opaque
@@ -76,9 +85,8 @@ class PersistentInventoryBar: SKNode {
         super.init()
         
         setupBar(size: size)
-        setupSlots()
-        setupMoreButton()
         setupButtonContainers()
+        relayout(for: size)
         
         isUserInteractionEnabled = true
     }
@@ -89,7 +97,7 @@ class PersistentInventoryBar: SKNode {
     
     private func setupBar(size: CGSize) {
         // Position at bottom of screen (now relative to scene, not container)
-        position = CGPoint(x: size.width/2, y: Self.barHeight/2)
+        position = CGPoint(x: size.width/2, y: barHeight/2)
         zPosition = 5000  // Extremely high z-position
         
         // Ensure this node is fully opaque and interactive
@@ -117,42 +125,17 @@ class PersistentInventoryBar: SKNode {
         addChild(selectedIndicator)
     }
     
-    private func setupSlots() {
-        let totalWidth = CGFloat(Self.maxVisibleSlots) * (Self.slotSize.width + slotSpacing) - slotSpacing
-        let startX = -totalWidth / 2 + Self.slotSize.width / 2
-        
-        for i in 0..<Self.maxVisibleSlots {
-            let slot = InventorySlot(size: Self.slotSize)
-            slot.position = CGPoint(
-                x: startX + CGFloat(i) * (Self.slotSize.width + slotSpacing),
-                y: 0
-            )
-            slot.zPosition = 2
-            slot.slotIndex = i
-            
-            addChild(slot)
-            visibleSlots.append(slot)
+    private func setupMoreButtonIfNeeded(buttonSize: CGSize, at positionX: CGFloat) {
+        if moreButton == nil {
+            moreButton = HUDButton(type: .inventory, size: buttonSize)
+            moreButton?.zPosition = 2
+            moreButton?.onTap = { [weak self] in
+                self?.hudManager?.show(.inventory)
+            }
+            if let button = moreButton { addChild(button) }
         }
-    }
-    
-    private func setupMoreButton() {
-        let buttonSize = CGSize(width: 60, height: 60)
-        let lastSlot = visibleSlots.last!
-        
-        moreButton = HUDButton(type: .inventory, size: buttonSize)
-        moreButton?.position = CGPoint(
-            x: lastSlot.position.x + Self.slotSize.width/2 + slotSpacing + buttonSize.width/2,
-            y: 0
-        )
-        moreButton?.zPosition = 2
-        moreButton?.onTap = { [weak self] in
-            self?.hudManager?.show(.inventory)
-        }
-        
-        if let button = moreButton {
-            addChild(button)
-        }
-        
+        moreButton?.position = CGPoint(x: positionX, y: 0)
+        moreButton?.resize(to: buttonSize)
         updateMoreButton()
     }
     
@@ -239,6 +222,8 @@ class PersistentInventoryBar: SKNode {
         
         button.zPosition = 4
         persistentButtons.append(button)
+        // Relayout to account for new buttons
+        relayout(for: lastKnownSceneSize)
     }
     
     func removePersistentButton(_ button: HUDButton) {
@@ -353,7 +338,7 @@ class PersistentInventoryBar: SKNode {
 }
 
 class InventorySlot: SKNode {
-    private let slotSize: CGSize
+    private(set) var slotSize: CGSize
     private let background: SKShapeNode
     private var itemSprite: SKSpriteNode?
     private var glowEffect: SKEffectNode?
@@ -388,10 +373,7 @@ class InventorySlot: SKNode {
         self.item = item
         
         itemSprite = SKSpriteNode(imageNamed: item.imageName)
-        itemSprite?.size = CGSize(
-            width: slotSize.width * 0.7,
-            height: slotSize.height * 0.7
-        )
+        itemSprite?.size = CGSize(width: slotSize.width * 0.7, height: slotSize.height * 0.7)
         itemSprite?.position = .zero
         itemSprite?.zPosition = 1
         
@@ -469,5 +451,126 @@ class InventorySlot: SKNode {
             SKAction.scale(to: 1.2, duration: 0.2),
             SKAction.scale(to: 1.0, duration: 0.1)
         ]))
+    }
+
+    func resize(to size: CGSize) {
+        slotSize = size
+        background.path = CGPath(roundedRect: CGRect(origin: .zero, size: size).offsetBy(dx: -size.width/2, dy: -size.height/2), cornerWidth: 8, cornerHeight: 8, transform: nil)
+        if let sprite = itemSprite {
+            sprite.size = CGSize(width: size.width * 0.7, height: size.height * 0.7)
+        }
+    }
+}
+
+// MARK: - Responsive Layout
+extension PersistentInventoryBar {
+    /// Calculate a reasonable bar height for the given scene size
+    static func preferredBarHeight(for size: CGSize) -> CGFloat {
+        // 12% of height on phones; clamp to keep it usable across devices
+        let target = size.height * 0.12
+        return max(72, min(target, 140))
+    }
+
+    /// Recompute sizes, counts, and positions based on the new scene size
+    func resize(to size: CGSize) {
+        lastKnownSceneSize = size
+
+        // Update bar height and notify safe area manager
+        barHeight = Self.preferredBarHeight(for: size)
+        SafeAreaManager.setInventoryBarHeight(barHeight)
+
+        // Resize background and border
+        let newBarSize = CGSize(width: size.width, height: barHeight)
+        backgroundBar.size = newBarSize
+        backgroundBorder.path = CGPath(roundedRect: CGRect(origin: .zero, size: newBarSize).offsetBy(dx: -newBarSize.width/2, dy: -newBarSize.height/2), cornerWidth: 10, cornerHeight: 10, transform: nil)
+
+        // Reposition node at the bottom center
+        position = CGPoint(x: size.width/2, y: barHeight/2)
+
+        // Layout slots, buttons, and more button
+        relayout(for: size)
+        // Refresh items into resized slots
+        updateInventory(items: InventoryManager.shared.items)
+    }
+
+    private func relayout(for size: CGSize) {
+        // Compute sizes
+        slotSize = CGSize(width: barHeight * 0.8, height: barHeight * 0.8)
+        let buttonSize = CGSize(width: barHeight * 0.6, height: barHeight * 0.6)
+        let sideMargin: CGFloat = 12
+        let buttonSpacing: CGFloat = 8
+
+        // Update selection indicator to track new slot size
+        let indicatorSize = CGSize(width: slotSize.width + 10, height: slotSize.height + 10)
+        selectedIndicator.path = CGPath(roundedRect: CGRect(origin: .zero, size: indicatorSize).offsetBy(dx: -indicatorSize.width/2, dy: -indicatorSize.height/2), cornerWidth: 12, cornerHeight: 12, transform: nil)
+
+        // Update button containers near edges
+        leftButtonContainer.position = CGPoint(x: -backgroundBar.size.width/2 + sideMargin + buttonSize.width/2, y: 0)
+        rightButtonContainer.position = CGPoint(x: backgroundBar.size.width/2 - sideMargin - buttonSize.width/2, y: 0)
+        // Resize existing buttons to match new button size
+        for (i, btn) in leftButtonContainer.children.enumerated() {
+            (btn as? HUDButton)?.resize(to: buttonSize)
+            btn.position = CGPoint(x: CGFloat(i) * (buttonSize.width + buttonSpacing), y: 0)
+        }
+        for (i, btn) in rightButtonContainer.children.enumerated() {
+            (btn as? HUDButton)?.resize(to: buttonSize)
+            btn.position = CGPoint(x: CGFloat(-i) * (buttonSize.width + buttonSpacing), y: 0)
+        }
+
+        // Calculate available width for slots between the button containers
+        let leftCount = CGFloat(leftButtonContainer.children.count)
+        let leftGapCount = max(0, leftButtonContainer.children.count - 1)
+        let leftGapsWidth = CGFloat(leftGapCount) * buttonSpacing
+        let leftWidth = (leftCount * buttonSize.width) + leftGapsWidth + sideMargin
+
+        let rightCount = CGFloat(rightButtonContainer.children.count)
+        let rightGapCount = max(0, rightButtonContainer.children.count - 1)
+        let rightGapsWidth = CGFloat(rightGapCount) * buttonSpacing
+        let rightWidth = (rightCount * buttonSize.width) + rightGapsWidth + sideMargin
+
+        let centerWidth = backgroundBar.size.width - leftWidth - rightWidth
+
+        // Determine how many slots fit (reserve space for the more button)
+        let perSlot = slotSize.width + slotSpacing
+        let reservedForMore = buttonSize.width + buttonSpacing
+        let slotsFitFloat = (centerWidth - reservedForMore + slotSpacing) / perSlot
+        let maxSlotsFitting = Int(slotsFitFloat.rounded(.down))
+        let clampedSlots = max(3, min(8, maxSlotsFitting))
+        Self.maxVisibleSlots = clampedSlots
+
+        // Adjust visible slot nodes to match the count
+        if visibleSlots.count != clampedSlots {
+            // Remove old slots
+            visibleSlots.forEach { $0.removeFromParent() }
+            visibleSlots.removeAll()
+            // Create new slots
+            for i in 0..<clampedSlots {
+                let slot = InventorySlot(size: slotSize)
+                slot.zPosition = 2
+                slot.slotIndex = i
+                addChild(slot)
+                visibleSlots.append(slot)
+            }
+        } else {
+            // Resize existing slot visuals
+            for slot in visibleSlots {
+                slot.resize(to: slotSize)
+            }
+        }
+
+        // Lay out slots centered in the remaining space between button groups
+        let totalSlotsWidth = CGFloat(clampedSlots) * (slotSize.width + slotSpacing) - slotSpacing
+        let leftEdge = -backgroundBar.size.width/2 + leftWidth
+        let startX = leftEdge + (centerWidth - reservedForMore - totalSlotsWidth)/2 + slotSize.width/2
+        for (i, slot) in visibleSlots.enumerated() {
+            slot.position = CGPoint(
+                x: startX + CGFloat(i) * (slotSize.width + slotSpacing),
+                y: 0
+            )
+        }
+
+        // Place the more button at the end of the slots area
+        let moreX = startX + CGFloat(clampedSlots) * (slotSize.width + slotSpacing) - slotSpacing + buttonSpacing + buttonSize.width/2
+        setupMoreButtonIfNeeded(buttonSize: buttonSize, at: moreX)
     }
 }

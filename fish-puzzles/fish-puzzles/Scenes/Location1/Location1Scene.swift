@@ -101,6 +101,10 @@ class Location1Scene: BaseGameScene {
         if !frames.isEmpty {
             fishCharacter = SKSpriteNode(texture: frames[0])
             fishCharacter.size = CGSize(width: 80, height: 60)
+            // Ensure the fish sprite renders upright on device
+            // Some sprite sheet exports invert the vertical orientation in SpriteKit
+            fishCharacter.zRotation = 0
+            fishCharacter.yScale = -1
         } else {
             // Fallback to colored rectangle if sprite sheet fails
             fishCharacter = SKSpriteNode(color: .orange, size: CGSize(width: 80, height: 60))

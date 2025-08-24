@@ -13,7 +13,7 @@ class HUDButton: SKNode {
     private var background: SKShapeNode!
     private var iconLabel: SKLabelNode!
     private var border: SKShapeNode!
-    private let buttonSize: CGSize
+    private var buttonSize: CGSize
     
     enum ButtonType {
         case inventory
@@ -64,7 +64,7 @@ class HUDButton: SKNode {
         
         // Add icon
         iconLabel = SKLabelNode(text: buttonType.icon)
-        iconLabel.fontSize = 28
+        iconLabel.fontSize = min(28, buttonSize.height * 0.56)
         iconLabel.verticalAlignmentMode = .center
         iconLabel.zPosition = 2
         addChild(iconLabel)
@@ -97,5 +97,13 @@ class HUDButton: SKNode {
             border.strokeColor = .white
             border.glowWidth = 0
         }
+    }
+
+    /// Resize the button visuals to a new size (keeps position)
+    func resize(to size: CGSize) {
+        buttonSize = size
+        background.path = CGPath(roundedRect: CGRect(origin: .zero, size: size).offsetBy(dx: -size.width/2, dy: -size.height/2), cornerWidth: 10, cornerHeight: 10, transform: nil)
+        border.path = CGPath(roundedRect: CGRect(origin: .zero, size: size).offsetBy(dx: -size.width/2, dy: -size.height/2), cornerWidth: 10, cornerHeight: 10, transform: nil)
+        iconLabel.fontSize = min(28, size.height * 0.56)
     }
 }

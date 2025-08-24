@@ -12,8 +12,16 @@ class SafeAreaManager {
     static let shared = SafeAreaManager()
     
     // UI element heights
-    static let inventoryBarHeight: CGFloat = 100
+    // Make inventory bar height adjustable to support responsive layouts
+    static var inventoryBarHeight: CGFloat = 100
     static let inventoryBarPadding: CGFloat = 10  // Extra padding above inventory
+    
+    /// Update the current inventory bar height and return the effective value
+    @discardableResult
+    static func setInventoryBarHeight(_ height: CGFloat) -> CGFloat {
+        inventoryBarHeight = height
+        return inventoryBarHeight
+    }
     
     enum BorderStyle {
         case solid(color: UIColor)

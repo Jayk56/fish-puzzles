@@ -254,6 +254,17 @@ class BaseGameScene: SKScene {
     var groundLevel: CGFloat {
         return SafeAreaManager.shared.groundLevel(for: size)
     }
+
+    // MARK: - Resize Handling
+    override func didChangeSize(_ oldSize: CGSize) {
+        super.didChangeSize(oldSize)
+        // Update HUD layout to new size
+        hudManager?.resize(to: size)
+        // Refresh background styling to match new bounds
+        setupBackgroundStyling()
+        // Refresh safe area debug overlay if shown
+        if showSafeAreaDebug { enableSafeAreaDebug() }
+    }
     
     /// Get the sky level Y position (top of safe area)
     var skyLevel: CGFloat {

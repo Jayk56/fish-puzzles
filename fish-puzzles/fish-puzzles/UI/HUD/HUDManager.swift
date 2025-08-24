@@ -80,6 +80,19 @@ class HUDManager {
     var inventoryBar: PersistentInventoryBar? {
         return persistentInventoryBar
     }
+
+    /// Resize HUD elements when the scene size changes
+    func resize(to size: CGSize) {
+        guard let scene = scene else { return }
+        // Center the overlay container in the new scene size
+        overlayContainer.position = CGPoint(x: size.width/2, y: size.height/2)
+        // Resize overlays that support it
+        for (_, overlay) in overlays {
+            overlay.resize(to: size)
+        }
+        // Resize persistent inventory bar and keep it attached to the scene
+        persistentInventoryBar?.resize(to: size)
+    }
     
     func show(_ type: OverlayType, animated: Bool = true) {
         guard let overlay = overlays[type] else { return }
@@ -169,6 +182,7 @@ protocol UIOverlay: AnyObject {
     func show(animated: Bool)
     func hide(animated: Bool)
     func update(deltaTime: TimeInterval)
+    func resize(to: CGSize)
 }
 
 class BaseOverlay: SKNode, UIOverlay {
@@ -230,6 +244,10 @@ class BaseOverlay: SKNode, UIOverlay {
     }
     
     func update(deltaTime: TimeInterval) {
+    }
+    
+    func resize(to: CGSize) {
+        // Default no-op; overlays can override as needed
     }
     
     func containsTouch(at point: CGPoint) -> Bool {
