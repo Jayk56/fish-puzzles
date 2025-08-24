@@ -1,5 +1,7 @@
 # Fish Puzzles - Architecture Documentation
 
+Note: The current implementation is a single Xcode project (no SwiftPM multi-module). Some sections below describe the target design and CI/CD pipeline for future modularization and automation. Where there is any mismatch, prefer the in-repo code layout under `fish-puzzles/fish-puzzles/`.
+
 ## Overview
 
 Fish Puzzles is a native iOS kid-friendly point-and-click adventure game built with SpriteKit. This architecture prioritizes child safety, performance, and maintainability while delivering a delightful experience for children aged 4-9.
@@ -203,7 +205,6 @@ App → GameCore → SceneManagement → AssetPipeline
 ## Team Resources
 
 ### Documentation
-- [API Documentation](../api/) - Generated with DocC
 - [Design Guide](../design/) - Art and audio specifications
 - [QA Test Plans](../tests/) - Testing procedures
 

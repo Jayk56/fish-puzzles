@@ -30,10 +30,13 @@ Fish Puzzles is a whimsical, story-driven 2D adventure game designed for childre
 git clone https://github.com/yourteam/fish-puzzles.git
 cd fish-puzzles
 
-# Run setup script
+# Run setup script (project bootstrap)
 ./setup.sh
 
-# Install dependencies and build
+# Enter the Xcode project folder (contains the Makefile)
+cd fish-puzzles
+
+# Install tools and build
 make setup
 make build
 
@@ -63,7 +66,11 @@ See [architecture/README.md](architecture/README.md) for detailed documentation.
 ### Creating a New Scene
 
 ```bash
-./Scripts/create_scene.sh MyNewScene
+# From repo root
+fish-puzzles/Scripts/create_scene.sh MyNewScene
+
+# Or from inside the Xcode project folder
+../Scripts/create_scene.sh MyNewScene
 ```
 
 ### Running Tests
@@ -81,9 +88,6 @@ make release
 ## Documentation
 
 - [Architecture Documentation](architecture/)
-- [API Documentation](docs/api/)
-- [Contributing Guidelines](CONTRIBUTING.md)
-- [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ## License
 

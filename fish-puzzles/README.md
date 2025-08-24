@@ -20,18 +20,21 @@ fish-puzzles/
 │   │   ├── Location1/        # First game location
 │   │   └── Location2/        # Second game location
 │   ├── Systems/              # Game systems
-│   │   ├── Audio/            # Music, SFX, and voice-over
-│   │   ├── Interaction/      # Touch and hotspot handling
-│   │   ├── Inventory/        # Item management
-│   │   ├── Save/             # Save system with CloudKit
-│   │   └── Analytics/        # Privacy-safe analytics
+│   │   ├── Audio/            # Music and SFX playback
+│   │   ├── Interaction/      # Touch, hotspots, and item use
+│   │   ├── Inventory/        # Item management and rules
+│   │   ├── Movement/         # Player movement (no global pathfinding)
+│   │   ├── Save/             # Local saves (+ CloudKit stub)
+│   │   ├── Feedback/         # Visual feedback & effects
+│   │   ├── Safety/           # Parental gate utilities
+│   │   └── Puzzle/           # Puzzle base classes
 │   ├── UI/                   # User interface
 │   │   ├── HUD/              # Heads-up display
 │   │   ├── Menus/            # Game menus
-│   │   └── Dialogue/         # Dialogue system
+│   │   └── Dialogue/         # Dialogue overlays/components
 │   ├── Utilities/            # Helper classes
 │   │   ├── Extensions/       # Swift extensions
-│   │   ├── Helpers/          # Utility functions
+│   │   ├── Helpers/          # Utility functions (e.g., AssetManager)
 │   │   └── Constants/        # Game constants
 │   └── Resources/            # Game resources
 │       ├── Assets.xcassets   # Images and colors
@@ -160,8 +163,8 @@ make test
 # Run all tests
 make test
 
-# Run with coverage
-make test-coverage
+# Run with profiling/coverage flags
+make profile
 
 # UI tests only
 make test-ui
@@ -176,9 +179,11 @@ The project includes debug overlays in development builds:
 
 ## CloudKit Setup
 
+Local saves are active via `UserDefaults`. CloudKit sync is currently stubbed in `SaveManager`.
+
 1. Enable CloudKit capability in Xcode
 2. Create container: `iCloud.com.yourcompany.fishpuzzles`
-3. Configure record types for saves
+3. Implement sync in `SaveManager.syncToCloud` if needed
 
 ## App Store Preparation
 
@@ -186,8 +191,8 @@ The project includes debug overlays in development builds:
 # Create archive
 make archive
 
-# Run final checks
-make release-check
+# Build for release
+make release
 ```
 
 ## Contributing

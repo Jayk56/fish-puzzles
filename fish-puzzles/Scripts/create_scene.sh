@@ -10,10 +10,10 @@ fi
 echo "Creating scene: $SCENE_NAME"
 
 # Create scene directory if it doesn't exist
-mkdir -p "fish-puzzles/Scenes/${SCENE_NAME}"
+mkdir -p "fish-puzzles/fish-puzzles/Scenes/${SCENE_NAME}"
 
 # Create scene file
-cat > "fish-puzzles/Scenes/${SCENE_NAME}/${SCENE_NAME}Scene.swift" << EOF
+cat > "fish-puzzles/fish-puzzles/Scenes/${SCENE_NAME}/${SCENE_NAME}Scene.swift" << EOF
 import SpriteKit
 
 class ${SCENE_NAME}Scene: BaseGameScene {
@@ -52,10 +52,10 @@ class ${SCENE_NAME}Scene: BaseGameScene {
 EOF
 
 # Create test directory if it doesn't exist
-mkdir -p "fish-puzzlesTests/Scenes"
+mkdir -p "fish-puzzles/fish-puzzlesTests/Scenes"
 
 # Create test file
-cat > "fish-puzzlesTests/Scenes/${SCENE_NAME}SceneTests.swift" << EOF
+cat > "fish-puzzles/fish-puzzlesTests/Scenes/${SCENE_NAME}SceneTests.swift" << EOF
 import XCTest
 @testable import fish_puzzles
 
@@ -80,8 +80,8 @@ final class ${SCENE_NAME}SceneTests: XCTestCase {
 }
 EOF
 
-echo "✓ Created ${SCENE_NAME}Scene.swift in fish-puzzles/Scenes/${SCENE_NAME}/"
-echo "✓ Created ${SCENE_NAME}SceneTests.swift in fish-puzzlesTests/Scenes/"
+echo "✓ Created ${SCENE_NAME}Scene.swift in fish-puzzles/fish-puzzles/Scenes/${SCENE_NAME}/"
+echo "✓ Created ${SCENE_NAME}SceneTests.swift in fish-puzzles/fish-puzzlesTests/Scenes/"
 echo ""
 echo "Remember to add these files to your Xcode project:"
 echo "1. Drag the new scene file into Xcode under Scenes group"

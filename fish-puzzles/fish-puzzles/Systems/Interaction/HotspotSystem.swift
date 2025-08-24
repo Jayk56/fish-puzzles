@@ -159,22 +159,4 @@ class HotspotManager: HotspotDelegate {
     }
 }
 
-class HotspotComponent: Component {
-    var hotspot: Hotspot?
-    
-    init(hotspot: Hotspot) {
-        self.hotspot = hotspot
-        super.init()
-    }
-    
-    override func didAddToEntity() {
-        guard let hotspot = hotspot else { return }
-        HotspotManager.shared.register(hotspot)
-        hotspot.node = entity?.node
-    }
-    
-    override func willRemoveFromEntity() {
-        guard let hotspot = hotspot else { return }
-        HotspotManager.shared.unregister(hotspot.id)
-    }
-}
+// Note: ECS-based HotspotComponent removed in favor of central HotspotManager
