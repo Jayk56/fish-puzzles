@@ -291,10 +291,18 @@ class Location1Scene: BaseGameScene {
         // Execute all effects through the interaction system
         interactionSystem.executeEffects(effects)
         
-        // Add item to inventory
+        // Add item to inventory (update HUD via InventoryManager)
         let pearl = Item(id: "pearl", name: "Shiny Pearl", imageName: "pearl")
-        GameEngine.shared.addItemToInventory(pearl)
-        print("✨ Added Shiny Pearl to inventory!")
+        if !InventoryManager.shared.hasItem(withId: pearl.id) {
+            InventoryManager.shared.addItem(pearl)
+            // Mirror to persistent game state for future checks/saves
+            if !GameEngine.shared.gameState.inventory.contains(pearl.id) {
+                GameEngine.shared.addItemToInventory(pearl)
+            }
+            print("✨ Added Shiny Pearl to inventory!")
+        } else {
+            print("ℹ️ Pearl already in inventory; skipping duplicate add.")
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
