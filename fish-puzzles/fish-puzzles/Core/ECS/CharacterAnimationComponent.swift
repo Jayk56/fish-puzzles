@@ -25,15 +25,16 @@ class CharacterAnimationComponent: Component {
     }
     
     private func setupAnimations() {
-        // Load all frames from sprite sheet
-        spriteFrames = AssetManager.shared.loadTexturesFromSpriteSheet(
-            named: "sprite-sheet-blue-fish",
-            rows: 3,
-            columns: 3
-        )
-        
+        // Load frames from per-frame atlas (preferred for device consistency)
+        let atlas = SKTextureAtlas(named: "FishCharacter")
+        let names = atlas.textureNames
+            .filter { $0.hasPrefix("fish_") }
+            .sorted()
+        spriteFrames = names.map { atlas.textureNamed($0) }
+        spriteFrames.forEach { $0.filteringMode = .nearest }
+
         guard spriteFrames.count >= 9 else {
-            print("⚠️ Failed to load fish sprite frames")
+            print("⚠️ Failed to load fish sprite frames from atlas. Found: \(spriteFrames.count)")
             return
         }
         

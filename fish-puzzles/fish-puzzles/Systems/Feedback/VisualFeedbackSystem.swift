@@ -205,7 +205,7 @@ class VisualFeedbackSystem {
         guard let scene = getCurrentScene() else { return }
         
         let emitter = SKEmitterNode()
-        emitter.particleTexture = SKTexture(imageNamed: "spark")
+        emitter.particleTexture = AssetManager.shared.texture(named: "spark")
         emitter.particleBirthRate = 50
         emitter.particleLifetime = 0.5
         emitter.particleScale = 0.2

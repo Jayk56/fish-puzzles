@@ -341,7 +341,7 @@ class DragDropSystem {
         guard let scene = scene else { return }
         
         let emitter = SKEmitterNode()
-        emitter.particleTexture = SKTexture(imageNamed: "spark")
+        emitter.particleTexture = AssetManager.shared.texture(named: "spark")
         emitter.particleBirthRate = 200
         emitter.particleLifetime = 0.5
         emitter.particleScale = 0.3

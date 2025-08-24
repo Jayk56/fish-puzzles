@@ -1,4 +1,4 @@
-.PHONY: all setup build test run clean atlases lint format help
+.PHONY: all setup build test run clean atlases lint format help slice-spritesheet
 
 all: clean build test
 
@@ -44,6 +44,20 @@ clean: ## Clean build artifacts
 atlases: ## Generate texture atlases
 	@echo "Generating texture atlases..."
 	@python3 Scripts/generate_atlases.py
+
+slice-spritesheet: ## Slice a grid PNG into a per-frame .spriteatlas (vars: FILE, ROWS, COLS, ATLAS, BASENAME, [ORIGIN])
+	@if [ -z "$(FILE)" ] || [ -z "$(ROWS)" ] || [ -z "$(COLS)" ] || [ -z "$(ATLAS)" ] || [ -z "$(BASENAME)" ]; then \
+		echo "Usage: make slice-spritesheet FILE=path/to/sheet.png ROWS=3 COLS=3 ATLAS=FishCharacter BASENAME=fish [ORIGIN=top-left|bottom-left]"; \
+		exit 1; \
+	fi
+	@python3 Scripts/slice_spritesheet_to_spriteatlas.py \
+		--input "$(FILE)" \
+		--rows $(ROWS) \
+		--cols $(COLS) \
+		--atlas "$(ATLAS)" \
+		--basename "$(BASENAME)" \
+		--assets fish-puzzles/Assets.xcassets \
+		--origin "$(ORIGIN)"
 
 lint: ## Run SwiftLint
 	@echo "Linting code..."

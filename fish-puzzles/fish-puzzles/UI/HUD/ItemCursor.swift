@@ -154,7 +154,7 @@ class ItemCursor: SKNode {
     
     private func createSuccessParticles() {
         let emitter = SKEmitterNode()
-        emitter.particleTexture = SKTexture(imageNamed: "spark")
+        emitter.particleTexture = AssetManager.shared.texture(named: "spark")
         emitter.particleBirthRate = 100
         emitter.particleLifetime = 0.5
         emitter.particleScale = 0.3

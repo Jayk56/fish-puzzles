@@ -165,7 +165,7 @@ class SafeAreaManager {
             
         case .pattern(let imageName):
             // Use tiled pattern
-            let patternTexture = SKTexture(imageNamed: imageName)
+            let patternTexture = AssetManager.shared.texture(named: imageName)
             node.texture = patternTexture
             // Create shader for tiling effect if needed
             let shader = SKShader(source: """

@@ -38,6 +38,12 @@ class Location1Scene: BaseGameScene {
         showSafeAreaDebug = true
         #endif
         
+        // Preload atlas to avoid first-use hitch
+        let fishAtlas = SKTextureAtlas(named: "FishCharacter")
+        SKTextureAtlas.preloadTextureAtlases([fishAtlas]) {
+            print("✅ Preloaded FishCharacter atlas")
+        }
+
         // Add fish character
         setupCharacter()
         
@@ -91,20 +97,15 @@ class Location1Scene: BaseGameScene {
         // Create fish entity with sprite
         fishEntity = Entity()
         
-        // Load first frame as initial texture
-        let frames = AssetManager.shared.loadTexturesFromSpriteSheet(
-            named: "sprite-sheet-blue-fish",
-            rows: 3,
-            columns: 3
-        )
-        
-        if !frames.isEmpty {
-            fishCharacter = SKSpriteNode(texture: frames[0])
+        // Load first frame from per-frame atlas for consistent device behavior
+        let atlas = SKTextureAtlas(named: "FishCharacter")
+        let names = atlas.textureNames.filter { $0.hasPrefix("fish_") }.sorted()
+        if let firstName = names.first {
+            let tex = atlas.textureNamed(firstName)
+            tex.filteringMode = .nearest
+            fishCharacter = SKSpriteNode(texture: tex)
             fishCharacter.size = CGSize(width: 80, height: 60)
-            // Ensure the fish sprite renders upright on device
-            // Some sprite sheet exports invert the vertical orientation in SpriteKit
             fishCharacter.zRotation = 0
-            fishCharacter.yScale = -1
         } else {
             // Fallback to colored rectangle if sprite sheet fails
             fishCharacter = SKSpriteNode(color: .orange, size: CGSize(width: 80, height: 60))

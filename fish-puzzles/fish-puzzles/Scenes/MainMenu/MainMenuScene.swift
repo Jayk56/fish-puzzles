@@ -15,6 +15,12 @@ class MainMenuScene: BaseMenuScene {
         // Set scene scaling mode for landscape
         scaleMode = .aspectFill
         
+        // Preload character atlas so first scene animates immediately
+        let fishAtlas = SKTextureAtlas(named: "FishCharacter")
+        SKTextureAtlas.preloadTextureAtlases([fishAtlas]) {
+            print("✅ Preloaded FishCharacter atlas in Main Menu")
+        }
+        
         // Background
         let background = SKSpriteNode(color: .systemBlue, size: size)
         background.position = CGPoint(x: size.width/2, y: size.height/2)

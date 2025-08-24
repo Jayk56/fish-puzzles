@@ -144,6 +144,8 @@ make test
 - Extract complex logic to systems
 - Use components for reusable behaviors
 - Profile memory usage regularly
+- For consistent sprite rendering on Simulator and devices, follow Docs/sprite-animation-consistency.md
+ - Avoid placing a full grid sprite sheet PNG inside a `.spriteatlas` and slicing via `SKTexture(rect:in:)`. On devices, atlas repacking can break frame order. Prefer per-frame images in the atlas (see Docs/sprite-animation-consistency.md), or keep the grid PNG outside the atlas if you must slice.
 
 ## Performance Targets
 

@@ -267,7 +267,7 @@ class PersistentInventoryBar: SKNode {
         ]))
         
         let sparkle = SKEmitterNode()
-        sparkle.particleTexture = SKTexture(imageNamed: "spark")
+        sparkle.particleTexture = AssetManager.shared.texture(named: "spark")
         sparkle.particleBirthRate = 50
         sparkle.particleLifetime = 0.5
         sparkle.particleScale = 0.2

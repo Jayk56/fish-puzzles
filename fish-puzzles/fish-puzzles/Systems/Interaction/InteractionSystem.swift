@@ -325,7 +325,8 @@ final class InteractionSystem {
                             
                             var textures: [SKTexture] = []
                             for i in 1...frameCount {
-                                textures.append(SKTexture(imageNamed: "\(baseName)\(i)"))
+                                let t = AssetManager.shared.texture(named: "\(baseName)\(i)")
+                                textures.append(t)
                             }
                             
                             let animateAction = SKAction.animate(with: textures, 
@@ -333,7 +334,7 @@ final class InteractionSystem {
                             sprite.run(animateAction)
                         } else {
                             // Single texture change
-                            sprite.texture = SKTexture(imageNamed: animation)
+                            sprite.texture = AssetManager.shared.texture(named: animation)
                         }
                     }
                 }
@@ -363,7 +364,7 @@ final class InteractionSystem {
                     // Configure based on particle name
                     switch particles.lowercased() {
                     case "sparkle", "star":
-                        emitter.particleTexture = SKTexture(imageNamed: "spark")
+                        emitter.particleTexture = AssetManager.shared.texture(named: "spark")
                         emitter.particleBirthRate = 30
                         emitter.particleLifetime = 1.0
                         emitter.particleScale = 0.2
@@ -374,7 +375,7 @@ final class InteractionSystem {
                         emitter.emissionAngleRange = .pi * 2
                         
                     case "smoke":
-                        emitter.particleTexture = SKTexture(imageNamed: "smoke")
+                        emitter.particleTexture = AssetManager.shared.texture(named: "smoke")
                         emitter.particleBirthRate = 10
                         emitter.particleLifetime = 2.0
                         emitter.particleScale = 0.5
@@ -384,7 +385,7 @@ final class InteractionSystem {
                         emitter.yAcceleration = 20
                         
                     case "dust":
-                        emitter.particleTexture = SKTexture(imageNamed: "dust")
+                        emitter.particleTexture = AssetManager.shared.texture(named: "dust")
                         emitter.particleBirthRate = 20
                         emitter.particleLifetime = 1.5
                         emitter.particleScale = 0.1
@@ -393,7 +394,7 @@ final class InteractionSystem {
                         
                     default:
                         // Generic particle effect
-                        emitter.particleTexture = SKTexture(imageNamed: "particle")
+                        emitter.particleTexture = AssetManager.shared.texture(named: "particle")
                         emitter.particleBirthRate = 15
                         emitter.particleLifetime = 1.0
                         emitter.particleScale = 0.3
@@ -413,7 +414,7 @@ final class InteractionSystem {
             
         case .changeSprite(let sprite):
             if let target = effect.target?.node as? SKSpriteNode {
-                target.texture = SKTexture(imageNamed: sprite)
+                target.texture = AssetManager.shared.texture(named: sprite)
             }
             
         case .unlock(let id):
