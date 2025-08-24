@@ -14,6 +14,9 @@ class InventoryOverlay: BaseOverlay {
     private let maxSlots = 12
     private var closeButton: CloseButton!
     
+    // Access shared inventory for syncing
+    private let inventory = InventoryManager.shared
+    
     init(size: CGSize) {
         super.init(layer: .inventory, size: size)
         self.isModal = true
@@ -85,6 +88,12 @@ class InventoryOverlay: BaseOverlay {
         
         inventoryBackground.addChild(closeButton)
     }
+
+    override func show(animated: Bool) {
+        // Ensure overlay reflects latest inventory before showing
+        populateFromInventory()
+        super.show(animated: animated)
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
@@ -101,19 +110,18 @@ class InventoryOverlay: BaseOverlay {
         }
     }
     
-    func addItem(_ itemName: String, texture: SKTexture) {
-        for slot in itemSlots {
-            if slot.isEmpty {
-                slot.setItem(name: itemName, texture: texture)
-                break
-            }
-        }
-    }
-    
-    func removeItem(_ itemName: String) {
-        for slot in itemSlots {
-            if slot.itemName == itemName {
-                slot.clear()
+    /// Reload all slots from the InventoryManager
+    private func populateFromInventory() {
+        // Clear everything first
+        itemSlots.forEach { $0.clear() }
+
+        let items = inventory.items
+        guard !items.isEmpty else { return }
+
+        for (idx, item) in items.enumerated() {
+            if idx < itemSlots.count {
+                itemSlots[idx].setItem(item)
+            } else {
                 break
             }
         }
@@ -121,9 +129,9 @@ class InventoryOverlay: BaseOverlay {
 }
 
 class ItemSlot: SKNode {
-    var itemName: String?
+    var item: Item?
     var itemSprite: SKSpriteNode?
-    var isEmpty: Bool { return itemName == nil }
+    var isEmpty: Bool { return item == nil }
     private let slotSize: CGSize
     var background: SKShapeNode!
     
@@ -145,10 +153,11 @@ class ItemSlot: SKNode {
         addChild(background)
     }
     
+    // Backward-compatible setter if needed elsewhere
     func setItem(name: String, texture: SKTexture) {
         clear()
-        
-        itemName = name
+        // Create a temporary item shell for display purposes
+        item = Item(id: name, name: name, displayName: name, imageName: name, description: "")
         itemSprite = SKSpriteNode(texture: texture)
         itemSprite?.size = CGSize(width: slotSize.width * 0.8, height: slotSize.height * 0.8)
         itemSprite?.position = .zero
@@ -158,8 +167,20 @@ class ItemSlot: SKNode {
         }
     }
     
+    func setItem(_ newItem: Item) {
+        clear()
+        item = newItem
+        let texture = AssetManager.shared.texture(named: newItem.imageName)
+        itemSprite = SKSpriteNode(texture: texture)
+        itemSprite?.size = CGSize(width: slotSize.width * 0.8, height: slotSize.height * 0.8)
+        itemSprite?.position = .zero
+        if let sprite = itemSprite {
+            addChild(sprite)
+        }
+    }
+    
     func clear() {
-        itemName = nil
+        item = nil
         itemSprite?.removeFromParent()
         itemSprite = nil
     }
